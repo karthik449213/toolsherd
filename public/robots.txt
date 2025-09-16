@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://toolsherd.ai/sitemap.xml
