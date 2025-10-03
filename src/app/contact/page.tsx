@@ -16,7 +16,7 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="mt-4 max-w-xl mx-auto text-lg text-slate-600">
-            Have a question, a suggestion for a tool, or a partnership inquiry? We'd love to hear from you.
+            Have a question, a suggestion for a tool, or a partnership inquiry? We&#39;d love to hear from you.
           </p>
         </div>
 
@@ -92,6 +92,7 @@ export default function ContactPage() {
           </form>
         </div>
       </div>
+
     </main>
   );
 }

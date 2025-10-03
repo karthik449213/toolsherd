@@ -1,4 +1,10 @@
+
+
+
+
 import type { Metadata } from "next";
+
+
 
 export const metadata: Metadata = {
   title: "Submit a Tool - Tools Herd AI",
@@ -9,6 +15,7 @@ export default function SubmitToolPage() {
   return (
     <main className="bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+
 
         {/* Header */}
         <div className="text-center mb-12">
@@ -77,7 +84,7 @@ export default function SubmitToolPage() {
                     className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
-                <p className="mt-2 text-sm text-slate-500">This will be the main description on the tool's listing page.</p>
+                <p className="mt-2 text-sm text-slate-500">This will be the main description on the tools listing page.</p>
               </div>
 
               {/* Tool Category */}
@@ -132,7 +139,7 @@ export default function SubmitToolPage() {
                     className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
-                 <p className="mt-2 text-sm text-slate-500">We'll use this to contact you with any questions about your submission.</p>
+                 <p className="mt-2 text-sm text-slate-500">We&#39;ll use this to contact you with any questions about your submission.</p>
               </div>
 
               {/* Submit Button */}
@@ -144,10 +151,12 @@ export default function SubmitToolPage() {
                   Submit for Review
                 </button>
               </div>
+
             </div>
           </form>
         </div>
       </div>
+
     </main>
   );
 }

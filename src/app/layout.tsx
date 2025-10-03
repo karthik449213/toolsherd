@@ -1,6 +1,10 @@
+
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://toolsherd.ai/'),
   title: "Tools Herd AI - Ultimate AI Directory",
   description: "Discover the best AI tools for productivity, content creation, coding, marketing, trading, and more. Your go-to AI directory for 2025.",
   keywords: [
@@ -25,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Tools Herd AI",
     images: [
       {
-        url: "/public/file.svg",
+        url: "/file.svg",
         width: 1200,
         height: 630,
         alt: "Tools Herd AI Directory"
@@ -38,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tools Herd AI - Ultimate AI Directory",
     description: "Discover the best AI tools for productivity, content creation, coding, marketing, trading, and more.",
-    images: ["/public/file.svg"]
+    images: ["/file.svg"]
   },
   alternates: {
     canonical: "https://toolsherd.ai/"
@@ -67,7 +72,9 @@ export default function RootLayout({
         }} />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

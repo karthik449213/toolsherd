@@ -40,7 +40,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Our Approach Section */}
+          
           <div>
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Our Approach to Curation</h2>
             <p className="leading-relaxed">
@@ -64,7 +64,7 @@ export default function AboutPage() {
                 <h3 className="text-xl font-bold text-slate-800">[Your Name]</h3>
                 <p className="text-md text-blue-600 font-semibold">[Your Role, e.g., Founder & Lead Curator]</p>
                 <p className="mt-2 text-slate-600">
-                  [Write a short, 1-2 sentence bio here. For example: "I'm a passionate software developer dedicated to making AI technology accessible to everyone. Tools Herd AI is my contribution to the community, aimed at fostering innovation and collaboration."]
+                  [Write a short, 1-2 sentence bio here. For example: I&apos;m a passionate software developer dedicated to making AI technology accessible to everyone. Tools Herd AI is my contribution to the community, aimed at fostering innovation and collaboration.]
                 </p>
               </div>
             </div>
@@ -74,13 +74,13 @@ export default function AboutPage() {
           <div className="text-center pt-12">
             <h2 className="text-3xl font-bold text-slate-900">Join Our Community</h2>
             <p className="mt-3 max-w-2xl mx-auto text-lg text-slate-600">
-              Tools Herd AI is more than just a directory; it's a community of innovators. Explore our collection, subscribe to our newsletter for the latest updates, and help us grow.
+              Tools Herd AI is more than just a directory; it&#39;s a community of innovators. Explore our collection, subscribe to our newsletter for the latest updates, and help us grow.
             </p>
             <div className="mt-8 flex justify-center gap-4">
               <Link href="/tools" className="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
                 Explore Tools
               </Link>
-              <Link href="/submit-tool" className="inline-block bg-slate-100 text-slate-800 font-semibold px-6 py-3 rounded-md hover:bg-slate-200 transition-colors">
+              <Link href="/list-a-website" className="inline-block bg-slate-100 text-slate-800 font-semibold px-6 py-3 rounded-md hover:bg-slate-200 transition-colors">
                 Submit a Tool
               </Link>
             </div>
@@ -88,6 +88,7 @@ export default function AboutPage() {
         </div>
 
       </div>
+
     </main>
   );
 }

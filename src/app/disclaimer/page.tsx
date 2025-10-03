@@ -22,10 +22,10 @@ export default function DisclaimerPage() {
         </div>
 
         <div className="mt-12 text-slate-700 space-y-8 prose prose-lg max-w-none">
-          
+
           <h2>General Disclaimer</h2>
           <p>
-            All the information on this website, Tools Herd AI (the "Site"), is published in good faith and for general information purposes only. We do not make any warranties about the completeness, reliability, and accuracy of this information. Any action you take upon the information you find on this website is strictly at your own risk. We will not be liable for any losses and/or damages in connection with the use of our website.
+            All the information on this website, Tools Herd AI , is published in good faith and for general information purposes only. We do not make any warranties about the completeness, reliability, and accuracy of this information. Any action you take upon the information you find on this website is strictly at your own risk. We will not be liable for any losses and/or damages in connection with the use of our website.
           </p>
 
           <h2>External Links Disclaimer</h2>
@@ -53,7 +53,7 @@ export default function DisclaimerPage() {
           <p>
             If you have any questions about this disclaimer, you can contact us by email:
             <br />
-            <Link href="mailto:[your-email@example.com]" className="text-blue-600 hover:underline">[your-email@example.com]</Link>
+            <Link href="mailto:[your-email@example.com]" className="text-blue-600 hover:underline">karthikpiinasi@gmail.com</Link>
           </p>
         </div>
       </div>
