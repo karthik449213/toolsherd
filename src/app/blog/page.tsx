@@ -36,7 +36,7 @@ export default function BlogPage() {
       let rows: RawBlogPost[] = [];
 
         rows = await fetchFrom("blog_posts");
-
+        console.log("Fetched blog posts:", rows);
 
 
       const mapped: BlogPost[] = rows.map((row: RawBlogPost) => {

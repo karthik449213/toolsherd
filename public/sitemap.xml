@@ -3,13 +3,46 @@
   <url>
     <loc>https://toolsherd.ai/</loc>
     <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://toolsherd.ai/categories</loc>
+    <loc>https://toolsherd.ai/tools</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://toolsherd.ai/blog</loc>
     <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://toolsherd.ai/about</loc>
     <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://toolsherd.ai/contact</loc>
+    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://toolsherd.ai/list-a-website</loc>
+    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://toolsherd.ai/privacy-policy</loc>
+    <priority>0.3</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://toolsherd.ai/terms-and-conditions</loc>
+    <priority>0.3</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://toolsherd.ai/disclaimer</loc>
+    <priority>0.3</priority>
+    <changefreq>yearly</changefreq>
   </url>
 </urlset>

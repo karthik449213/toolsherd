@@ -11,14 +11,14 @@ import {
 import { BlogPost, RawBlogPost } from '@/lib/types';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 const formatDate = (d: Date) =>
   new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const fetchPost = async (table: string): Promise<RawBlogPost[]> => {
     const { data, error } = await supabase.from(table).select('*').eq('slug', slug).limit(1);

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from 'next/image';
   import { Button } from "@/components/ui/button";
@@ -28,23 +28,12 @@ import {supabase} from "@/lib/supabaseClient";
   // Supabase configuration
   // IMPORTANT: Replace these with environment variables for production.
 
-  interface RawAITool {
-    id: number;
-    name: string;
-    category: string;
-    description?: string | null;
-    imageUrl?: string | null;
-    tags?: unknown;
-    url: string;
-  }
-
-  interface AITool {
+  interface Tool {
     id: number;
     name: string;
     category: string;
     description: string | null;
     imageUrl: string | null;
-    tags: string[] | string | null;
     url: string;
   }
 
@@ -99,81 +88,11 @@ import {supabase} from "@/lib/supabaseClient";
     }
   };
 
-  // Tag utilities
-  const getTagColor = (tag: string) => {
-    const t = (tag ?? "").toLowerCase();
-    if (t.includes("freemium")) return "bg-emerald-100 text-emerald-800";
-    if (t.includes("free")) return "bg-green-100 text-emerald-800";
-    if (t.includes("paid")) return "bg-yellow-100 text-yellow-800";
-    if (t.includes("popular") || t.includes("trending") || t.includes("featured"))
-      return "bg-red-100 text-red-800";
-    if (t.includes("gpt")) return "bg-purple-100 text-purple-800";
-    if (t.includes("seo")) return "bg-green-100 text-green-800";
-    return "bg-gray-100 text-gray-800";
-  };
-
-  // Turn any supported tags shape into a clean string array
-  const toTagsArray = (tags: unknown): string[] => {
-    if (!tags) return [];
-
-    // Already an array (could be strings or objects)
-    if (Array.isArray(tags)) {
-      return tags
-        .map((t: unknown) => {
-          if (typeof t === "string") return t.trim();
-          if (t && typeof t === "object") {
-            // Common shapes: {label}, {name}, {value}
-            const obj = t as { label?: unknown; name?: unknown; value?: unknown };
-            const val = obj.label ?? obj.name ?? obj.value;
-            return val ? String(val).trim() : "";
-          }
-          return String(t ?? "").trim();
-        })
-        .filter(Boolean);
-    }
-
-    // String: could be CSV or a JSON array string
-    if (typeof tags === "string") {
-      const raw = tags.trim();
-
-      // Try JSON parse first
-      if ((raw.startsWith("[") && raw.endsWith("]")) || (raw.startsWith('"') && raw.endsWith('"'))) {
-        try {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) {
-            return parsed
-              .map((t: unknown) => (typeof t === "string" ? t : String(t ?? "")))
-              .map((s: string) => s.trim())
-              .filter(Boolean);
-          }
-        } catch {
-          // fall through to CSV parsing
-        }
-      }
-
-      // Fallback: treat as CSV
-      return raw
-        .split(",")
-        .map((t) => t.replace(/^[\s'"]+|[\s'"]+$/g, "")) // trim and strip quotes
-        .filter(Boolean);
-    }
-
-    return [];
-  };
-
-  // Optional: nicer label for display (title-case and replace separators)
-  const prettifyTag = (tag: string) =>
-    tag
-      .replace(/[_-]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim()
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-
   // Pagination constants
   const PAGE_SIZE = 9;
 
   // Simple dedupe by id when appending
-  const mergeUniqueById = (prev: AITool[], next: AITool[]) => {
+  const mergeUniqueById = (prev: Tool[], next: Tool[]) => {
     const seen = new Set<number>(prev.map((t) => t.id));
     const merged = [...prev];
     for (const item of next) {
@@ -190,12 +109,11 @@ import {supabase} from "@/lib/supabaseClient";
     const [searchQuery, setSearchQuery] = useState("");
     const [categorySheetOpen, setCategorySheetOpen] = useState(false);
 
-    const [aiTools, setAiTools] = useState<AITool[]>([]);
+    const [tools, setTools] = useState<Tool[]>([]);
      const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
-    const [totalCount, setTotalCount] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -203,95 +121,74 @@ import {supabase} from "@/lib/supabaseClient";
     const [blogError, setBlogError] = useState<string | null>(null);
 
   // Fetch a page with current filters
-  const fetchToolsPage = useCallback(async (opts: { page: number; replace: boolean }) => {
-      const q = searchQuery.trim().toLowerCase();
-      const from = opts.page * PAGE_SIZE;
-      const to = from + PAGE_SIZE - 1;
+  const fetchTools = async (opts: { page: number; replace: boolean }) => {
+    const q = searchQuery.trim().toLowerCase();
+    const from = opts.page * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
 
-      try {
-        if (opts.replace) {
-          setLoading(true);
-        } else {
-          setLoadingMore(true);
-        }
-        setError(null);
-
-        let query = supabase
-          .from("ai_tools")
-          .select("*", { count: "exact" })
-          .order("id", { ascending: true })
-          .range(from, to);
-
-        if (activeCategory !== "all") {
-          // case-insensitive filter on category
-          query = query.ilike("category", activeCategory);
-        }
-
-        if (q) {
-          // Name/description search; tags included if it's a text column.
-          // If your tags column is array/json and this errors, remove ilike(tags,...) part.
-          query = query.or(`name.ilike.%${q}%,description.ilike.%${q}%,tags.ilike.%${q}%`);
-        }
-
-        const { data, error, count } = await query;
-
-        if (error) {
-          throw error;
-        }
-
-        const rawFetched = (data ?? []) as RawAITool[];
-        const fetched: AITool[] = rawFetched.map((row) => ({
-          id: row.id,
-          name: row.name,
-          category: row.category,
-          description: row.description ?? null,
-          imageUrl: row.imageUrl ?? null,
-          tags: toTagsArray(row.tags),
-          url: row.url,
-        }));
-        setTotalCount(count ?? null);
-
-        if (opts.replace) {
-          setAiTools(fetched);
-          setPage(0);
-        } else {
-          setAiTools((prev) => mergeUniqueById(prev, fetched));
-          setPage(opts.page);
-        }
-
-        const loadedCount = (opts.replace ? 0 : aiTools.length) + fetched.length;
-        const effectiveLoadedCount = opts.replace ? fetched.length : loadedCount;
-        if (count != null) {
-          setHasMore(effectiveLoadedCount < count);
-        } else {
-          // Fallback: if we received less than a full page, assume no more
-          setHasMore(fetched.length === PAGE_SIZE);
-        }
-      } catch (e: unknown) {
-        console.error("Error fetching tools:", e);
-        setError(e instanceof Error ? e.message : "Failed to load tools");
-        // On error, be conservative with hasMore to prevent infinite retries
-        setHasMore(false);
-      } finally {
-        setLoading(false);
-        setLoadingMore(false);
+    try {
+      if (opts.replace) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
       }
-    }, [activeCategory, searchQuery]);
+      setError(null);
+
+      let query = supabase
+        .from('ai_tools')
+        .select('*')
+        .order('id', { ascending: true })
+        .range(from, to);
+
+      if (activeCategory !== 'all') {
+        query = query.ilike('category', activeCategory);
+      }
+
+      if (q) {
+        query = query.or(`name.ilike.%${q}%,description.ilike.%${q}%,category.ilike.%${q}%`);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      const fetched = (data ?? []) as Tool[];
+
+      if (opts.replace) {
+        setTools(fetched);
+        setPage(0);
+      } else {
+        setTools((prev) => mergeUniqueById(prev, fetched));
+        setPage(opts.page);
+      }
+
+      setHasMore(fetched.length === PAGE_SIZE);
+    } catch (e: unknown) {
+      console.error('Error fetching tools:', e);
+      setError(e instanceof Error ? e.message : 'Failed to load tools');
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
 
     const fetchBlogPosts = async () => {
       setBlogLoading(true);
       setBlogError(null);
       try {
-        const fetchFrom = async (table: string): Promise<RawBlogPost[]> => {
-        const { data, error } = await supabase.from(table).select("*").order("publishedat", { ascending: false }).limit(12);
-          if (error) throw error;
-          return (data ?? []) as RawBlogPost[];
-        };
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .order("publishedat", { ascending: false })
+          .limit(12);
+        if (error) throw error;
 
-        let rows: RawBlogPost[] = [];
+        const rows: RawBlogPost[] = (data ?? []) as RawBlogPost[];
 
-          rows = await fetchFrom("blog_posts");
-
+        console.log("Fetched blog posts:", rows);
 
         const mapped: BlogPost[] = rows
           .map((row: RawBlogPost) => {
@@ -322,13 +219,12 @@ import {supabase} from "@/lib/supabaseClient";
 
     // Initial load + refetch on filter changes
     useEffect(() => {
-      // Reset list when filters change
-      setAiTools([]);
+      setTools([]);
       setPage(0);
       setHasMore(true);
-      setTotalCount(null);
-      fetchToolsPage({ page: 0, replace: true });
-    }, [activeCategory, searchQuery, fetchToolsPage]);
+      fetchTools({ page: 0, replace: true });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchQuery, activeCategory]);
 
     // Load blog posts once on mount
     useEffect(() => {
@@ -337,7 +233,7 @@ import {supabase} from "@/lib/supabaseClient";
 
     const handleLoadMore = () => {
       if (loadingMore || !hasMore) return;
-      fetchToolsPage({ page: page + 1, replace: false });
+      fetchTools({ page: page + 1, replace: false });
     };
 
     return (
@@ -420,29 +316,27 @@ import {supabase} from "@/lib/supabaseClient";
 
             {error && <div className="text-center text-red-600 mb-6">{error}</div>}
 
-            {loading && aiTools.length === 0 ? (
+            {loading && tools.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-lg text-slate-600">Loading AI tools...</p>
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {aiTools.map((tool) => {
+                  {tools.map((tool) => {
                     return (
                       <Card
                         key={tool.id}
                         className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                       >
                         <div className="relative h-48 bg-gray-50 rounded-t-2xl overflow-hidden">
-                          <Image
-                            src={tool.imageUrl || ""}
-                            alt={`${tool.name} interface`}
-                            fill
-                            className="object-cover"
-                            placeholder="blur"
-                            blurDataURL="/placeholder.png"
-                            loading="lazy"
-                          />
+                        <Image
+                                         src={tool.imageUrl || ''}
+                                         alt={`${tool.name} logo`}
+                                         width={400}
+                                         height={192}
+                                         className="w-full h-48 flex items-center justify-center bg-gray-50 rounded-t-2xl object-contain p-4"
+                                       />
                         </div>
                         <CardContent className="p-6">
                           <div className="flex items-center justify-between mb-3">
@@ -453,40 +347,25 @@ import {supabase} from "@/lib/supabaseClient";
                           </div>
                           <p className="text-slate-600 mb-4">{tool.description}</p>
 
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {toTagsArray(tool.tags).map((rawTag, index) => {
-                              const label = prettifyTag(rawTag);
-                              return (
-                                <Badge
-                                  key={`${tool.id}-tag-${index}-${label}`}
-                                  className={`px-3 py-1 rounded-full text-xs font-medium ${getTagColor(label)}`}
-                                >
-                                  {label}
-                                </Badge>
-                              );
-                            })}
-                          </div>
-
-                          <Button
-                            className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium"
-                            onClick={() => window.open(tool.url, "_blank")}
-                          >
-                            Visit {tool.name} <ExternalLink className="h-4 w-4 ml-2" />
-                          </Button>
+                          <Link href={tool.url} target="_blank" rel="noopener noreferrer">
+                            <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+                              Visit {tool.name} <ExternalLink className="h-4 w-4 ml-2" />
+                            </Button>
+                          </Link>
                         </CardContent>
                       </Card>
                     );
                   })}
                 </div>
 
-                {aiTools.length === 0 && !loading && !error && (
+                {tools.length === 0 && !loading && !error && (
                   <div className="text-center py-16">
                     <p className="text-lg text-slate-600">No tools found matching your criteria.</p>
                   </div>
                 )}
 
                 <div className="text-center mt-10">
-                  {hasMore ? (
+                  {hasMore && (
                     <Button
                       onClick={handleLoadMore}
                       disabled={loadingMore}
@@ -494,9 +373,6 @@ import {supabase} from "@/lib/supabaseClient";
                     >
                       {loadingMore ? "Loading..." : "Load More Tools"}
                     </Button>
-                  ) : (
-                    totalCount != null &&
-                    aiTools.length > 0 && <p className="text-slate-500 text-sm">Showing {aiTools.length} {totalCount ? `of ${totalCount} ` : ""}tools.</p>
                   )}
                 </div>
               </>
