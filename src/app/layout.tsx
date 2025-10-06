@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   keywords: [
     "AI tools", "artificial intelligence", "machine learning", "productivity AI", "content creation AI", "coding AI", "marketing AI", "trading AI", "AI directory", "best AI tools", "2025 AI", "automation", "deep learning", "GPT", "AI for business", "AI for creators", "AI for developers"
   ],
+
   openGraph: {
     title: "Tools Herd AI - Ultimate AI Directory",
     description: "Discover the best AI tools for productivity, content creation, coding, marketing, trading, and more.",
@@ -38,6 +39,9 @@ export const metadata: Metadata = {
     ],
     locale: "en_US",
     type: "website"
+  },
+   verification: {
+    google: "32jTef7cOu1lJIDk_o2TUqQJpJvkxbF43uL4gbCmNrM", // replace with your actual code
   },
   twitter: {
     card: "summary_large_image",
