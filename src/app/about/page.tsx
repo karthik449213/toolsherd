@@ -61,10 +61,10 @@ export default function AboutPage() {
               {/* TODO: Replace this div with an <Image> component of your photo */}
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-slate-200 flex-shrink-0"></div>
               <div>
-                <h3 className="text-xl font-bold text-slate-800">[Your Name]</h3>
-                <p className="text-md text-blue-600 font-semibold">[Your Role, e.g., Founder & Lead Curator]</p>
+                <h3 className="text-xl font-bold text-slate-800">KARTHIKEYA</h3>
+                <p className="text-md text-blue-600 font-semibold">FOUNDER</p>
                 <p className="mt-2 text-slate-600">
-                  [Write a short, 1-2 sentence bio here. For example: I&apos;m a passionate software developer dedicated to making AI technology accessible to everyone. Tools Herd AI is my contribution to the community, aimed at fostering innovation and collaboration.]
+                       AI is evolving day by day .so ,to educate the students to know more about ai tools <br></br>we invented this ai tool directory webiste
                 </p>
               </div>
             </div>
