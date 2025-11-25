@@ -322,14 +322,14 @@ import {supabase} from "@/lib/supabaseClient";
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 tools-lsit lg:grid-cols-3 gap-8">
                   {tools.map((tool) => {
                     return (
                       <Card
                         key={tool.id}
                         className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                       >
-                        <div className="relative h-48 bg-gray-50 rounded-t-2xl overflow-hidden">
+                        <div className="tool-logo img relative h-48 bg-gray-50 rounded-t-2xl overflow-hidden">
                         <Image
                                          src={tool.imageUrl || ''}
                                          alt={`${tool.name} logo`}
@@ -345,9 +345,9 @@ import {supabase} from "@/lib/supabaseClient";
                               {getCategoryDisplayName(tool.category)}
                             </Badge>
                           </div>
-                          <p className="text-slate-600 mb-4">{tool.description}</p>
+                          <p className="tool-tagline text-slate-600 mb-4">{tool.description}</p>
 
-                          <Link href={tool.url} target="_blank" rel="noopener noreferrer">
+                          <Link  href={tool.url} target="_blank" rel="noopener noreferrer">
                             <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
                               Visit {tool.name} <ExternalLink className="h-4 w-4 ml-2" />
                             </Button>
