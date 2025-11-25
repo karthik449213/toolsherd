@@ -14,7 +14,7 @@ export function FeedbackForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-slate-600 hover:text-blue-600 transition-colors">
+        <Button className="block text-white hover:text-emerald-300 font-semibold transition-colors duration-300">
           Feedback
         </Button>
       </DialogTrigger>

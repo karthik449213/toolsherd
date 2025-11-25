@@ -180,7 +180,7 @@ import {supabase} from "@/lib/supabaseClient";
       setBlogError(null);
       try {
         const { data, error } = await supabase
-          .from("blog_posts")
+          .from("blog_post")
           .select("*")
           .order("publishedat", { ascending: false })
           .limit(12);
@@ -402,7 +402,7 @@ import {supabase} from "@/lib/supabaseClient";
                     className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
                   >
                     {post.coverImageUrl && (
-                      <Image src={post.coverImageUrl} alt={post.title} className="w-full h-48 object-cover" />
+                      <Image src={post.coverImageUrl} alt={post.title} height={800} width={400} className="w-full h-48 object-cover" />
                     )}
                     <CardContent className="p-6">
                       <div className="text-sm text-slate-500 mb-2">{formatDate(post.publishedAt)}</div>

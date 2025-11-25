@@ -35,7 +35,7 @@ export default function BlogPage() {
 
       let rows: RawBlogPost[] = [];
 
-        rows = await fetchFrom("blog_posts");
+        rows = await fetchFrom("blog_post");
         console.log("Fetched blog posts:", rows);
 
 
@@ -100,6 +100,8 @@ export default function BlogPage() {
                     <Image
                       src={post.coverImageUrl}
                       alt={post.title}
+                      height={800}
+                      width={400}
                       className="w-full h-48 object-cover rounded-t-2xl"
                     />
                   )}

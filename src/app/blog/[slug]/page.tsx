@@ -1,3 +1,4 @@
+
 import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -28,7 +29,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   let postData: RawBlogPost[] = [];
   
-    postData = await fetchPost('blog_posts');
+    postData = await fetchPost('blog_post');
   
 
   if (!postData || postData.length === 0) {
@@ -66,6 +67,8 @@ export default async function BlogPostPage({ params }: Props) {
               <Image
                 src={post.coverImageUrl}
                 alt={post.title}
+                height={800}
+                width={400}
                 className="w-full h-64 object-cover"
               />
             )}
