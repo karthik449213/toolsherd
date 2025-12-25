@@ -9,17 +9,68 @@ export interface BlogPost {
   content: string;
   createdAt: Date;
   updatedAt: Date;
+  tags?: string[];
+  category?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
 }
 
 export interface RawBlogPost {
   id?: number;
   title?: string;
   excerpt?: string | null;
-  coverImageUrl?: string | null;
+  cover_image_url?: string | null;
   slug?: string;
-  publishedat?: string;
+  published_at?: string;
   author?: string | null;
-  content?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  content_md?: string;
+  created_at?: string;
+  updated_at?: string;
+  tags?: string[];
+  category?: string;
+  seo_title?: string;
+  seo_description?: string;
+  seo_keywords?: string[];
+  is_published?: boolean;
+}
+
+export interface BlogPostCardProps {
+  title: string;
+  excerpt: string;
+  slug: string;
+  author?: string;
+  publishedAt: Date;
+  coverImage?: string;
+  tags?: string[];
+  readingTime?: number;
+}
+
+export interface BlogPostComponentProps {
+  title: string;
+  author?: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+  excerpt?: string;
+  content: string;
+  coverImage?: string;
+  slug: string;
+  tags?: string[];
+  relatedPosts?: Array<{
+    title: string;
+    slug: string;
+    excerpt?: string;
+  }>;
+}
+
+export interface BlogMetadata {
+  title: string;
+  description: string;
+  keywords: string[];
+  author: string;
+  publishedDate: string;
+  modifiedDate: string;
+  imageUrl: string;
+  url: string;
+  articleSection?: string;
 }

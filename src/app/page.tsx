@@ -126,6 +126,12 @@ import {supabase} from "@/lib/supabaseClient";
     const from = opts.page * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
 
+    // Check for network connectivity
+    if (!navigator.onLine) {
+      setError('No internet connection. Please check your network.');
+      return;
+    }
+
     try {
       if (opts.replace) {
         setLoading(true);
@@ -166,8 +172,26 @@ import {supabase} from "@/lib/supabaseClient";
 
       setHasMore(fetched.length === PAGE_SIZE);
     } catch (e: unknown) {
-      console.error('Error fetching tools:', e);
-      setError(e instanceof Error ? e.message : 'Failed to load tools');
+      let errorMessage = 'Failed to load tools';
+      
+      if (e instanceof Error) {
+        errorMessage = e.message;
+      } else if (typeof e === 'string') {
+        errorMessage = e;
+      } else if (e && typeof e === 'object') {
+        // Handle Supabase error objects
+        const errorObj = e as Record<string, any>;
+        if (errorObj.message) {
+          errorMessage = errorObj.message;
+        } else if (errorObj.error) {
+          errorMessage = typeof errorObj.error === 'string' ? errorObj.error : JSON.stringify(errorObj.error);
+        } else {
+          errorMessage = JSON.stringify(e);
+        }
+      }
+      
+      console.error('Error fetching tools:', errorMessage, e);
+      setError(errorMessage);
       setHasMore(false);
     } finally {
       setLoading(false);
@@ -176,13 +200,19 @@ import {supabase} from "@/lib/supabaseClient";
   };
 
     const fetchBlogPosts = async () => {
+      // Check for network connectivity
+      if (!navigator.onLine) {
+        setBlogError('No internet connection. Please check your network.');
+        return;
+      }
+
       setBlogLoading(true);
       setBlogError(null);
       try {
         const { data, error } = await supabase
           .from("blog_post")
           .select("*")
-          .order("publishedat", { ascending: false })
+          .order("published_at", { ascending: false })
           .limit(12);
         if (error) throw error;
 
@@ -194,14 +224,14 @@ import {supabase} from "@/lib/supabaseClient";
           .map((row: RawBlogPost) => {
             const title = row.title ?? "Untitled";
             const excerpt = row.excerpt ?? null;
-            const coverImageUrl = row.coverImageUrl ?? null;
+            const coverImageUrl = row.cover_image_url ?? null;
             const slug = row.slug ?? "";
-            const publishedAt = row.publishedat ? new Date(row.publishedat) : new Date();
+            const publishedAt = row.published_at ? new Date(row.published_at) : new Date();
             const id = row.id ?? 0;
             const author = row.author ?? null;
-            const content = row.content ?? "";
-            const createdAt = row.createdAt ? new Date(row.createdAt) : new Date();
-            const updatedAt = row.updatedAt ? new Date(row.updatedAt) : new Date();
+            const content = row.content_md ?? "";
+            const createdAt = row.created_at ? new Date(row.created_at) : new Date();
+            const updatedAt = row.updated_at ? new Date(row.updated_at) : new Date();
             return { id, title, excerpt, coverImageUrl, slug, publishedAt, author, content, createdAt, updatedAt };
           })
           .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
@@ -209,8 +239,26 @@ import {supabase} from "@/lib/supabaseClient";
 
         setBlogPosts(mapped);
       } catch (e: unknown) {
-        console.error("Error fetching blog posts:", e);
-        setBlogError(e instanceof Error ? e.message : "Failed to load blog posts");
+        let errorMessage = 'Failed to load blog posts';
+        
+        if (e instanceof Error) {
+          errorMessage = e.message;
+        } else if (typeof e === 'string') {
+          errorMessage = e;
+        } else if (e && typeof e === 'object') {
+          // Handle Supabase error objects
+          const errorObj = e as Record<string, any>;
+          if (errorObj.message) {
+            errorMessage = errorObj.message;
+          } else if (errorObj.error) {
+            errorMessage = typeof errorObj.error === 'string' ? errorObj.error : JSON.stringify(errorObj.error);
+          } else {
+            errorMessage = JSON.stringify(e);
+          }
+        }
+        
+        console.error('Error fetching blog posts:', errorMessage, e);
+        setBlogError(errorMessage);
         setBlogPosts([]);
       } finally {
         setBlogLoading(false);
@@ -229,6 +277,30 @@ import {supabase} from "@/lib/supabaseClient";
     // Load blog posts once on mount
     useEffect(() => {
       fetchBlogPosts();
+    }, []);
+
+    // Monitor network status
+    useEffect(() => {
+      const handleOnline = () => {
+        console.log('Back online! Retrying...');
+        setError(null);
+        setBlogError(null);
+        fetchTools({ page: 0, replace: true });
+        fetchBlogPosts();
+      };
+
+      const handleOffline = () => {
+        setError('No internet connection');
+        setBlogError('No internet connection');
+      };
+
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      };
     }, []);
 
     const handleLoadMore = () => {

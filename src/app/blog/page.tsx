@@ -28,7 +28,7 @@ export default function BlogPage() {
     setError(null);
     try {
       const fetchFrom = async (table: string): Promise<RawBlogPost[]> => {
-        const { data, error } = await supabase.from(table).select("*").order("publishedat", { ascending: false });
+        const { data, error } = await supabase.from(table).select("*").eq("is_published", true).order("published_at", { ascending: false });
         if (error) throw error;
         return (data ?? []) as RawBlogPost[];
       };
@@ -42,14 +42,14 @@ export default function BlogPage() {
       const mapped: BlogPost[] = rows.map((row: RawBlogPost) => {
         const title = row.title ?? "Untitled";
         const excerpt = row.excerpt ?? null;
-        const coverImageUrl = row.coverImageUrl ?? null;
+        const coverImageUrl = row.cover_image_url ?? null;
         const slug = row.slug ?? "";
-        const publishedAt = row.publishedat ? new Date(row.publishedat) : new Date();
+        const publishedAt = row.published_at ? new Date(row.published_at) : new Date();
         const id = row.id ?? 0;
         const author = row.author ?? null;
-        const content = row.content ?? "";
-        const createdAt = row.createdAt ? new Date(row.createdAt) : new Date();
-        const updatedAt = row.updatedAt ? new Date(row.updatedAt) : new Date();
+        const content = row.content_md ?? "";
+        const createdAt = row.created_at ? new Date(row.created_at) : new Date();
+        const updatedAt = row.updated_at ? new Date(row.updated_at) : new Date();
         return { id, title, excerpt, coverImageUrl, slug, publishedAt, author, content, createdAt, updatedAt };
       });
 
@@ -66,7 +66,7 @@ export default function BlogPage() {
   useEffect(() => {
     fetchBlogPosts();
   }, []);
-
+ console.log("Rendering BlogPage with posts:", blogPosts);
   return (
     <div className="min-h-screen bg-slate-50">
 
