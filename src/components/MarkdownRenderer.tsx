@@ -63,7 +63,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
         // Paragraphs
         p: ({ children }) => (
-          <p className="text-slate-700 leading-relaxed my-4">
+          <p className="text-slate-900 leading-relaxed my-4">
             {children}
           </p>
         ),
@@ -116,12 +116,12 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
         // Lists
         ul: ({ children }) => (
-          <ul className="list-disc list-inside space-y-2 my-4 text-slate-700">
+          <ul className="list-disc list-inside space-y-2 my-4 text-slate-900">
             {children}
           </ul>
         ),
         ol: ({ children }) => (
-          <ol className="list-decimal list-inside space-y-2 my-4 text-slate-700">
+          <ol className="list-decimal list-inside space-y-2 my-4 text-slate-900">
             {children}
           </ol>
         ),
@@ -133,7 +133,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
         // Blockquotes
         blockquote: ({ children }) => (
-          <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-slate-700 bg-blue-50 py-2 pr-4 rounded">
+          <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-slate-900 bg-blue-50 py-2 pr-4 rounded">
             {children}
           </blockquote>
         ),
