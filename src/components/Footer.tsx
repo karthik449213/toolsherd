@@ -11,8 +11,11 @@ export default function Footer() {
               <Bot className="h-8 w-8 text-emerald-400" />
               <h3 className="text-xl font-bold">Tools Herd AI</h3>
             </div>
-            <p className="text-slate-300 mb-6 max-w-md">
-              Discover, compare, and find the perfect AI tools for your needs. We curate the best AI solutions across all categories.
+            <p className="text-slate-300 mb-3 max-w-md">
+              <span className="font-semibold text-white">Tools Herd AI</span> is a high-authority AI tools discovery, comparison, and decision-making platform built for professionals, founders, and businesses.
+            </p>
+            <p className="text-slate-300 mb-6 max-w-md text-sm">
+              We help you discover, compare, evaluate, and adopt AI tools that deliver real business outcomes. If you're an AI founder or brand, we provide high-intent exposure, SEO authority, and qualified leads.
             </p>
             <div className="flex space-x-4">
              <Link href="#" className="hover:text-white transition-colors">

@@ -36,7 +36,7 @@ interface AlertProps {
 
 // Paragraph
 export const Paragraph: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <p className="text-lg text-slate-700 mb-4 leading-relaxed">{children}</p>
+  <p className="text-lg text-black mb-4 leading-relaxed">{children}</p>
 );
 
 // Heading
@@ -65,7 +65,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         {lines.map((line, idx) => (
           <div key={idx} className="flex">
             {showLineNumbers && (
-              <span className="text-slate-500 mr-4 w-8 text-right select-none">
+              <span className="text-black mr-4 w-8 text-right select-none">
                 {idx + 1}
               </span>
             )}
@@ -96,7 +96,7 @@ export const ImageWithCaption: React.FC<ImageProps> = ({
       />
     </div>
     {caption && (
-      <figcaption className="text-center text-sm text-slate-600 mt-3 italic">
+      <figcaption className="text-center text-sm text-black mt-3 italic">
         {caption}
       </figcaption>
     )}
@@ -105,7 +105,7 @@ export const ImageWithCaption: React.FC<ImageProps> = ({
 
 // Unordered List
 export const UnorderedList: React.FC<ListProps> = ({ items }) => (
-  <ul className="list-disc list-inside space-y-2 my-4 text-slate-700">
+  <ul className="list-disc list-inside space-y-2 my-4 text-black">
     {items.map((item, idx) => (
       <li key={idx} className="text-lg leading-relaxed">
         {item}
@@ -116,7 +116,7 @@ export const UnorderedList: React.FC<ListProps> = ({ items }) => (
 
 // Ordered List
 export const OrderedList: React.FC<ListProps> = ({ items }) => (
-  <ol className="list-decimal list-inside space-y-2 my-4 text-slate-700">
+  <ol className="list-decimal list-inside space-y-2 my-4 text-black">
     {items.map((item, idx) => (
       <li key={idx} className="text-lg leading-relaxed">
         {item}
@@ -164,7 +164,7 @@ export const AlertBlock: React.FC<AlertProps> = ({ type, title, message }) => {
         <IconComponent className={`${style.icon} h-5 w-5 flex-shrink-0 mt-0.5`} />
         <div>
           {title && <h4 className={`${style.title} font-semibold mb-1`}>{title}</h4>}
-          <p className="text-slate-700">{message}</p>
+          <p className="text-black">{message}</p>
         </div>
       </div>
     </div>

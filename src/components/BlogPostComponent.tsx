@@ -75,9 +75,9 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Article Content */}
-            <article className="lg:col-span-3 bg-white rounded-lg shadow-md p-8">
+            <article className="lg:col-span-3 bg-white rounded-lg shadow-md p-8" suppressHydrationWarning>
               {/* Post Meta */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-6 pb-6 border-b border-slate-200">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-black mb-6 pb-6 border-b border-slate-200">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
                   <time dateTime={formatDateISO(publishedAt)}>
@@ -90,19 +90,19 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
                     <span>{author}</span>
                   </div>
                 )}
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-black">
                   {readingTime} min read
                 </div>
               </div>
 
               {/* Post Title */}
-              <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+              <h1 className="text-4xl sm:text-5xl font-bold text-black mb-4 leading-tight">
                 {title}
               </h1>
 
               {/* Excerpt */}
               {excerpt && (
-                <p className="text-xl text-slate-600 leading-relaxed mb-8">
+                <p className="text-xl text-black leading-relaxed mb-8">
                   {excerpt}
                 </p>
               )}
@@ -110,7 +110,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
               {/* Content */}
               {content && (
                 <div
-                  className="prose prose-lg max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-a:text-blue-600 prose-strong:text-slate-900 prose-code:text-red-600 prose-code:bg-slate-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic"
+                  className="prose prose-lg max-w-none prose-headings:text-slate-900 prose-p:text-black prose-a:text-blue-600 prose-strong:text-slate-900 prose-code:text-red-600 prose-code:bg-slate-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic"
                   dangerouslySetInnerHTML={{ __html: content }}
                 />
               )}
@@ -121,7 +121,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
                   <div className="flex items-start gap-4">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-slate-900 mb-2">About the Author</h3>
-                      <p className="text-slate-700 mb-4">
+                      <p className="text-black mb-4">
                         {author} is a passionate tech enthusiast and writer dedicated to exploring artificial intelligence,
                         innovative tools, and cutting-edge technologies that shape our digital future.
                       </p>
@@ -182,10 +182,10 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
               <section className="mt-12 pt-8 border-t-2 border-slate-200">
                 <h3 className="text-lg font-bold text-slate-900 mb-4">Comments</h3>
                 <div className="bg-slate-100 rounded-lg p-8 text-center">
-                  <p className="text-slate-600 mb-4">
+                  <p className="text-black mb-4">
                     Comments section coming soon. Join our community to share your thoughts!
                   </p>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-black">
                     We're working on integrating a powerful comment system to enhance reader engagement.
                   </p>
                 </div>
@@ -208,7 +208,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
                           {post.title}
                         </Link>
                         {post.excerpt && (
-                          <p className="text-sm text-slate-600 mt-1 line-clamp-2">
+                          <p className="text-sm text-black mt-1 line-clamp-2">
                             {post.excerpt}
                           </p>
                         )}
@@ -239,7 +239,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
               {/* Newsletter Signup */}
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md p-6 mt-6 border border-blue-100">
                 <h3 className="text-lg font-bold text-slate-900 mb-3">Stay Updated</h3>
-                <p className="text-sm text-slate-700 mb-4">
+                <p className="text-sm text-black mb-4">
                   Get the latest AI tools and tech articles delivered to your inbox.
                 </p>
                 <form className="space-y-3">
@@ -268,7 +268,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h4 className="font-bold text-slate-900 mb-3">About AI Tools</h4>
-              <p className="text-slate-600 text-sm">
+              <p className="text-black text-sm">
                 Exploring the latest in artificial intelligence and innovative tools to enhance productivity and creativity.
               </p>
             </div>
@@ -294,7 +294,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
             </div>
             <div>
               <h4 className="font-bold text-slate-900 mb-3">Contact</h4>
-              <p className="text-slate-600 text-sm">
+              <p className="text-black text-sm">
                 Have a question or suggestion?{' '}
                 <Link href="/contact" className="text-blue-600 hover:text-blue-800 transition-colors">
                   Get in touch
@@ -302,7 +302,7 @@ export const BlogPostComponent: React.FC<BlogPostComponentProps> = ({
               </p>
             </div>
           </div>
-          <div className="border-t border-slate-200 mt-8 pt-8 text-center text-slate-600 text-sm">
+          <div className="border-t border-slate-200 mt-8 pt-8 text-center text-black text-sm">
             <p>&copy; 2025 AI Tools. All rights reserved.</p>
           </div>
         </div>

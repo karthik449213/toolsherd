@@ -19,6 +19,7 @@ const formatDate = (d: Date) =>
   new Date(d).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 
 export default function BlogPage() {
+  const [isMounted, setIsMounted] = React.useState(false);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,9 +67,15 @@ export default function BlogPage() {
   useEffect(() => {
     fetchBlogPosts();
   }, []);
- console.log("Rendering BlogPage with posts:", blogPosts);
+
+  // Set mounted flag to avoid hydration mismatches
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  console.log("Rendering BlogPage with posts:", blogPosts);
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50" suppressHydrationWarning>
 
 
       {/* Blog Section */}

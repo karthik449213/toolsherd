@@ -46,17 +46,17 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           </h3>
         ),
         h4: ({ children }) => (
-          <h4 className="text-xl font-bold text-slate-900 mt-4 mb-2">
+          <h4 className="text-xl font-bold text-slate-900 mt-4 mb-2 leading-tight">
             {children}
           </h4>
         ),
         h5: ({ children }) => (
-          <h5 className="text-lg font-bold text-slate-900 mt-3 mb-2">
+          <h5 className="text-lg font-bold text-slate-900 mt-3 mb-2 leading-tight">
             {children}
           </h5>
         ),
         h6: ({ children }) => (
-          <h6 className="text-base font-bold text-slate-900 mt-2 mb-1">
+          <h6 className="text-base font-bold text-slate-900 mt-2 mb-1 leading-tight">
             {children}
           </h6>
         ),
@@ -89,7 +89,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
               className="max-w-full h-auto rounded-lg shadow-md"
             />
             {alt && (
-              <figcaption className="text-sm text-slate-600 text-center mt-2">
+              <figcaption className="text-sm text-black text-center mt-2">
                 {alt}
               </figcaption>
             )}
@@ -184,7 +184,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           </strong>
         ),
         em: ({ children }) => (
-          <em className="italic text-slate-700">
+          <em className="italic text-black">
             {children}
           </em>
         ),

@@ -19,6 +19,15 @@ export default function AboutPage() {
           <p className="mt-4 max-w-2xl mx-auto text-lg text-slate-600">
             Cutting through the noise to bring you the best tools in the AI landscape.
           </p>
+          
+          <div className="mt-8 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl p-6 border border-emerald-200 max-w-3xl mx-auto">
+            <p className="text-base font-semibold text-slate-800 mb-3">
+              Tools Herd AI is a high-authority AI tools discovery, comparison, and decision-making platform built for professionals, founders, and businesses.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              It helps users discover, compare, evaluate, and adopt AI tools that deliver real business outcomes, while providing AI founders and brands with high-intent exposure, SEO authority, and qualified leads.
+            </p>
+          </div>
         </div>
 
         {/* Main Content Section */}

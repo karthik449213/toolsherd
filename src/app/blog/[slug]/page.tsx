@@ -316,7 +316,7 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {/* Main Content */}
-        <main className="py-16 bg-gradient-to-br from-slate-50 to-slate-100">
+        <main className="py-16 bg-gradient-to-br from-slate-700 to-slate-900">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               {/* Article Content */}

@@ -1,3 +1,23 @@
 User-agent: *
 Allow: /
-Sitemap: https://toolsherd.netlify.app/sitemap.xml
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.env
+Disallow: /.env.local
+Disallow: /private/
+
+# Allow specific crawlers for better indexing
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Sitemap location (will be served from /sitemap.xml route)
+Sitemap: https://toolsherd.ai/sitemap.xml
+
+# Crawl delay to be respectful to servers
+Crawl-delay: 1
