@@ -17,7 +17,7 @@ User-agent: Slurp
 Allow: /
 
 # Sitemap location (will be served from /sitemap.xml route)
-Sitemap: https://toolsherd.ai/sitemap.xml
+Sitemap: https://toolsherd.in/sitemap.xml
 
 # Crawl delay to be respectful to servers
 Crawl-delay: 1

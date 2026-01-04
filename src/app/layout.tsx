@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 };
 
 // Domain configuration
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://toolsherd.ai";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://toolsherd.in";
 const SITE_NAME = "Tools Herd AI";
 const SITE_DESCRIPTION =
   "Tools Herd AI is a high-authority AI tools discovery and comparison platform for professionals, founders, and businesses. Discover, compare, evaluate, and adopt AI tools that deliver real business outcomes.";
