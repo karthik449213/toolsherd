@@ -260,7 +260,7 @@ export default function ToolsPage() {
                     <p className="text-slate-600 mb-4">{tool.description}</p>
                     <Link href={`/tools/${tool.slug}`}>
                       <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
-                        View Tool <ExternalLink className="h-4 w-4 ml-2" />
+                        Read More <ExternalLink className="h-4 w-4 ml-2" />
                       </Button>
                     </Link>
                   </CardContent>

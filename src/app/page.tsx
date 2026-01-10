@@ -31,6 +31,7 @@ import {supabase} from "@/lib/supabaseClient";
   interface Tool {
     id: number;
     name: string;
+    slug: string;
     category: string;
     description: string | null;
     imageUrl: string | null;
@@ -108,6 +109,7 @@ import {supabase} from "@/lib/supabaseClient";
     const [activeCategory, setActiveCategory] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
     const [categorySheetOpen, setCategorySheetOpen] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     const [tools, setTools] = useState<Tool[]>([]);
      const [loading, setLoading] = useState(true);
@@ -267,6 +269,10 @@ import {supabase} from "@/lib/supabaseClient";
 
     // Initial load + refetch on filter changes
     useEffect(() => {
+      setIsClient(true);
+    }, []);
+
+    useEffect(() => {
       setTools([]);
       setPage(0);
       setHasMore(true);
@@ -418,10 +424,10 @@ import {supabase} from "@/lib/supabaseClient";
                             </Badge>
                           </div>
                           <p className="tool-tagline text-slate-600 mb-4">{tool.description}</p>
+ <Link href={`/tools/${tool.slug}`}>
+                      <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+                        Read More <ExternalLink className="h-4 w-4 ml-2" />
 
-                          <Link  href={tool.url} target="_blank" rel="noopener noreferrer">
-                            <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
-                              Visit {tool.name} <ExternalLink className="h-4 w-4 ml-2" />
                             </Button>
                           </Link>
                         </CardContent>
@@ -440,7 +446,7 @@ import {supabase} from "@/lib/supabaseClient";
                   {hasMore && (
                     <Button
                       onClick={handleLoadMore}
-                      disabled={loadingMore}
+                      disabled={isClient && loadingMore}
                       className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
                       {loadingMore ? "Loading..." : "Load More Tools"}

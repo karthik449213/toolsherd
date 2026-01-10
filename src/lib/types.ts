@@ -74,3 +74,50 @@ export interface BlogMetadata {
   url: string;
   articleSection?: string;
 }
+
+// Admin Form Types
+export interface ToolFeature {
+  title: string;
+  description: string;
+}
+
+export interface PricingTier {
+  name: string;
+  price: string;
+  features: string[];
+}
+
+export interface ToolFormData {
+  name: string;
+  slug: string;
+  category: string;
+  description: string;
+  detailed_description: string;
+  key_features: ToolFeature[];
+  use_cases: string[];
+  pricing_tiers: PricingTier[];
+  target_audience: string;
+  seo_title: string;
+  seo_description: string;
+  seo_keywords: string[];
+  rating: number;
+  user_count: number;
+  imageUrl?: string;
+}
+
+export interface BlogFormData {
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string;
+  content_md: string;
+  seo_title: string;
+  seo_description: string;
+  seo_keywords: string[];
+  author: string;
+  reading_time_minutes: number;
+  tags: string[];
+  image_placeholder: string;
+  coverImageUrl?: string;
+  bodyImages?: string[]; // Array of body image URLs
+}
