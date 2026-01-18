@@ -30,7 +30,7 @@ export default function SubmitToolPage() {
         {/* Submission Form */}
         <div className="bg-slate-800/40 p-8 rounded-2xl border border-cyan-500/20 shadow-glow-medium">
           <form
-            action="https://formspree.io/f/YOUR_NEW_FORMSPREE_ENDPOINT_HERE" // <-- PASTE YOUR NEW URL HERE
+            action="https://formspree.io/f/xkoogvyv" // <-- PASTE YOUR NEW URL HERE
             method="POST"
           >
             <div className="space-y-6">
