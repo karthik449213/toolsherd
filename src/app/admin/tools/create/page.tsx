@@ -110,11 +110,20 @@ export default function CreateToolPage() {
           {/* Image Upload */}
           <div className="bg-white rounded-2xl p-8 border border-slate-200">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">2. Upload Tool Image</h2>
+            {uploadErrs.length > 0 && (
+              <div className="mb-4 bg-red-50 border border-red-300 rounded-xl p-4">
+                <p className="text-sm font-semibold text-red-800 mb-2">Upload Issues:</p>
+                {uploadErrs.map((err, idx) => (
+                  <p key={idx} className="text-sm text-red-700">{err}</p>
+                ))}
+              </div>
+            )}
             <ImageUploadZone
               onUpload={handleUploadImage}
               uploadedUrl={getUrl('logo') || undefined}
               fieldName="logo"
               isUploading={isUploading}
+              uploadError={uploadErrs.length > 0 ? uploadErrs[0] : undefined}
             />
           </div>
 

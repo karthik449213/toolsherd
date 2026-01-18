@@ -102,6 +102,8 @@ export interface ToolFormData {
   seo_keywords: string[];
   rating: number;
   user_count: number;
+  tags: string[];
+  website_url: string;
   imageUrl?: string;
 }
 
@@ -110,14 +112,14 @@ export interface BlogFormData {
   slug: string;
   excerpt: string;
   category: string;
-  content_md: string;
+  content: string; // JSON string of blog content
   seo_title: string;
   seo_description: string;
   seo_keywords: string[];
   author: string;
   reading_time_minutes: number;
   tags: string[];
-  image_placeholder: string;
+  image_placeholder?: string; // Optional placeholder
   coverImageUrl?: string;
   bodyImages?: string[]; // Array of body image URLs
 }

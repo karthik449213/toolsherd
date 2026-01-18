@@ -15,7 +15,26 @@ export const useImageUpload = () => {
     setUploadProgress((prev) => ({ ...prev, [fieldName]: 0 }));
     setUploadErrors([]);
 
+    // Validate file before upload
+    if (!file.type.startsWith('image/')) {
+      const error = 'Invalid file type. Please upload an image file.';
+      setUploadErrors([error]);
+      setIsUploading(false);
+      console.error('Upload validation error:', error);
+      return null;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      const error = 'File size exceeds 5MB limit';
+      setUploadErrors([error]);
+      setIsUploading(false);
+      console.error('Upload validation error:', error);
+      return null;
+    }
+
     try {
+      console.log('Starting upload:', { fieldName, fileName: file.name, fileSize: file.size, fileType: file.type });
+      
       const formData = new FormData();
       formData.append('file', file);
       formData.append('fieldName', fieldName);
@@ -26,19 +45,23 @@ export const useImageUpload = () => {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        setUploadErrors([error.error || 'Upload failed']);
+        const errorData = await response.json();
+        const errorMsg = errorData.error || `Upload failed with status ${response.status}`;
+        console.error('Upload response error:', errorData);
+        setUploadErrors([errorMsg]);
         setIsUploading(false);
         return null;
       }
 
       const data = await response.json();
+      console.log('Upload successful:', data);
       setUploadedUrls((prev) => ({ ...prev, [fieldName]: data.url }));
       setUploadProgress((prev) => ({ ...prev, [fieldName]: 100 }));
       setIsUploading(false);
       return data.url;
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : 'Upload failed';
+      console.error('Upload exception:', errorMsg, e);
       setUploadErrors([errorMsg]);
       setIsUploading(false);
       return null;

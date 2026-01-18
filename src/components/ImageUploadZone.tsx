@@ -9,6 +9,7 @@ interface ImageUploadZoneProps {
   uploadedUrl?: string;
   fieldName: string;
   isUploading?: boolean;
+  uploadError?: string;
 }
 
 export default function ImageUploadZone({
@@ -16,6 +17,7 @@ export default function ImageUploadZone({
   uploadedUrl,
   fieldName,
   isUploading = false,
+  uploadError,
 }: ImageUploadZoneProps) {
   const [preview, setPreview] = useState<string | null>(uploadedUrl || null);
   const [dragActive, setDragActive] = useState(false);
@@ -110,7 +112,15 @@ export default function ImageUploadZone({
 
       {error && (
         <div className="bg-red-50 border border-red-300 rounded-xl p-4 text-red-800">
-          {error}
+          <p className="font-semibold">Upload Error:</p>
+          <p className="text-sm mt-1">{error}</p>
+        </div>
+      )}
+
+      {uploadError && (
+        <div className="bg-red-50 border border-red-300 rounded-xl p-4 text-red-800">
+          <p className="font-semibold">Server Upload Error:</p>
+          <p className="text-sm mt-1">{uploadError}</p>
         </div>
       )}
 

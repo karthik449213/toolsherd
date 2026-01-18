@@ -9,8 +9,30 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!body.name || !body.slug || !body.category) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing required fields: name, slug, and category are required' },
         { status: 400 }
+      );
+    }
+
+    // Check if slug already exists
+    const { data: existingTool, error: checkError } = await supabase
+      .from('ai_tools')
+      .select('id, slug')
+      .eq('slug', body.slug)
+      .limit(1);
+
+    if (checkError) {
+      console.error('Error checking for duplicate slug:', checkError);
+      return NextResponse.json(
+        { error: 'Failed to validate slug uniqueness' },
+        { status: 500 }
+      );
+    }
+
+    if (existingTool && existingTool.length > 0) {
+      return NextResponse.json(
+        { error: `A tool with slug "${body.slug}" already exists. Please use a different slug.` },
+        { status: 409 }
       );
     }
 
@@ -26,29 +48,41 @@ export async function POST(request: NextRequest) {
       use_cases: body.use_cases,
       pricing_tiers: body.pricing_tiers,
       target_audience: body.target_audience,
+      tags: body.tags,
+      website_url: body.website_url,
       seo_title: body.seo_title,
       seo_description: body.seo_description,
       seo_keywords: body.seo_keywords,
       rating: body.rating,
       user_count: body.user_count,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
+      is_published: true,
+      featured: false,
+    }).select('id, slug');
 
     if (error) {
-      console.error('Database error:', error);
+      console.error('Database insert error:', error);
+      
+      // Handle specific error codes
+      if (error.code === '23505') {
+        return NextResponse.json(
+          { error: `Duplicate entry: A tool with this slug already exists. Please choose a different slug.` },
+          { status: 409 }
+        );
+      }
+      
       return NextResponse.json(
         { error: error.message || 'Failed to create tool' },
         { status: 500 }
       );
     }
 
+    console.log('✅ Tool created successfully:', { id: data?.[0]?.id, slug: body.slug });
     return NextResponse.json(
       { success: true, data },
       { status: 201 }
     );
   } catch (e) {
-    console.error('Error:', e);
+    console.error('❌ Unexpected error:', e);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

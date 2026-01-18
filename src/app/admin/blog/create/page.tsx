@@ -49,6 +49,57 @@ export default function CreateBlogPage() {
     return uploadImage(file, 'featured');
   };
 
+  const jsonTemplate = `{
+  "title": "Emergent.sh: The Complete Guide to Autonomous \\"Vibe Coding\\"",
+  "slug": "emergent-sh-guide-vibe-coding",
+  "excerpt": "Discover how Emergent.sh is redefining software development through agentic \\"vibe coding.\\" This comprehensive guide explores how to build full-stack applications using natural language prompts.",
+  "category": "AI Development",
+  "author": "Alex Chen",
+  "tags": ["Emergent.sh", "Vibe Coding", "AI App Builder", "Autonomous Agents"],
+  "reading_time_minutes": 10,
+  "seo_title": "Emergent.sh Guide: Build Full-Stack Apps with AI Agents (2026)",
+  "seo_description": "A comprehensive guide to Emergent.sh, the leading autonomous coding platform.",
+  "seo_keywords": ["Emergent.sh guide", "vibe coding", "AI software engineer", "autonomous coding agents"],
+  "content": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Your Main Title Here"
+    },
+    {
+      "type": "paragraph",
+      "content": "Your first paragraph goes here. Keep it engaging and set the tone for your article."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Main Section"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add your content here. Use multiple paragraphs to develop your ideas."
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": ["First point", "Second point", "Third point"]
+    },
+    {
+      "type": "quote",
+      "content": "Add an inspiring or important quote here."
+    },
+    {
+      "type": "code",
+      "content": "// Add code examples here\\nfunction example() {\\n  return true;\\n}"
+    }
+  ]
+}`;
+
+  const copyTemplate = () => {
+    navigator.clipboard.writeText(jsonTemplate);
+    alert('Template copied to clipboard!');
+  };
+
   const handlePublish = async () => {
     if (!parsedData) return;
 
@@ -89,7 +140,32 @@ export default function CreateBlogPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-4xl font-bold text-slate-900">Create New Blog Post</h1>
-        <p className="text-slate-600 mt-2">Paste your JSON content below</p>
+        <p className="text-slate-600 mt-2">Create blog posts using JSON format</p>
+      </div>
+
+      {/* Instructions Section */}
+      <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+        <h3 className="text-lg font-semibold text-blue-900 mb-3">📋 JSON Format Instructions</h3>
+        <div className="space-y-2 text-sm text-blue-800">
+          <p><strong>Required Fields:</strong> title, slug, excerpt, category, author, tags, reading_time_minutes, seo_title, seo_description, seo_keywords</p>
+          <p><strong>Content Field:</strong> Can be a JSON array of content blocks (or a JSON string if pasting as string)</p>
+          <p><strong>Supported Block Types:</strong></p>
+          <ul className="list-disc list-inside ml-2 space-y-1 text-xs">
+            <li><code className="bg-blue-100 px-2 py-1 rounded">heading</code> - with level (1-6) and content</li>
+            <li><code className="bg-blue-100 px-2 py-1 rounded">paragraph</code> - with content</li>
+            <li><code className="bg-blue-100 px-2 py-1 rounded">list</code> - with ordered (true/false) and items array</li>
+            <li><code className="bg-blue-100 px-2 py-1 rounded">quote</code> - with content</li>
+            <li><code className="bg-blue-100 px-2 py-1 rounded">code</code> - with content (code snippet)</li>
+            <li><code className="bg-blue-100 px-2 py-1 rounded">image</code> - with src, alt, and optional caption</li>
+          </ul>
+        </div>
+        <Button
+          onClick={copyTemplate}
+          className="mt-4 bg-blue-600 hover:bg-blue-700 rounded-xl"
+        >
+          Copy JSON Template
+        </Button>
+        <p className="text-xs text-blue-700 mt-2">📖 See BLOG_POST_FORMAT_GUIDE.md for complete documentation</p>
       </div>
 
       {/* JSON Input Section */}
@@ -102,7 +178,7 @@ export default function CreateBlogPage() {
           errors={errors}
           success={success}
           isLoading={isValidating}
-          placeholder="Paste your blog JSON here..."
+          placeholder="Paste your blog JSON here (or click 'Copy JSON Template' above)..."
         />
       </div>
 

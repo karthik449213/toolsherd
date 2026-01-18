@@ -9,15 +9,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   ExternalLink,
-  Pen,
-  Rocket,
-  Code,
-  TrendingUp,
+  Bot,
+  Network,
+  Zap,
+  Settings,
+  Search,
+  Clock,
+  Store,
+  PenTool,
+  Palette,
+  Briefcase,
   ListFilter,
 } from 'lucide-react';
 import CategorySheet from '@/components/category-sheet';
 import { supabase } from '@/lib/supabaseClient';
 import clsx from 'clsx';
+import { getDatabaseValuesForCategory } from '@/lib/categoryMapping';
 
 type Tool = {
   id: string;
@@ -30,26 +37,47 @@ type Tool = {
 
 const categories = [
   { id: 'all', name: 'All Tools', icon: null },
-  { id: 'content creation', name: 'Content Creation', icon: Pen },
-  { id: 'productivity', name: 'Productivity', icon: Rocket },
-  { id: 'coding', name: 'Coding', icon: Code },
-  { id: 'marketing', name: 'Marketing', icon: TrendingUp },
-  { id: 'trading', name: 'Trading', icon: TrendingUp },
+  { id: 'ai_agents', name: 'AI Agents & Autonomous Systems', icon: Bot },
+  { id: 'agentic_ai', name: 'Agentic AI & Multi-Agent Workflows', icon: Network },
+  { id: 'no_code_ai', name: 'No-Code & Low-Code AI Builders', icon: Zap },
+  { id: 'ai_automation', name: 'AI Automation & Workflow Tools', icon: Settings },
+  { id: 'ai_seo', name: 'AI SEO & Search Growth Tools', icon: Search },
+  { id: 'ai_content_engines', name: 'AI Content Engines (Blogs, Reels, YouTube)', icon: PenTool },
+  { id: 'ai_creative_tools', name: 'AI Creative Tools (Video, Image, Audio)', icon: Palette },
+  { id: 'ai_business_growth', name: 'AI for Business, Sales & Lead Gen', icon: Briefcase },
+  { id: 'ai_ecommerce', name: 'AI for E-Commerce & Dropshipping', icon: Store },
+  { id: 'ai_productivity', name: 'AI Productivity & Personal Assistants', icon: Clock },
+  { id: 'ai_saas_builders', name: 'AI SaaS Builders & Marketplaces', icon: Store },
+  { id: 'ai_dev_platforms', name: 'AI Dev, APIs & Deployment Platforms', icon: PenTool },
 ];
 
 const getCategoryDisplayName = (category: string) => {
   const normalized = (category ?? '').toLowerCase().trim();
   switch (normalized) {
-    case 'content creation':
-      return 'Content Creation';
-    case 'productivity':
-      return 'Productivity';
-    case 'coding':
-      return 'Coding';
-    case 'marketing':
-      return 'Marketing';
-    case 'trading':
-      return 'Trading';
+    case 'ai_agents':
+      return 'AI Agents & Autonomous Systems';
+    case 'agentic_ai':
+      return 'Agentic AI & Multi-Agent Workflows';
+    case 'no_code_ai':
+      return 'No-Code & Low-Code AI Builders';
+    case 'ai_automation':
+      return 'AI Automation & Workflow Tools';
+    case 'ai_seo':
+      return 'AI SEO & Search Growth Tools';
+    case 'ai_content_engines':
+      return 'AI Content Engines (Blogs, Reels, YouTube)';
+    case 'ai_creative_tools':
+      return 'AI Creative Tools (Video, Image, Audio)';
+    case 'ai_business_growth':
+      return 'AI for Business, Sales & Lead Gen';
+    case 'ai_ecommerce':
+      return 'AI for E-Commerce & Dropshipping';
+    case 'ai_productivity':
+      return 'AI Productivity & Personal Assistants';
+    case 'ai_saas_builders':
+      return 'AI SaaS Builders & Marketplaces';
+    case 'ai_dev_platforms':
+      return 'AI Dev, APIs & Deployment Platforms';
     default:
       return normalized.charAt(0).toUpperCase() + normalized.slice(1);
   }
@@ -58,18 +86,32 @@ const getCategoryDisplayName = (category: string) => {
 const getCategoryColor = (category: string) => {
   const normalized = (category ?? '').toLowerCase().trim();
   switch (normalized) {
-    case 'content creation':
-      return 'bg-blue-100 text-blue-800';
-    case 'productivity':
-      return 'bg-green-100 text-green-800';
-    case 'coding':
-      return 'bg-slate-100 text-slate-800';
-    case 'marketing':
-      return 'bg-orange-100 text-orange-800';
-    case 'trading':
-      return 'bg-yellow-100 text-yellow-800';
+    case 'ai_agents':
+      return 'bg-blue-500/10 text-blue-300 border border-blue-500/20';
+    case 'agentic_ai':
+      return 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/20';
+    case 'no_code_ai':
+      return 'bg-purple-500/10 text-purple-300 border border-purple-500/20';
+    case 'ai_automation':
+      return 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/20';
+    case 'ai_seo':
+      return 'bg-green-500/10 text-green-300 border border-green-500/20';
+    case 'ai_content_engines':
+      return 'bg-pink-500/10 text-pink-300 border border-pink-500/20';
+    case 'ai_creative_tools':
+      return 'bg-fuchsia-500/10 text-fuchsia-300 border border-fuchsia-500/20';
+    case 'ai_business_growth':
+      return 'bg-orange-500/10 text-orange-300 border border-orange-500/20';
+    case 'ai_ecommerce':
+      return 'bg-amber-500/10 text-amber-300 border border-amber-500/20';
+    case 'ai_productivity':
+      return 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20';
+    case 'ai_saas_builders':
+      return 'bg-violet-500/10 text-violet-300 border border-violet-500/20';
+    case 'ai_dev_platforms':
+      return 'bg-sky-500/10 text-sky-300 border border-sky-500/20';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-slate-500/10 text-slate-300 border border-slate-500/20';
   }
 };
 
@@ -118,7 +160,12 @@ export default function ToolsPage() {
         .range(from, to);
 
       if (activeCategory !== 'all') {
-        query = query.ilike('category', activeCategory);
+        const dbValues = getDatabaseValuesForCategory(activeCategory);
+        if (dbValues.length > 0) {
+          // Build OR filter for all possible database values
+          const filters = dbValues.map(v => `category.ilike.%${v}%`).join(',');
+          query = query.or(filters);
+        }
       }
 
       if (q) {
@@ -172,17 +219,17 @@ export default function ToolsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-950">
 
 
       {/* Search and Category Filter */}
-      <main className="py-16 bg-slate-50" itemScope itemType="https://schema.org/CollectionPage">
+      <main className="py-16 bg-slate-950" itemScope itemType="https://schema.org/CollectionPage">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <header className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4" itemProp="name">
+            <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono" itemProp="name">
               All AI Tools
             </h2>
-            <p className="text-lg text-slate-600" itemProp="description">
+            <p className="text-lg text-slate-300" itemProp="description">
               Comprehensive collection of AI tools across all categories
             </p>
           </header>
@@ -194,9 +241,9 @@ export default function ToolsPage() {
                 placeholder="Search AI tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 text-lg rounded-2xl border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 shadow-lg pr-16"
+                className="w-full px-6 py-4 text-lg rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-16 placeholder-slate-500"
               />
-              <Button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-xl">
+              <Button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-6 py-2 rounded-xl font-semibold shadow-glow-medium">
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
@@ -213,8 +260,8 @@ export default function ToolsPage() {
                     className={clsx(
                       'px-6 py-3 rounded-xl font-medium transition-all duration-300',
                       isActive
-                        ? 'bg-emerald-600 text-white shadow-lg hover:bg-emerald-700'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        ? 'bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400'
+                        : 'bg-slate-800/50 text-slate-300 border border-cyan-500/20 hover:bg-slate-700/50'
                     )}
                     aria-pressed={isActive}
                   >
@@ -226,29 +273,29 @@ export default function ToolsPage() {
             </div>
           </div>
 
-          {error && <div className="text-center text-red-600 mb-6">{error}</div>}
+          {error && <div className="text-center text-red-500 mb-6 bg-red-950/30 border border-red-500/30 rounded p-4">{error}</div>}
 
           {loading && tools.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-lg text-slate-600">Loading AI tools...</p>
+              <p className="text-lg text-slate-400">Loading AI tools...</p>
             </div>
           ) : tools && tools.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {tools.map((tool) => (
                 <Card
                   key={tool.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+                  className="bg-slate-800/40 border border-cyan-500/20 rounded-2xl shadow-glow-medium hover:shadow-glow-large hover:border-cyan-500/40 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                 >
                   <Image
                     src={tool.imageUrl || ''}
                     alt={`${tool.name} logo`}
                     width={400}
                     height={192}
-                    className="w-full h-48 flex items-center justify-center bg-gray-50 rounded-t-2xl object-contain p-4"
+                    className="w-full h-48 flex items-center justify-center bg-slate-700/50 rounded-t-2xl object-contain p-4"
                   />
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-slate-900">{tool.name}</h3>
+                      <h3 className="text-xl font-bold text-cyan-100">{tool.name}</h3>
                       <Badge
                         className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(
                           tool.category
@@ -257,9 +304,9 @@ export default function ToolsPage() {
                         {getCategoryDisplayName(tool.category)}
                       </Badge>
                     </div>
-                    <p className="text-slate-600 mb-4">{tool.description}</p>
+                    <p className="text-slate-400 mb-4">{tool.description}</p>
                     <Link href={`/tools/${tool.slug}`}>
-                      <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+                      <Button className="w-full bg-cyan-500 text-gray-950 py-3 rounded-xl hover:bg-cyan-400 transition-colors font-medium shadow-glow-medium">
                         Read More <ExternalLink className="h-4 w-4 ml-2" />
                       </Button>
                     </Link>
@@ -269,7 +316,7 @@ export default function ToolsPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-lg text-slate-600">No tools available at the moment.</p>
+              <p className="text-lg text-slate-400">No tools available at the moment.</p>
             </div>
           )}
 

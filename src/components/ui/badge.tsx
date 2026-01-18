@@ -4,17 +4,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500/50",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+        default: "border-cyan-500/50 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-500/80",
+        secondary: "border-slate-500/50 bg-slate-500/10 text-slate-300 hover:bg-slate-500/20",
+        destructive: "border-red-500/50 bg-red-500/10 text-red-300 hover:bg-red-500/20",
+        outline: "border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/10",
+        magenta: "border-magenta-500/50 bg-magenta-500/10 text-magenta-300 hover:bg-magenta-500/20",
+        green: "border-green-500/50 bg-green-500/10 text-green-300 hover:bg-green-500/20",
+        orange: "border-orange-500/50 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20",
+        purple: "border-purple-500/50 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20",
       },
     },
     defaultVariants: {

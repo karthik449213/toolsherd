@@ -75,33 +75,33 @@ export default function BlogPage() {
 
   console.log("Rendering BlogPage with posts:", blogPosts);
   return (
-    <div className="min-h-screen bg-slate-50" suppressHydrationWarning>
+    <div className="min-h-screen bg-slate-950" suppressHydrationWarning>
 
 
       {/* Blog Section */}
-      <main className="py-16 bg-slate-50">
+      <main className="py-16 bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <header className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono">
               AI Blog & Insights
             </h2>
-            <p className="text-lg text-slate-600">
+            <p className="text-lg text-slate-300">
               Stay updated with the latest trends, tips, and insights in AI technology
             </p>
           </header>
 
-          {error && <div className="text-center text-red-600 mb-6">{error}</div>}
+          {error && <div className="text-center text-red-500 mb-6 bg-red-950/30 border border-red-500/30 rounded p-4">{error}</div>}
 
           {loading ? (
             <div className="text-center py-16">
-              <p className="text-lg text-slate-600">Loading blog posts...</p>
+              <p className="text-lg text-slate-400">Loading blog posts...</p>
             </div>
           ) : blogPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {blogPosts.map((post) => (
                 <Card
                   key={post.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+                  className="bg-slate-800/40 border border-cyan-500/20 rounded-2xl shadow-glow-medium hover:shadow-glow-large hover:border-cyan-500/40 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                 >
                   {post.coverImageUrl && (
                     <Image
@@ -113,23 +113,23 @@ export default function BlogPage() {
                     />
                   )}
                   <CardContent className="p-6">
-                    <div className="flex items-center text-sm text-slate-500 mb-3">
-                      <Calendar className="h-4 w-4 mr-1" />
+                    <div className="flex items-center text-sm text-slate-400 mb-3">
+                      <Calendar className="h-4 w-4 mr-1 text-cyan-400" />
                       {formatDate(post.publishedAt)}
                       {post.author && (
                         <>
                           <span className="mx-2">•</span>
-                          <User className="h-4 w-4 mr-1" />
+                          <User className="h-4 w-4 mr-1 text-cyan-400" />
                           {post.author}
                         </>
                       )}
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-3">{post.title}</h3>
+                    <h3 className="text-xl font-bold text-cyan-100 mb-3">{post.title}</h3>
                     {post.excerpt && (
-                      <p className="text-slate-600 mb-4 line-clamp-3">{post.excerpt}</p>
+                      <p className="text-slate-300 mb-4 line-clamp-3">{post.excerpt}</p>
                     )}
                     <Link href={`/blog/${post.slug}`}>
-                      <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+                      <Button className="w-full bg-cyan-500 text-gray-950 py-3 rounded-xl hover:bg-cyan-400 transition-colors font-medium shadow-glow-medium">
                         Read More
                       </Button>
                     </Link>

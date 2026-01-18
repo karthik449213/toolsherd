@@ -10,18 +10,18 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   return (
-    <main className="bg-white">
+    <main className="bg-slate-950">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-cyan-100 tracking-tight font-mono">
             Disclaimer & Disclosure
           </h1>
-          <p className="mt-4 text-lg text-slate-600">
+          <p className="mt-4 text-lg text-slate-400">
             Last updated: September 17, 2025
           </p>
         </div>
 
-        <div className="mt-12 text-slate-700 space-y-8 prose prose-lg max-w-none">
+        <div className="mt-12 text-slate-300 space-y-8 prose prose-lg max-w-none prose-invert">
 
           <h2>General Disclaimer</h2>
           <p>
@@ -49,11 +49,11 @@ export default function DisclaimerPage() {
             The information provided on the Site is for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. The use or reliance of any information contained on this site is solely at your own risk.
           </p>
 
-          <h2>Contact Us</h2>
+          <h2 className="text-cyan-300 font-mono">Contact Us</h2>
           <p>
             If you have any questions about this disclaimer, you can contact us by email:
             <br />
-            <Link href="mailto:[your-email@example.com]" className="text-blue-600 hover:underline">karthikpiinasi@gmail.com</Link>
+            <Link href="mailto:karthikpiinasi@gmail.com" className="text-cyan-400 hover:text-cyan-300 transition-colors">karthikpiinasi@gmail.com</Link>
           </p>
         </div>
       </div>

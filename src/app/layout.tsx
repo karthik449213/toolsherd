@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "./markdown-content.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { CookieProvider } from "@/components/cookies/CookieProvider";
+import { CookieBanner } from "@/components/cookies/CookieBanner";
+import { GoogleAnalyticsScript } from "@/components/analytics/GoogleAnalyticsScript";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +31,9 @@ export const viewport: Viewport = {
 
 // Domain configuration
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://toolsherd.in";
-const SITE_NAME = "Tools Herd AI";
+const SITE_NAME = "Tools Herd ";
 const SITE_DESCRIPTION =
-  "Tools Herd AI is a high-authority AI tools discovery and comparison platform for professionals, founders, and businesses. Discover, compare, evaluate, and adopt AI tools that deliver real business outcomes.";
+  "Tools Herd  is a high-authority AI tools discovery and comparison platform for professionals, founders, and businesses. Discover, compare, evaluate, and adopt AI tools that deliver real business outcomes.";
 
 // Keywords
 const KEYWORDS = [
@@ -238,32 +240,16 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-
-        {/* Google Analytics (add your tracking ID) */}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                    page_path: window.location.pathname,
-                  });
-                `,
-              }}
-            />
-          </>
-        )}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-mono`}>
+        <CookieProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <CookieBanner />
+          
+          {/* Google Analytics - Only loads after user consents to analytics cookies */}
+          <GoogleAnalyticsScript />
+        </CookieProvider>
       </body>
     </html>
   );

@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
-  ],
+, "PRIVACY_POLICY_UPDATED.tsx"  ],
   "exclude": [
     "node_modules"
   ]

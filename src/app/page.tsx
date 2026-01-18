@@ -9,14 +9,17 @@ import Image from 'next/image';
   import {
     Search,
     ExternalLink,
-
-    Pen,
-    Rocket,
-    Code,
-    TrendingUp,
-
+    Bot,
+    Network,
+    Zap,
+    Settings,
+    Search as SearchIcon,
+    Clock,
+    Store,
+    PenTool,
+    Palette,
+    Briefcase,
     ListFilter,
-
   } from "lucide-react";
 
 
@@ -25,6 +28,7 @@ import {supabase} from "@/lib/supabaseClient";
   import clsx from 'clsx';
   import type { LucideIcon } from 'lucide-react';
   import { BlogPost, RawBlogPost } from "@/lib/types";
+  import { getDatabaseValuesForCategory } from "@/lib/categoryMapping";
   // Supabase configuration
   // IMPORTANT: Replace these with environment variables for production.
 
@@ -43,11 +47,18 @@ import {supabase} from "@/lib/supabaseClient";
 
   const categories = [
     { id: "all", name: "All Tools", icon: null as LucideIcon | null },
-    { id: "content creation", name: "Content Creation", icon: Pen },
-    { id: "productivity", name: "Productivity", icon: Rocket },
-    { id: "coding", name: "Coding", icon: Code },
-    { id: "marketing", name: "Marketing", icon: TrendingUp },
-    { id: "trading", name: "Trading", icon: TrendingUp },
+    { id: "ai_agents", name: "AI Agents & Autonomous Systems", icon: Bot },
+    { id: "agentic_ai", name: "Agentic AI & Multi-Agent Workflows", icon: Network },
+    { id: "no_code_ai", name: "No-Code & Low-Code AI Builders", icon: Zap },
+    { id: "ai_automation", name: "AI Automation & Workflow Tools", icon: Settings },
+    { id: "ai_seo", name: "AI SEO & Search Growth Tools", icon: SearchIcon },
+    { id: "ai_content_engines", name: "AI Content Engines (Blogs, Reels, YouTube)", icon: PenTool },
+    { id: "ai_creative_tools", name: "AI Creative Tools (Video, Image, Audio)", icon: Palette },
+    { id: "ai_business_growth", name: "AI for Business, Sales & Lead Gen", icon: Briefcase },
+    { id: "ai_ecommerce", name: "AI for E-Commerce & Dropshipping", icon: Store },
+    { id: "ai_productivity", name: "AI Productivity & Personal Assistants", icon: Clock },
+    { id: "ai_saas_builders", name: "AI SaaS Builders & Marketplaces", icon: Store },
+    { id: "ai_dev_platforms", name: "AI Dev, APIs & Deployment Platforms", icon: PenTool },
   ];
 
   const normalizeCategory = (category: string | null | undefined) =>
@@ -56,16 +67,30 @@ import {supabase} from "@/lib/supabaseClient";
   const getCategoryDisplayName = (category: string) => {
     const normalized = normalizeCategory(category);
     switch (normalized) {
-      case "content creation":
-        return "Content Creation";
-      case "productivity":
-        return "Productivity";
-      case "coding":
-        return "Coding";
-      case "marketing":
-        return "Marketing";
-      case "trading":
-        return "Trading";
+      case "ai_agents":
+        return "AI Agents & Autonomous Systems";
+      case "agentic_ai":
+        return "Agentic AI & Multi-Agent Workflows";
+      case "no_code_ai":
+        return "No-Code & Low-Code AI Builders";
+      case "ai_automation":
+        return "AI Automation & Workflow Tools";
+      case "ai_seo":
+        return "AI SEO & Search Growth Tools";
+      case "ai_content_engines":
+        return "AI Content Engines (Blogs, Reels, YouTube)";
+      case "ai_creative_tools":
+        return "AI Creative Tools (Video, Image, Audio)";
+      case "ai_business_growth":
+        return "AI for Business, Sales & Lead Gen";
+      case "ai_ecommerce":
+        return "AI for E-Commerce & Dropshipping";
+      case "ai_productivity":
+        return "AI Productivity & Personal Assistants";
+      case "ai_saas_builders":
+        return "AI SaaS Builders & Marketplaces";
+      case "ai_dev_platforms":
+        return "AI Dev, APIs & Deployment Platforms";
       default:
         return normalized.charAt(0).toUpperCase() + normalized.slice(1);
     }
@@ -74,18 +99,32 @@ import {supabase} from "@/lib/supabaseClient";
   const getCategoryColor = (category: string) => {
     const normalized = normalizeCategory(category);
     switch (normalized) {
-      case "content creation":
-        return "bg-blue-100 text-blue-800";
-      case "productivity":
-        return "bg-green-100 text-green-800";
-      case "coding":
-        return "bg-slate-100 text-slate-800";
-      case "marketing":
-        return "bg-orange-100 text-orange-800";
-      case "trading":
-        return "bg-yellow-100 text-yellow-800";
+      case "ai_agents":
+        return "bg-blue-500/10 text-blue-300 border-blue-500/30";
+      case "agentic_ai":
+        return "bg-indigo-500/10 text-indigo-300 border-indigo-500/30";
+      case "no_code_ai":
+        return "bg-purple-500/10 text-purple-300 border-purple-500/30";
+      case "ai_automation":
+        return "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
+      case "ai_seo":
+        return "bg-green-500/10 text-green-300 border-green-500/30";
+      case "ai_content_engines":
+        return "bg-pink-500/10 text-pink-300 border-pink-500/30";
+      case "ai_creative_tools":
+        return "bg-fuchsia-500/10 text-fuchsia-300 border-fuchsia-500/30";
+      case "ai_business_growth":
+        return "bg-orange-500/10 text-orange-300 border-orange-500/30";
+      case "ai_ecommerce":
+        return "bg-amber-500/10 text-amber-300 border-amber-500/30";
+      case "ai_productivity":
+        return "bg-emerald-500/10 text-emerald-300 border-emerald-500/30";
+      case "ai_saas_builders":
+        return "bg-violet-500/10 text-violet-300 border-violet-500/30";
+      case "ai_dev_platforms":
+        return "bg-sky-500/10 text-sky-300 border-sky-500/30";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-cyan-500/10 text-cyan-300 border-cyan-500/30";
     }
   };
 
@@ -149,7 +188,12 @@ import {supabase} from "@/lib/supabaseClient";
         .range(from, to);
 
       if (activeCategory !== 'all') {
-        query = query.ilike('category', activeCategory);
+        const dbValues = getDatabaseValuesForCategory(activeCategory);
+        if (dbValues.length > 0) {
+          // Build OR filter for all possible database values
+          const filters = dbValues.map(v => `category.ilike.%${v}%`).join(',');
+          query = query.or(filters);
+        }
       }
 
       if (q) {
@@ -315,18 +359,18 @@ import {supabase} from "@/lib/supabaseClient";
     };
 
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-slate-950">
 
 
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-stone-50 to-zinc-100 py-16 lg:py-24">
+        <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-16 lg:py-24 border-b border-cyan-500/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-6 animate-in fade-in duration-500">
-              Tools Herd AI: Your Ultimate AI Directory
-              <span className="block text-3xl lg:text-5xl text-emerald-600 mt-2">Discover 2025&apos;s Best AI Tools by Category</span>
+            <h1 className="text-4xl lg:text-6xl font-bold text-cyan-100 mb-6 animate-in fade-in duration-500 font-mono">
+              Tools Herd : Your Ultimate AI Directory
+              <span className="block text-3xl lg:text-5xl text-cyan-400 mt-2">Discover Latest AI Tools by Category</span>
             </h1>
-            <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto animate-in slide-in-from-bottom-4 duration-700">
-              Hand-picked AI tools to boost your productivity, creativity, and business – all in one place.
+            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto animate-in slide-in-from-bottom-4 duration-700">
+              Hand-picked AI tools to boost your productivity, creativity, and business  all in one place.
             </p>
 
             <div className="max-w-2xl mx-auto mb-8 animate-in slide-in-from-bottom-4 duration-900">
@@ -336,24 +380,24 @@ import {supabase} from "@/lib/supabaseClient";
                   placeholder="Search AI tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-6 py-4 text-lg rounded-2xl border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 shadow-lg pr-16"
+                  className="w-full px-6 py-4 text-lg rounded-2xl border-2 border-cyan-500/40 focus:border-cyan-500/80 focus:ring-4 focus:ring-cyan-500/30 shadow-glow-medium pr-16 bg-slate-800/60 text-cyan-100"
                 />
-                <Button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-xl">
+                <Button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-6 py-2 rounded-xl font-semibold">
                   <Search className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-600">
-              <span className="bg-white px-4 py-2 rounded-full shadow-sm">�� Trending: ChatGPT</span>
-              <span className="bg-white px-4 py-2 rounded-full shadow-sm">✨ New: Runway ML</span>
-              <span className="bg-white px-4 py-2 rounded-full shadow-sm">💎 Featured: Notion AI</span>
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-300">
+              <span className="bg-slate-800/40 border border-cyan-500/20 px-4 py-2 rounded-full shadow-glow-subtle">Trending: ChatGPT</span>
+              <span className="bg-slate-800/40 border border-cyan-500/20 px-4 py-2 rounded-full shadow-glow-subtle">New: Runway ML</span>
+              <span className="bg-slate-800/40 border border-cyan-500/20 px-4 py-2 rounded-full shadow-glow-subtle">Featured: Notion AI</span>
             </div>
           </div>
         </section>
 
         {/* Category Filter - hidden on mobile, sticky on md+ */}
-        <section className="hidden md:block bg-white py-8 border-b border-slate-200 md:sticky md:top-0 md:z-40">
+        <section className="hidden md:block bg-slate-900/60 backdrop-blur py-8 border-b border-cyan-500/20 md:sticky md:top-16 md:z-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap justify-center gap-2 lg:gap-4">
               {categories.map((category) => {
@@ -365,8 +409,8 @@ import {supabase} from "@/lib/supabaseClient";
     className={clsx(
       "px-6 py-3 rounded-xl font-medium transition-all duration-300",
       activeCategory === category.id
-        ? "bg-emerald-600 text-white shadow-lg hover:bg-emerald-700"
-        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+        ? "bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400"
+        : "bg-slate-800/50 text-slate-200 border border-cyan-500/20 hover:border-cyan-500/50 hover:bg-slate-800"
     )}
     aria-pressed={activeCategory === category.id}
   >
@@ -381,22 +425,22 @@ import {supabase} from "@/lib/supabaseClient";
         </section>
 
         {/* Tools Grid */}
-        <main className="py-16 bg-slate-50" itemScope itemType="https://schema.org/CollectionPage">
+        <main className="py-16 bg-slate-950" itemScope itemType="https://schema.org/CollectionPage">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <header className="text-center mb-12">
-              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4" itemProp="name">
+              <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono" itemProp="name">
                 Featured AI Tools
               </h2>
-              <p className="text-lg text-slate-600" itemProp="description">
+              <p className="text-lg text-slate-300" itemProp="description">
                 Curated collection of the most powerful AI tools available today
               </p>
             </header>
 
-            {error && <div className="text-center text-red-600 mb-6">{error}</div>}
+            {error && <div className="text-center text-red-500 mb-6 bg-red-500/10 border border-red-500/30 rounded-lg py-4">{error}</div>}
 
             {loading && tools.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-lg text-slate-600">Loading AI tools...</p>
+                <p className="text-lg text-slate-300">Loading AI tools...</p>
               </div>
             ) : (
               <>
@@ -405,27 +449,27 @@ import {supabase} from "@/lib/supabaseClient";
                     return (
                       <Card
                         key={tool.id}
-                        className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+                        className="bg-slate-800/40 rounded-2xl border border-cyan-500/20 shadow-glow-medium hover:shadow-glow-large hover:-translate-y-1 transition-all duration-300 transform overflow-hidden"
                       >
-                        <div className="tool-logo img relative h-48 bg-gray-50 rounded-t-2xl overflow-hidden">
+                        <div className="tool-logo img relative h-48 bg-slate-900/50 rounded-t-2xl overflow-hidden border-b border-cyan-500/10">
                         <Image
                                          src={tool.imageUrl || ''}
                                          alt={`${tool.name} logo`}
                                          width={400}
                                          height={192}
-                                         className="w-full h-48 flex items-center justify-center bg-gray-50 rounded-t-2xl object-contain p-4"
+                                         className="w-full h-48 flex items-center justify-center bg-slate-900/50 rounded-t-2xl object-contain p-4"
                                        />
                         </div>
                         <CardContent className="p-6">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-xl font-bold text-slate-900">{tool.name}</h3>
-                            <Badge className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(tool.category)}`}>
+                            <h3 className="text-xl font-bold text-cyan-100">{tool.name}</h3>
+                            <Badge className={`px-3 py-1 rounded-full text-sm font-medium border ${getCategoryColor(tool.category)}`}>
                               {getCategoryDisplayName(tool.category)}
                             </Badge>
                           </div>
-                          <p className="tool-tagline text-slate-600 mb-4">{tool.description}</p>
+                          <p className="tool-tagline text-slate-400 mb-4">{tool.description}</p>
  <Link href={`/tools/${tool.slug}`}>
-                      <Button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+                      <Button className="w-full bg-cyan-500 text-gray-950 py-3 rounded-xl hover:bg-cyan-400 hover:shadow-glow-medium transition-all font-semibold">
                         Read More <ExternalLink className="h-4 w-4 ml-2" />
 
                             </Button>
@@ -438,7 +482,7 @@ import {supabase} from "@/lib/supabaseClient";
 
                 {tools.length === 0 && !loading && !error && (
                   <div className="text-center py-16">
-                    <p className="text-lg text-slate-600">No tools found matching your criteria.</p>
+                    <p className="text-lg text-slate-400">No tools found matching your criteria.</p>
                   </div>
                 )}
 
@@ -447,7 +491,7 @@ import {supabase} from "@/lib/supabaseClient";
                     <Button
                       onClick={handleLoadMore}
                       disabled={isClient && loadingMore}
-                      className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      className="bg-gradient-to-r from-cyan-500 to-cyan-400 text-gray-950 px-8 py-4 rounded-2xl font-semibold hover:from-cyan-400 hover:to-cyan-300 transition-all duration-300 shadow-glow-large hover:shadow-glow-xl"
                     >
                       {loadingMore ? "Loading..." : "Load More Tools"}
                     </Button>
@@ -459,25 +503,25 @@ import {supabase} from "@/lib/supabaseClient";
         </main>
 
         {/* Blog Section */}
-        <section className="py-16 bg-white border-t border-slate-200">
+        <section className="py-16 bg-slate-900/50 border-t border-cyan-500/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <header className="text-center mb-12">
-              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">Latest Blog Posts</h2>
-              <p className="text-lg text-slate-600">Daily updates from our blog</p>
+              <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono">Latest Blog Posts</h2>
+              <p className="text-lg text-slate-300">Daily updates from our blog</p>
             </header>
 
-            {blogError && <div className="text-center text-red-600 mb-6">{blogError}</div>}
+            {blogError && <div className="text-center text-red-500 mb-6 bg-red-500/10 border border-red-500/30 rounded-lg py-4">{blogError}</div>}
 
             {blogLoading ? (
-              <div className="text-center py-8 text-slate-600">Loading blog posts...</div>
+              <div className="text-center py-8 text-slate-400">Loading blog posts...</div>
             ) : blogPosts.length === 0 ? (
-              <div className="text-center py-8 text-slate-600">No blog posts yet.</div>
+              <div className="text-center py-8 text-slate-400">No blog posts yet.</div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {blogPosts.map((post) => (
                   <Card
                     key={post.id}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                    className="bg-slate-800/40 rounded-2xl border border-cyan-500/20 shadow-glow-medium hover:shadow-glow-large transition-all duration-300 overflow-hidden"
                   >
                     {post.coverImageUrl && (
                       <Image src={post.coverImageUrl} alt={post.title} height={800} width={400} className="w-full h-48 object-cover" />
@@ -485,11 +529,11 @@ import {supabase} from "@/lib/supabaseClient";
                     <CardContent className="p-6">
                       <div className="text-sm text-slate-500 mb-2">{formatDate(post.publishedAt)}</div>
                       <Link href={`/blog/${post.slug}`}>
-                        <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-emerald-600 transition-colors">{post.title}</h3>
+                        <h3 className="text-xl font-bold text-cyan-100 mb-2 hover:text-cyan-300 transition-colors">{post.title}</h3>
                       </Link>
-                      {post.excerpt && <p className="text-slate-600 mb-4">{post.excerpt}</p>}
+                      {post.excerpt && <p className="text-slate-400 mb-4">{post.excerpt}</p>}
                       <Link href={`/blog/${post.slug}`}>
-                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                        <Button className="bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-semibold">
                           Read More <ExternalLink className="h-4 w-4 ml-2" />
                         </Button>
                       </Link>
@@ -506,10 +550,10 @@ import {supabase} from "@/lib/supabaseClient";
         {/* Floating mobile button and category sheet */}
         <Button
           aria-label="Open categories"
-          className="md:hidden fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full p-0 bg-emerald-600 hover:bg-emerald-700 shadow-lg"
+          className="md:hidden fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full p-0 bg-cyan-500 hover:bg-cyan-400 shadow-glow-large text-gray-950"
           onClick={() => setCategorySheetOpen(true)}
         >
-          <ListFilter className="h-6 w-6 text-white" />
+          <ListFilter className="h-6 w-6" />
         </Button>
 
         <CategorySheet
