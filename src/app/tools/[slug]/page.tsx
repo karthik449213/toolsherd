@@ -137,14 +137,15 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Tool Image */}
             <div className="flex items-center justify-center">
-              <div className="relative w-full h-96 bg-slate-800/40 border border-cyan-500/20 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium">
+              <div className="relative w-full h-auto aspect-square bg-slate-800/40 border border-cyan-500/20 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium">
                 {tool.imageUrl && (
                   <Image
                     src={tool.imageUrl}
                     alt={tool.name}
                     fill
-                    className="object-contain p-8"
+                    className="object-contain  p-4 md:p-8"
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
                   />
                 )}
               </div>
@@ -159,11 +160,24 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
               <p className="text-xl text-slate-300 mb-8 leading-relaxed">{tool.description}</p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <a href={tool.website_url} target="_blank" rel="noopener noreferrer">
-                  <Button className="w-full sm:w-auto bg-cyan-500 text-gray-950 hover:bg-cyan-400 px-8 py-6 text-lg rounded-xl font-semibold shadow-glow-medium">
-                    Visit Website <ExternalLink className="h-5 w-5 ml-2" />
-                  </Button>
-                </a>
+                {(tool.website_url || tool.url) && (
+                  <a 
+                    href={tool.website_url || tool.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      const url = tool.website_url || tool.url;
+                      if (!url || url.trim() === '') {
+                        e.preventDefault();
+                        console.warn('No valid website URL provided');
+                      }
+                    }}
+                  >
+                    <Button className="w-full sm:w-auto bg-cyan-500 text-gray-950 hover:bg-cyan-400 px-8 py-6 text-lg rounded-xl font-semibold shadow-glow-medium">
+                      Visit Website <ExternalLink className="h-5 w-5 ml-2" />
+                    </Button>
+                  </a>
+                )}
                 <Button variant="outline" className="w-full sm:w-auto px-8 py-6 text-lg rounded-xl border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50">
                   Share Tool
                 </Button>

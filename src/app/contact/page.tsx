@@ -83,7 +83,7 @@ export default function ContactPage() {
               <div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-sm font-medium text-gray-950 bg-cyan-500 hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-colors shadow-glow-medium font-semibold"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-sm font-medium text-gray-950 bg-cyan-500 hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-colors shadow-glow-medium font-medium"
                 >
                   Send Message
                 </button>

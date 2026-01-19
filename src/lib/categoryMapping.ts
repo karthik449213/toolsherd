@@ -1,5 +1,33 @@
 /**
- * Category Mapping
+ * Blog-Specific Categories
+ * These are unique to blog posts, separate from tool categories
+ */
+export const blogCategories = [
+  { id: 'ai-for-students', name: 'AI for Students & Education' },
+  { id: 'ai-finance', name: 'AI in Finance & Money' },
+  { id: 'ai-future-tech', name: 'Future AI Tech (ML, Edge, Robotics)' },
+  { id: 'ai-tools', name: 'AI Tools & Guides' },
+  { id: 'ai-automation', name: 'AI for Everyday Automation' },
+  { id: 'ai-use-cases', name: 'AI in Real Life & Business' },
+  { id: 'ai-careers', name: 'AI Careers & Learning Paths' },
+  { id: 'ai-news', name: 'AI News & Trends' },
+  { id: 'ai-ethics', name: 'AI Ethics & Safety' },
+  { id: 'ai-creativity', name: 'AI Creativity: Art, Music, Writing' },
+  { id: 'ai-coding', name: 'AI for Developers & Coding' },
+  { id: 'ai-productivity', name: 'AI Productivity & Hacks' },
+  { id: 'ai-health', name: 'AI in Health & Well-Being' },
+];
+
+/**
+ * Get blog category name by ID
+ */
+export const getBlogCategoryNameById = (categoryId: string): string => {
+  const category = blogCategories.find(cat => cat.id === categoryId);
+  return category?.name || categoryId;
+};
+
+/**
+ * Tool Category Mapping
  * Maps between new category IDs and database values
  * This allows the UI to use new category IDs while maintaining backward compatibility
  */

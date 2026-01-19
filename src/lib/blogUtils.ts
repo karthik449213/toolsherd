@@ -4,6 +4,21 @@
  */
 
 import { BlogPost, BlogMetadata } from './types';
+import { blogCategories, getBlogCategoryNameById } from './categoryMapping';
+
+/**
+ * Get all available blog categories
+ */
+export const getAvailableBlogCategories = () => {
+  return blogCategories;
+};
+
+/**
+ * Get blog category display name by ID
+ */
+export const getBlogCategoryName = (categoryId: string): string => {
+  return getBlogCategoryNameById(categoryId);
+};
 
 /**
  * Format a date to a readable string

@@ -256,7 +256,16 @@ export class ConsentStorage {
    * (hasn't explicitly given consent yet)
    */
   static shouldShowBanner(): boolean {
-    const consent = this.getConsent();
-    return !consent || !consent.explicit;
+    try {
+      if (typeof window === 'undefined') return false;
+      const stored = localStorage.getItem(this.KEY);
+      if (!stored) return true; // Show banner if no consent stored
+      
+      const consent = JSON.parse(stored);
+      return !consent || !consent.explicit;
+    } catch (error) {
+      console.error('[Cookies] Error checking banner visibility:', error);
+      return true; // Show banner on error to ensure user sees it
+    }
   }
 }

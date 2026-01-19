@@ -14,6 +14,7 @@ import {
 
 import { supabase } from "@/lib/supabaseClient";
 import { BlogPost, RawBlogPost } from "@/lib/types";
+import { blogCategories } from "@/lib/categoryMapping";
 
 const formatDate = (d: Date) =>
   new Date(d).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
@@ -21,8 +22,10 @@ const formatDate = (d: Date) =>
 export default function BlogPage() {
   const [isMounted, setIsMounted] = React.useState(false);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const fetchBlogPosts = async () => {
     setLoading(true);
@@ -51,18 +54,30 @@ export default function BlogPage() {
         const content = row.content_md ?? "";
         const createdAt = row.created_at ? new Date(row.created_at) : new Date();
         const updatedAt = row.updated_at ? new Date(row.updated_at) : new Date();
-        return { id, title, excerpt, coverImageUrl, slug, publishedAt, author, content, createdAt, updatedAt };
+        const category = row.category ?? "ai-tools"; // Default category
+        return { id, title, excerpt, coverImageUrl, slug, publishedAt, author, content, createdAt, updatedAt, category };
       });
 
       setBlogPosts(mapped);
+      setFilteredPosts(mapped);
     } catch (e: unknown) {
       console.error("Error fetching blog posts:", e);
       setError(e instanceof Error ? e.message : "Failed to load blog posts");
       setBlogPosts([]);
+      setFilteredPosts([]);
     } finally {
       setLoading(false);
     }
   };
+
+  // Filter posts when category changes
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      setFilteredPosts(blogPosts);
+    } else {
+      setFilteredPosts(blogPosts.filter(post => post.category === selectedCategory));
+    }
+  }, [selectedCategory, blogPosts]);
 
   useEffect(() => {
     fetchBlogPosts();
@@ -90,15 +105,44 @@ export default function BlogPage() {
             </p>
           </header>
 
+          {/* Category Filter */}
+          <div className="mb-12">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => setSelectedCategory("all")}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  selectedCategory === "all"
+                    ? "bg-cyan-500 text-slate-900"
+                    : "bg-slate-800 text-slate-300 hover:bg-slate-700 border border-cyan-500/20"
+                }`}
+              >
+                All Posts
+              </button>
+              {blogCategories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all text-sm whitespace-nowrap ${
+                    selectedCategory === category.id
+                      ? "bg-cyan-500 text-slate-900"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700 border border-cyan-500/20"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {error && <div className="text-center text-red-500 mb-6 bg-red-950/30 border border-red-500/30 rounded p-4">{error}</div>}
 
           {loading ? (
             <div className="text-center py-16">
               <p className="text-lg text-slate-400">Loading blog posts...</p>
             </div>
-          ) : blogPosts.length > 0 ? (
+          ) : filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Card
                   key={post.id}
                   className="bg-slate-800/40 border border-cyan-500/20 rounded-2xl shadow-glow-medium hover:shadow-glow-large hover:border-cyan-500/40 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
@@ -139,7 +183,7 @@ export default function BlogPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-lg text-slate-600">No blog posts available at the moment.</p>
+              <p className="text-lg text-slate-600">No blog posts available in this category.</p>
             </div>
           )}
         </div>

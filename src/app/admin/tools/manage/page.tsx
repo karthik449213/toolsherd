@@ -5,14 +5,16 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Edit2, Trash2, Eye } from 'lucide-react';
+import { Edit2, Trash2, Eye, Image } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import { ImageUploadModal } from '@/components/admin/ImageUploadModal';
 
 interface Tool {
   id: string;
   name: string;
   category: string;
   slug: string;
+  imageUrl?: string;
   created_at?: string;
 }
 
@@ -57,6 +59,8 @@ export default function ManageToolsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [editingToolId, setEditingToolId] = useState<string | null>(null);
+  const [updateError, setUpdateError] = useState('');
 
   useEffect(() => {
     fetchTools();
@@ -67,7 +71,7 @@ export default function ManageToolsPage() {
       setLoading(true);
       const { data, error } = await supabase
         .from('ai_tools')
-        .select('id, name, category, slug, created_at')
+        .select('id, name, category, slug, imageUrl, created_at')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -87,6 +91,42 @@ export default function ManageToolsPage() {
       setDeleteConfirm(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to delete tool');
+    }
+  };
+
+  const handleImageUpdate = async (toolId: string, newImageUrl: string) => {
+    try {
+      setUpdateError('');
+
+      // Update in database
+      const response = await fetch('/api/admin/images/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: toolId,
+          imageUrl: newImageUrl,
+          type: 'tool',
+          field: 'imageUrl',
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to update image');
+      }
+
+      // Update local state
+      setTools(
+        tools.map((t) =>
+          t.id === toolId ? { ...t, imageUrl: newImageUrl } : t
+        )
+      );
+
+      setEditingToolId(null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to update image';
+      setUpdateError(message);
+      console.error('Image update error:', err);
     }
   };
 
@@ -130,7 +170,30 @@ export default function ManageToolsPage() {
           {tools.map((tool) => (
             <Card key={tool.id} className="border border-slate-200 hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex gap-4 items-start">
+                  {/* Image */}
+                  <div className="flex-shrink-0 relative">
+                    {tool.imageUrl ? (
+                      <img
+                        src={tool.imageUrl}
+                        alt={tool.name}
+                        className="w-24 h-24 object-cover rounded-lg border border-slate-200"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 bg-slate-100 rounded-lg border border-slate-300 flex items-center justify-center">
+                        <Image className="h-8 w-8 text-slate-400" />
+                      </div>
+                    )}
+                    <button
+                      onClick={() => setEditingToolId(tool.id)}
+                      className="absolute inset-0 bg-black/0 hover:bg-black/40 rounded-lg flex items-center justify-center opacity-0 hover:opacity-100 transition-all"
+                      title="Update image"
+                    >
+                      <Image className="h-5 w-5 text-white" />
+                    </button>
+                  </div>
+
+                  {/* Info */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-lg font-semibold text-slate-900">{tool.name}</h3>
@@ -145,7 +208,8 @@ export default function ManageToolsPage() {
                     )}
                   </div>
 
-                  <div className="flex gap-2">
+                  {/* Actions */}
+                  <div className="flex gap-2 flex-shrink-0">
                     <Link href={`/tools/${tool.slug}`}>
                       <Button variant="outline" size="sm" className="rounded-lg">
                         <Eye className="h-4 w-4" />
@@ -190,6 +254,26 @@ export default function ManageToolsPage() {
           ))}
         </div>
       )}
+
+      {/* Image Upload Modal */}
+      <ImageUploadModal
+        isOpen={editingToolId !== null}
+        onClose={() => {
+          setEditingToolId(null);
+          setUpdateError('');
+        }}
+        onUpload={(url) => {
+          if (editingToolId) {
+            handleImageUpdate(editingToolId, url);
+          }
+        }}
+        title="Update Tool Image"
+        description="Upload a new image for this tool"
+        currentImageUrl={
+          editingToolId ? tools.find((t) => t.id === editingToolId)?.imageUrl : undefined
+        }
+        fieldName="tool"
+      />
     </div>
   );
 }

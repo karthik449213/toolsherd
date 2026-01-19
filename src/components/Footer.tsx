@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { Bot, Facebook, Instagram, Twitter } from 'lucide-react';
+import { blogCategories } from '@/lib/categoryMapping';
 
 export default function Footer() {
   return (
     <footer className="bg-slate-950 border-t border-cyan-500/20 text-slate-200 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <Bot className="h-8 w-8 text-cyan-400" />
               <h3 className="text-xl font-bold text-cyan-300 font-mono">Tools Herd AI</h3>
@@ -35,87 +36,72 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-cyan-300">Categories</h4>
+            <h4 className="font-semibold mb-4 text-cyan-300">Tool Categories</h4>
             <ul className="space-y-2 text-slate-400 text-sm">
               <li>
                 <Link href="/tools?category=ai_agents" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI Agents & Autonomous Systems
+                  AI Agents
                 </Link>
               </li>
               <li>
                 <Link href="/tools?category=agentic_ai" className="hover:text-cyan-300 transition-colors duration-200">
-                  Agentic AI & Multi-Agent Workflows
+                  Agentic AI
                 </Link>
               </li>
               <li>
                 <Link href="/tools?category=no_code_ai" className="hover:text-cyan-300 transition-colors duration-200">
-                  No-Code & Low-Code AI Builders
+                  No-Code AI
                 </Link>
               </li>
               <li>
                 <Link href="/tools?category=ai_automation" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI Automation & Workflow Tools
+                  Automation
                 </Link>
               </li>
               <li>
                 <Link href="/tools?category=ai_seo" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI SEO & Search Growth Tools
+                  AI SEO
                 </Link>
               </li>
               <li>
                 <Link href="/tools?category=ai_content_engines" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI Content Engines
+                  Content Engines
                 </Link>
               </li>
               <li>
                 <Link href="/tools?category=ai_creative_tools" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI Creative Tools
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools?category=ai_business_growth" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI for Business & Sales
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools?category=ai_ecommerce" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI for E-Commerce
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools?category=ai_productivity" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI Productivity Assistants
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools?category=ai_saas_builders" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI SaaS Builders
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools?category=ai_dev_platforms" className="hover:text-cyan-300 transition-colors duration-200">
-                  AI Dev & Deployment
+                  Creative Tools
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-cyan-300">Resources</h4>
-            <ul className="space-y-2 text-slate-400">
-              <li>
-                <Link href="/newsletter" className="hover:text-cyan-300 transition-colors duration-200">
-                  Newsletter
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-cyan-300 transition-colors duration-200">
-                  Blog
-                </Link>
-              </li>
-              <li>
-               <Link href="/about" className="hover:text-cyan-300 transition-colors duration-200">
-                  About
+            <h4 className="font-semibold mb-4 text-cyan-300">Blog Topics</h4>
+            <ul className="space-y-2 text-slate-400 text-sm">
+              {blogCategories.slice(0, 7).map((category) => (
+                <li key={category.id}>
+                  <Link href={`/blog?category=${category.id}`} className="hover:text-cyan-300 transition-colors duration-200 line-clamp-1">
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4 text-cyan-300">More Topics</h4>
+            <ul className="space-y-2 text-slate-400 text-sm">
+              {blogCategories.slice(7).map((category) => (
+                <li key={category.id}>
+                  <Link href={`/blog?category=${category.id}`} className="hover:text-cyan-300 transition-colors duration-200 line-clamp-1">
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+              <li className="pt-2 border-t border-slate-700">
+                <Link href="/blog" className="hover:text-cyan-300 transition-colors duration-200 font-semibold">
+                  View All Blog Posts
                 </Link>
               </li>
             </ul>
