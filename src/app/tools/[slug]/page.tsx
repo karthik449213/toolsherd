@@ -137,14 +137,14 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Tool Image */}
             <div className="flex items-center justify-center">
-              <div className="relative w-full h-auto aspect-square bg-slate-800/40 border border-cyan-500/20 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium">
+              <div className="relative w-full max-w-md aspect-square bg-slate-800/40 border border-cyan-500/20 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium">
                 {tool.imageUrl && (
                   <Image
                     src={tool.imageUrl}
                     alt={tool.name}
                     fill
-                    className="object-contain  p-4 md:p-8"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 500px"
                     priority
                   />
                 )}

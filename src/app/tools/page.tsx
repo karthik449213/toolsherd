@@ -290,8 +290,8 @@ export default function ToolsPage() {
                     src={tool.imageUrl || ''}
                     alt={`${tool.name} logo`}
                     width={400}
-                    height={192}
-                    className="w-full h-48 flex items-center justify-center bg-slate-700/50 rounded-t-2xl object-contain p-4"
+                    height={300}
+                    className="w-full h-48 bg-slate-700/50 object-cover"
                   />
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-3">

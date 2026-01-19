@@ -110,9 +110,12 @@ export default function Footer() {
 
         <div className="border-t border-cyan-500/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-slate-500 text-sm">© 2024 Tools Herd AI. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex space-x-6 mt-4 md:mt-0 flex-wrap justify-center md:justify-end gap-y-2">
             <Link href="/privacy-policy" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors duration-200">
               Privacy Policy
+            </Link>
+            <Link href="/cookies" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors duration-200">
+              Cookies
             </Link>
             <Link href="/terms-and-conditions" className="text-slate-400 hover:text-cyan-300 text-sm transition-colors duration-200">
               Terms of Service

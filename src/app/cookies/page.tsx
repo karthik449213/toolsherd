@@ -1,29 +1,47 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 export default function CookiePolicyPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <article className="prose prose-lg max-w-none">
-          <h1 className="text-4xl font-bold mb-2 text-slate-900">Cookie Policy</h1>
-          <p className="text-lg text-slate-600 mb-8">
-            Last updated: January 18, 2026 • Effective immediately
-          </p>
+        {/* Back Button */}
+        <Link href="/privacy-policy" className="inline-block mb-8">
+          <Button variant="outline" className="border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50 rounded-lg">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Privacy Policy
+          </Button>
+        </Link>
 
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded">
-            <p className="text-sm text-slate-700 mb-2">
+        <article className="space-y-8 text-slate-300">
+          <div>
+            <h1 className="text-4xl font-bold mb-2 text-cyan-100 font-mono">Cookie Policy</h1>
+            <p className="text-lg text-slate-400">
+              Last updated: January 18, 2026 • Effective immediately
+            </p>
+          </div>
+
+          <div className="bg-cyan-500/10 border-l-4 border-cyan-500 p-6 rounded">
+            <p className="text-sm text-slate-200 mb-2">
               <strong>Quick Summary:</strong> We use cookies to help you discover AI tools,
               improve your experience, and understand how our community uses the platform.
               You control which cookies we use—just update your preferences anytime.
             </p>
+            <Link href="/cookies/preferences" className="inline-block mt-3">
+              <Button className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg px-4 py-2 text-sm">
+                Manage Cookie Preferences
+              </Button>
+            </Link>
           </div>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 text-cyan-300 font-mono">
             What Are Cookies?
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300">
             Cookies are small text files stored on your device that help websites remember
             information about you. Think of them as digital sticky notes that make your
             browsing experience smoother. They don't contain viruses or track you around
@@ -40,23 +58,23 @@ export default function CookiePolicyPage() {
             the bottom of your screen.
           </p>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 text-cyan-300 font-mono">
             Types of Cookies We Use
           </h2>
 
           <div className="space-y-6">
             {/* Essential */}
-            <div className="border-l-4 border-green-500 pl-6">
-              <h3 className="text-xl font-bold text-green-900 mb-2">
+            <div className="border-l-4 border-green-500 pl-6 bg-green-500/10 p-4 rounded">
+              <h3 className="text-xl font-bold text-green-300 mb-2">
                 🔒 Essential (Always Required)
               </h3>
-              <p className="text-slate-700 mb-3">
+              <p className="text-slate-300 mb-3">
                 These cookies are strictly necessary to make our website work. Without them,
                 features break—like staying logged in or completing a search. We don't need
                 your permission to use these.
               </p>
-              <p className="font-semibold text-slate-800 mb-2">What we store:</p>
-              <ul className="list-disc pl-5 text-slate-700 space-y-1">
+              <p className="font-semibold text-slate-200 mb-2">What we store:</p>
+              <ul className="list-disc pl-5 text-slate-300 space-y-1">
                 <li>
                   <strong>Session ID:</strong> Remembers you're logged in across pages
                 </li>
@@ -71,64 +89,64 @@ export default function CookiePolicyPage() {
                   <strong>Language/Theme:</strong> Your display preferences (dark mode, etc.)
                 </li>
               </ul>
-              <p className="text-sm text-slate-600 mt-3">
+              <p className="text-sm text-slate-400 mt-3">
                 <strong>Expiry:</strong> Varies (most clear when you close your browser)
               </p>
             </div>
 
             {/* Analytics */}
-            <div className="border-l-4 border-blue-500 pl-6">
-              <h3 className="text-xl font-bold text-blue-900 mb-2">
+            <div className="border-l-4 border-blue-500 pl-6 bg-blue-500/10 p-4 rounded">
+              <h3 className="text-xl font-bold text-blue-300 mb-2">
                 📊 Analytics (Help Us Improve)
               </h3>
-              <p className="text-slate-700 mb-3">
+              <p className="text-slate-300 mb-3">
                 We use analytics to understand how you interact with our AI tools directory.
                 This helps us discover which tools are most useful, identify broken links,
                 and build features you actually want. <strong>No personal data is sold.</strong>
               </p>
-              <p className="font-semibold text-slate-800 mb-2">What we learn:</p>
-              <ul className="list-disc pl-5 text-slate-700 space-y-1">
+              <p className="font-semibold text-slate-200 mb-2">What we learn:</p>
+              <ul className="list-disc pl-5 text-slate-300 space-y-1">
                 <li>Which AI tools you search for or click on</li>
                 <li>How long you spend on each tool's page</li>
                 <li>Common search queries (to improve rankings)</li>
                 <li>Device type and browser (desktop vs. mobile?)</li>
                 <li>Rough location (country level only, never your address)</li>
               </ul>
-              <p className="text-sm text-slate-600 mt-3">
+              <p className="text-sm text-slate-400 mt-3">
                 <strong>Services:</strong> Google Analytics 4, Vercel Analytics
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-400">
                 <strong>Expiry:</strong> 13 months (then we delete it)
               </p>
             </div>
 
             {/* Marketing */}
-            <div className="border-l-4 border-purple-500 pl-6">
-              <h3 className="text-xl font-bold text-purple-900 mb-2">
+            <div className="border-l-4 border-purple-500 pl-6 bg-purple-500/10 p-4 rounded">
+              <h3 className="text-xl font-bold text-purple-300 mb-2">
                 📢 Marketing (Show Relevant Ads)
               </h3>
-              <p className="text-slate-700 mb-3">
+              <p className="text-slate-300 mb-3">
                 Marketing cookies let us show you ads about tools we think you'll find
                 useful on other websites. They also help us measure if our promotions work.
                 You can opt out anytime—we won't be offended!
               </p>
-              <p className="font-semibold text-slate-800 mb-2">What we track:</p>
-              <ul className="list-disc pl-5 text-slate-700 space-y-1">
+              <p className="font-semibold text-slate-200 mb-2">What we track:</p>
+              <ul className="list-disc pl-5 text-slate-300 space-y-1">
                 <li>AI tools you've viewed (so we can remind you later)</li>
                 <li>Your interests in different AI categories</li>
                 <li>Whether you clicked our ads on other platforms</li>
               </ul>
-              <p className="text-sm text-slate-600 mt-3">
+              <p className="text-sm text-slate-400 mt-3">
                 <strong>Services:</strong> Facebook Pixel, Google Ads, LinkedIn Ads
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-400">
                 <strong>Expiry:</strong> 180 days or until you clear cookies
               </p>
             </div>
 
             {/* Affiliate */}
-            <div className="border-l-4 border-orange-500 pl-6">
-              <h3 className="text-xl font-bold text-orange-900 mb-2">
+            <div className="border-l-4 border-orange-500 pl-6 bg-orange-500/10 p-4 rounded">
+              <h3 className="text-xl font-bold text-orange-300 mb-2">
                 🤝 Affiliate Tracking (Commission Attribution)
               </h3>
               <p className="text-slate-700 mb-3">
@@ -484,34 +502,49 @@ export default function CookiePolicyPage() {
             checking back!
           </p>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 text-cyan-300 font-mono">
             Questions?
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300">
             We're here to help. If you have questions about cookies or privacy:
           </p>
-          <ul className="list-disc pl-5 text-slate-700 space-y-1 mb-8">
+          <ul className="list-disc pl-5 text-slate-300 space-y-2 mb-8">
             <li>
-              Email: <strong>hello@toolsherd.com</strong>
+              Email: <strong>karthikpiinasi@gmail.com</strong>
             </li>
             <li>
-              Data Protection Officer: <strong>privacy@toolsherd.com</strong>
+              Data Protection Officer: <strong>privacy@toolsherd.in</strong>
             </li>
             <li>
-              See our full <a href="/privacy-policy" className="text-blue-600 hover:underline">
+              See our full <a href="/privacy-policy" className="text-cyan-400 hover:text-cyan-300 underline">
                 Privacy Policy
               </a>{' '}
               for more details
             </li>
           </ul>
 
-          <div className="bg-slate-100 p-6 rounded-lg mt-8">
-            <p className="text-sm text-slate-700">
+          <div className="bg-cyan-500/10 border border-cyan-500/20 p-6 rounded-lg mt-8">
+            <p className="text-sm text-slate-200">
               <strong>📋 Summary:</strong> We use cookies to help you find great AI tools,
               keep you logged in, understand what works, and show you relevant ads. You
               control which cookies we use. No data is sold. Questions? We're transparent
               and happy to explain.
             </p>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex gap-4 mt-12 pt-8 border-t border-slate-700">
+            <Link href="/privacy-policy">
+              <Button variant="outline" className="border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50 rounded-lg">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Privacy Policy
+              </Button>
+            </Link>
+            <Link href="/cookies/preferences">
+              <Button className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg">
+                Manage Preferences
+              </Button>
+            </Link>
           </div>
         </article>
       </div>

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CookieProvider } from "@/components/cookies/CookieProvider";
 import { CookieBanner } from "@/components/cookies/CookieBanner";
+import { CookieAutoAccept } from "@/components/cookies/CookieAutoAccept";
 import { GoogleAnalyticsScript } from "@/components/analytics/GoogleAnalyticsScript";
 
 const geistSans = Geist({
@@ -270,6 +271,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-mono`}>
         <CookieProvider>
+          <CookieAutoAccept />
           <Navbar />
           <main>{children}</main>
           <Footer />

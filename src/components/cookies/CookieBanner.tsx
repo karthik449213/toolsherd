@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { CookieCategory } from '@/lib/cookies/types';
 import { useCookieConsent } from '@/hooks/useCookieConsent';
 import { CATEGORY_METADATA } from '@/lib/cookies/categories';
@@ -12,16 +13,20 @@ import { CATEGORY_GROUPS } from '@/lib/cookies/categories';
  * - No pre-ticked boxes
  * - Clear accept/reject buttons
  * - Link to preferences
+ * - Hidden on homepage (auto-accepts instead)
  */
 export function CookieBanner() {
+  const pathname = usePathname();
   const { showBanner, acceptAll, rejectAll, closeBanner } = useCookieConsent();
   const [isClient, setIsClient] = useState(false);
+  const isHomepage = pathname === '/';
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  if (!isClient || !showBanner) return null;
+  // Hide banner on homepage (auto-accept happens separately)
+  if (!isClient || !showBanner || isHomepage) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
