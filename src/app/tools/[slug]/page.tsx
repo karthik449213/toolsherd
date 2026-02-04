@@ -79,7 +79,7 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
         if (error) throw error;
         setTool(data as Tool);
       } catch (e) {
-        console.error('Error fetching tool:', e);
+    
         setError('Tool not found');
       } finally {
         setLoading(false);
@@ -135,18 +135,50 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
       <section className="bg-slate-900/30 border-b border-cyan-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Tool Image */}
+            {/* Tool Image Section - FIXED DIMENSIONS */}
+            {/* 
+              ✅ IMAGE DIMENSIONS FOR CANVA:
+              - Width: 600px
+              - Height: 600px
+              - Aspect Ratio: 1:1 (Square)
+              - Format: PNG or JPG with transparency preferred
+              - Max file size: 5MB
+              
+              📍 Container Size (on Desktop):
+              - Desktop: 448px × 448px (28rem × 28rem)
+              - Mobile: Full width - 32px (responsive)
+              - All sizes maintain 1:1 aspect ratio
+              
+              🎨 Design Tips for Canva:
+              1. Use square format (600×600px recommended)
+              2. Leave 20-30px padding on all sides for border
+              3. Use high contrast against dark background
+              4. Transparent background (PNG) or solid color
+              5. Center the main subject
+            */}
             <div className="flex items-center justify-center">
-              <div className="relative w-full max-w-md aspect-square bg-slate-800/40 border border-cyan-500/20 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium">
-                {tool.imageUrl && (
+              {/* Desktop: 448px × 448px | Mobile: responsive with 1:1 ratio */}
+              <div className="relative w-full max-w-md aspect-square bg-slate-800/40 border-2 border-cyan-500/30 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium hover:shadow-glow-large transition-shadow duration-300">
+                {tool.imageUrl ? (
                   <Image
                     src={tool.imageUrl}
                     alt={tool.name}
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 500px"
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 2rem), 448px"
                     priority
                   />
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full w-full bg-gradient-to-br from-slate-700 to-slate-900">
+                    <div className="text-center">
+                      <div className="text-cyan-400/50 mb-3">
+                        <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <p className="text-slate-400 text-sm">No image</p>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -169,7 +201,7 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
                       const url = tool.website_url || tool.url;
                       if (!url || url.trim() === '') {
                         e.preventDefault();
-                        console.warn('No valid website URL provided');
+                     
                       }
                     }}
                   >

@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error('Failed to update consent:', error);
+ 
 
     return NextResponse.json(
       {

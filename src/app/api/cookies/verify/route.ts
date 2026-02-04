@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       region,
     });
   } catch (error) {
-    console.error('[API] Error verifying consent:', error);
+   
     return NextResponse.json(
       { error: 'Failed to verify consent' },
       { status: 500 }

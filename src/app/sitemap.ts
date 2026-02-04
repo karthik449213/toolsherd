@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       blogPosts = data;
     }
   } catch (err) {
-    console.error('Error fetching blog posts for sitemap:', err);
+
   }
 
   // Static pages

@@ -196,7 +196,7 @@ export default function ToolsPage() {
         setHasMore(fetched.length === PAGE_SIZE);
       }
     } catch (e: unknown) {
-      console.error('Error fetching tools:', e);
+    
       setError(e instanceof Error ? e.message : 'Failed to load tools');
       setHasMore(false);
     } finally {

@@ -33,14 +33,15 @@ export default function BlogPage() {
     try {
       const fetchFrom = async (table: string): Promise<RawBlogPost[]> => {
         const { data, error } = await supabase.from(table).select("*").eq("is_published", true).order("published_at", { ascending: false });
+        
         if (error) throw error;
         return (data ?? []) as RawBlogPost[];
       };
-
+      
       let rows: RawBlogPost[] = [];
 
         rows = await fetchFrom("blog_post");
-        console.log("Fetched blog posts:", rows);
+
 
 
       const mapped: BlogPost[] = rows.map((row: RawBlogPost) => {
@@ -61,7 +62,7 @@ export default function BlogPage() {
       setBlogPosts(mapped);
       setFilteredPosts(mapped);
     } catch (e: unknown) {
-      console.error("Error fetching blog posts:", e);
+   
       setError(e instanceof Error ? e.message : "Failed to load blog posts");
       setBlogPosts([]);
       setFilteredPosts([]);
@@ -88,7 +89,7 @@ export default function BlogPage() {
     setIsMounted(true);
   }, []);
 
-  console.log("Rendering BlogPage with posts:", blogPosts);
+
   return (
     <div className="min-h-screen bg-slate-950" suppressHydrationWarning>
 
@@ -97,7 +98,7 @@ export default function BlogPage() {
       <main className="py-16 bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <header className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono">
+            <h2 className="text-3xl lg:text-4xl  font-bold text-cyan-300 mb-4 font-mono">
               AI Blog & Insights
             </h2>
             <p className="text-lg text-slate-300">
@@ -106,8 +107,8 @@ export default function BlogPage() {
           </header>
 
           {/* Category Filter */}
-          <div className="mb-12">
-            <div className="flex flex-wrap gap-2 justify-center">
+          <div className="mb-12 ">
+            <div className="flex flex-wrap gap-2 justify-center ">
               <button
                 onClick={() => setSelectedCategory("all")}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${

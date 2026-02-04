@@ -1,0 +1,84 @@
+# 📐 EXACT CANVA DIMENSIONS - PASTE THIS
+
+Copy and use these exact values in Canva:
+
+---
+
+## 🎯 CANVA CUSTOM SIZE
+
+```
+Width:   600
+Height:  600
+Unit:    px
+```
+
+Or copy this text:
+```
+600 × 600 px
+```
+
+---
+
+## 📏 WHEN CREATING IN CANVA
+
+### Step 1: Click "Custom size"
+### Step 2: Enter values:
+
+| Field | Value |
+|-------|-------|
+| Width | **600** |
+| Height | **600** |
+| Unit | **px** |
+
+### Step 3: Click "Create"
+
+---
+
+## 📍 YOUR IMAGE WILL DISPLAY AS
+
+```
+Desktop:  448 × 448 pixels
+Tablet:   Responsive width
+Mobile:   Full width - 32px padding
+
+ALL maintain 1:1 square ratio ✅
+```
+
+---
+
+## 🎨 DESIGN AREA
+
+Keep your design within:
+
+```
+Safe Zone: 560 × 560px
+(20px margin on all sides)
+```
+
+---
+
+## 📤 WHEN EXPORTING FROM CANVA
+
+Format: **PNG** (transparent) or **JPG**  
+Quality: **High**  
+Size after export: Should be < 5MB
+
+---
+
+## ✅ QUICK CHECKLIST
+
+- [ ] Canva size: 600 × 600px
+- [ ] Aspect ratio: 1:1 (square)
+- [ ] File format: PNG or JPG
+- [ ] Content within 560×560px safe zone
+- [ ] Ready to upload ✅
+
+---
+
+## 🚀 THAT'S IT!
+
+**Use these dimensions: 600 × 600 px**
+
+Then upload to: `/admin/tools/manage`
+
+Done! ✨

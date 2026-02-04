@@ -43,10 +43,9 @@ Tools Herd AI is a modern, full-stack web application built with **Next.js 16** 
 - **Class Variance Authority (CVA) 0.7.1** - Component styling utility
 - **Clsx 2.1.1** - Utility for className management
 
-#### Markdown & Content Rendering
-- **react-markdown 10.1.0** - React component for rendering Markdown
-- **remark-gfm 4.0.1** - GitHub-Flavored Markdown support
-- **remark-breaks 4.0.0** - Line break support in Markdown
+#### JSON Content & Rendering
+- **JSON validation & parsing** - Structured content block handling
+- **Content rendering engine** - Convert JSON blocks to React components
 - **react-day-picker 9.13.0** - Date picker component
 
 #### Form Handling & Validation
@@ -74,16 +73,22 @@ Tools Herd AI is a modern, full-stack web application built with **Next.js 16** 
 - **TW Animate CSS 1.2.5** - Additional Tailwind animations
 
 #### Form Utilities
-- **React Markdown 10.1.0** - Markdown rendering in React
-- **Date-fns 3.6.0** - Date utility library
+- **React Markdown** 10.1.0 - Markdown rendering in React
+- **Date-fns** 3.6.0 - Date utility library
+- **Zod** 3.24.2 - TypeScript-first schema validation
+
+#### Middleware & Backend Utilities
+- **Drizzle ORM** - Type-safe database ORM
+- **Drizzle-Zod** - Integration between Drizzle and Zod
+- **Memorystore** 1.6.7 - In-memory session store
+- **Connect-PG-Simple** 10.0.0 - PostgreSQL session store
 
 #### Communication & WebSocket
-- **WebSocket (ws) 8.18.0** - WebSocket client for real-time features
-- **Express 4.21.2** - Backend/server framework (if backend integration needed)
-- **Passport 0.7.0** - Authentication middleware
-- **Passport-local 1.0.0** - Local authentication strategy
-- **Express Session 1.18.1** - Session management
-- **connect-pg-simple 10.0.0** - PostgreSQL session store
+- **WebSocket (ws)** 8.18.0 - WebSocket client for real-time features
+- **Express** 4.21.2 - Backend/server framework
+- **Passport** 0.7.0 - Authentication middleware
+- **Passport-Local** 1.0.0 - Local authentication strategy
+- **Express Session** 1.18.1 - Session management
 
 ### Database
 - **Supabase** - PostgreSQL database with real-time capabilities
@@ -105,7 +110,7 @@ CREATE TABLE blog_post (
   title TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE,
   excerpt TEXT,
-  content_md TEXT NOT NULL,  -- MARKDOWN CONTENT ONLY
+  content_json JSONB NOT NULL,  -- JSON CONTENT STRUCTURE
   cover_image_url TEXT,
   seo_title TEXT,
   seo_description TEXT,
@@ -125,7 +130,7 @@ CREATE TABLE blog_post (
 - `title` - Blog post title (required)
 - `slug` - URL-friendly identifier (required, unique) - used in route `/blog/{slug}`
 - `excerpt` - Short description/preview text
-- `content_md` - Full markdown content for the post (required)
+- `content_json` - Full content in JSON format (required) - stores structured content blocks
 - `cover_image_url` - Featured image URL
 - `seo_title` - SEO-optimized title for search engines
 - `seo_description` - Meta description for SEO
@@ -159,24 +164,34 @@ The application follows a **modern Next.js App Router architecture** with a clea
 ┌─────────────────────────────────────────────────┐
 │          Vercel/Hosting (Next.js)               │
 ├─────────────────────────────────────────────────┤
+│  Middleware Layer (middleware.ts)               │
+│  - Cookie consent verification                 │
+│  - Request header manipulation                 │
+│  - Path-based routing logic                    │
+├─────────────────────────────────────────────────┤
 │  Frontend Layer (React 19 + TypeScript)         │
-│  - Pages: Home, Blog, Tools, About, Contact    │
+│  - Pages: Home, Blog, Tools, Admin, About     │
 │  - Components: Reusable UI elements            │
-│  - Hooks: Custom React hooks for logic         │
+│  - Custom Hooks: Logic abstraction             │
 ├─────────────────────────────────────────────────┤
 │  Next.js App Router (SSR/SSG/ISR)              │
 │  - Dynamic routes: /blog/[slug]                │
-│  - API routes (future expansion)               │
+│  - API routes: /api/*                          │
+│  - Admin dashboard: /admin/*                   │
 ├─────────────────────────────────────────────────┤
 │  Data Layer                                     │
 │  - Supabase Client (supabaseClient.ts)         │
 │  - TanStack Query (react-query)                │
+│  - Cookie management (cookies/utilities)       │
 │  - Type definitions (types.ts)                 │
 ├─────────────────────────────────────────────────┤
 │  Supabase Cloud Backend                        │
 │  - PostgreSQL Database                         │
-│  - Authentication (if needed)                  │
-│  - Storage for images                          │
+│  - Authentication & Sessions                   │
+│  - Image Storage (blog images, uploads)        │
+│  - Real-time subscriptions (optional)          │
+└─────────────────────────────────────────────────┘
+```
 └─────────────────────────────────────────────────┘
 ```
 
@@ -197,8 +212,11 @@ toolsherd/
 │   ├── app/                              # Next.js App Router pages
 │   │   ├── layout.tsx                    # Root layout with metadata
 │   │   ├── page.tsx                      # Home page - AI directory
+│   │   ├── robots.ts                     # SEO robots configuration
+│   │   ├── sitemap.ts                    # Dynamic sitemap generation
 │   │   ├── globals.css                   # Global styles
-│   │   ├── markdown-content.css          # Markdown-specific styling
+│   │   ├── api/                          # API routes for backend functionality
+│   │   ├── admin/                        # Admin dashboard pages
 │   │   ├── blog/
 │   │   │   ├── page.tsx                  # Blog listing page
 │   │   │   └── [slug]/
@@ -206,6 +224,7 @@ toolsherd/
 │   │   ├── about/page.tsx                # About page
 │   │   ├── contact/page.tsx              # Contact page
 │   │   ├── tools/page.tsx                # Tools listing page
+│   │   ├── cookies/                      # Cookie consent pages
 │   │   ├── disclaimer/page.tsx           # Disclaimer page
 │   │   ├── privacy-policy/page.tsx       # Privacy policy page
 │   │   ├── terms-and-conditions/page.tsx # Terms page
@@ -214,70 +233,87 @@ toolsherd/
 │   ├── components/                       # Reusable React components
 │   │   ├── Navbar.tsx                    # Navigation component
 │   │   ├── Footer.tsx                    # Footer component
-│   │   ├── MarkdownRenderer.tsx          # Markdown rendering with plugins
 │   │   ├── CodeBlock.tsx                 # Code block with syntax highlighting
 │   │   ├── BlogPostComponent.tsx         # Blog post display component
 │   │   ├── BlogPostCard.tsx              # Blog preview card
 │   │   ├── BlogPostPremiumContent.tsx    # Premium content component
 │   │   ├── ContentBuilder.tsx            # Rich content building components
 │   │   ├── QuoteBlock.tsx                # Quote/highlight block
+│   │   ├── ToolPreview.tsx               # Tool preview component
+│   │   ├── BlogPreview.tsx               # Blog preview component
+│   │   ├── ImageUploadZone.tsx           # Image upload functionality
+│   │   ├── MultiImageUploadZone.tsx      # Multiple image upload
+│   │   ├── JsonInput.tsx                 # JSON data input component
 │   │   ├── category-sheet.tsx            # Category filter sheet
 │   │   ├── feedback-form.tsx             # User feedback form
-│   │   └── ui/                           # Shadcn/UI components
-│   │       ├── button.tsx                # Button component
-│   │       ├── card.tsx                  # Card component
-│   │       ├── input.tsx                 # Input field
-│   │       ├── dialog.tsx                # Modal dialog
-│   │       ├── toast.tsx                 # Toast notifications
-│   │       ├── accordion.tsx             # Accordion component
-│   │       ├── badge.tsx                 # Badge/tag component
-│   │       ├── select.tsx                # Select dropdown
-│   │       ├── sheet.tsx                 # Side sheet/drawer
-│   │       ├── tabs.tsx                  # Tabbed interface
-│   │       ├── carousel.tsx              # Carousel component
-│   │       ├── chart.tsx                 # Chart components
-│   │       ├── tooltip.tsx               # Tooltip component
-│   │       └── [other UI components]     # Additional UI primitives
+│   │   ├── admin/                        # Admin-specific components
+│   │   ├── analytics/                    # Analytics dashboard components
+│   │   ├── cookies/                      # Cookie-related components
+│   │   └── ui/                           # Shadcn/UI components (30+ components)
+│   │       ├── button.tsx, card.tsx, input.tsx, dialog.tsx
+│   │       ├── toast.tsx, accordion.tsx, badge.tsx, select.tsx
+│   │       ├── sheet.tsx, tabs.tsx, carousel.tsx, chart.tsx
+│   │       ├── tooltip.tsx, and more...
+│   │
+│   ├── config/                           # Configuration files
+│   │   └── cookies.config.ts             # Cookie configuration
 │   │
 │   ├── hooks/                            # Custom React hooks
 │   │   ├── use-mobile.tsx                # Mobile detection hook
-│   │   └── use-toast.ts                  # Toast notification hook
+│   │   ├── use-toast.ts                  # Toast notification hook
+│   │   ├── useAccessibility.ts           # Accessibility hook
+│   │   ├── useCookieConsent.ts           # Cookie consent management
+│   │   ├── useImageUpload.ts             # Image upload handling
+│   │   └── useJsonParse.ts               # JSON parsing utility hook
 │   │
-│   └── lib/                              # Utility functions & configuration
-│       ├── supabaseClient.ts             # Supabase client initialization
-│       ├── types.ts                      # TypeScript interfaces
-│       ├── blogUtils.ts                  # Blog-specific utilities
-│       ├── queryClient.ts                # TanStack Query configuration
-│       └── utils.ts                      # General utilities
+│   ├── lib/                              # Utility functions & configuration
+│   │   ├── supabaseClient.ts             # Supabase client initialization
+│   │   ├── types.ts                      # TypeScript interfaces
+│   │   ├── blogUtils.ts                  # Blog-specific utilities
+│   │   ├── categoryMapping.ts            # Category configuration
+│   │   ├── jsonValidator.ts              # JSON validation utilities
+│   │   ├── queryClient.ts                # TanStack Query configuration
+│   │   ├── utils.ts                      # General utilities
+│   │   └── cookies/                      # Cookie management utilities
+│   │
+│   ├── middleware.ts                     # Next.js middleware for request handling
+│   └── middleware.example.ts             # Middleware example template
 │
 ├── public/                               # Static assets
-│   ├── robots.txt                        # SEO robots file
-│   └── sitemap.xml                       # XML sitemap
+│   ├── robots.txt                        # SEO robots file (if static)
+│   └── [other static files]
 │
-├── sql/                                  # Database scripts
-│   ├── create_blog_posts_table.sql       # Table creation script
-│   ├── insert_sample_blog_post_complete.sql
-│   ├── insert_detailed_blog_post.sql
-│   └── migrate_to_new_schema.sql
+├── guides/                               # Documentation and guides
+│   ├── CYBER_DESIGN_SYSTEM.md
+│   ├── IMPLEMENTATION_GUIDE.md
+│   ├── TECHNICAL_ARCHITECTURE.md
+│   └── cookies/                          # Cookie implementation guides
 │
 ├── .next/                                # Build output (generated)
 ├── node_modules/                         # Dependencies (generated)
 ├── .env                                  # Environment variables (local)
+├── .env.example                          # Example environment variables
+├── .env.local.example                    # Example local environment variables
 ├── .gitignore                            # Git ignore rules
 ├── package.json                          # Project dependencies & scripts
 ├── package-lock.json                     # Locked dependency versions
 ├── tsconfig.json                         # TypeScript configuration
 ├── next.config.ts                        # Next.js configuration
 ├── postcss.config.mjs                    # PostCSS/Tailwind configuration
-├── eslint.config.mjs                     # ESLint configuration
+├── eslint.config.mjs                     # ESLint configuration (ESLint 9)
 ├── next-env.d.ts                         # Next.js type definitions
 │
-└── Documentation/
-    ├── README.md                         # This file
-    ├── BLOG_SYSTEM_DOCS.md               # Detailed blog system documentation
-    ├── BLOG_SETUP_EXAMPLES.md            # Blog setup and examples
-    ├── BLOG_COMPONENTS_EXAMPLES.md       # Component usage examples
-    └── BLOG_IMPLEMENTATION.md            # Implementation details
+├── Documentation Files (Project Root)
+│   ├── README.md                         # This file
+│   ├── BLOG_SYSTEM_DOCS.md               # Detailed blog system documentation
+│   ├── BLOG_SETUP_EXAMPLES.md            # Blog setup and examples
+│   ├── BLOG_COMPONENTS_EXAMPLES.md       # Component usage examples
+│   ├── BLOG_IMPLEMENTATION.md            # Implementation details
+│   ├── IMPLEMENTATION_SUMMARY.md         # Project implementation summary
+│   ├── PRELAUNCH_CHECKLIST.md            # Deployment checklist
+│   ├── SEO_OPTIMIZATION_GUIDE.md         # SEO best practices
+│   ├── VERCEL_DEPLOYMENT_GUIDE.md        # Deployment instructions
+│   └── [Other documentation files]
 ```
 
 ---
@@ -298,14 +334,30 @@ toolsherd/
 - ✅ **Dynamic Blog Post Pages** - Individual blog posts with dynamic routing (`/blog/[slug]`)
 - ✅ **Markdown Rendering** - Full GitHub-Flavored Markdown support
   - Headings with responsive sizing
-  - Code blocks with syntax highlighting
+  - Code blocks with syntax highlighting and copy-to-clipboard
   - Lists (ordered and unordered)
-  - Blockquotes and images
+  - Blockquotes and images with responsive sizing
   - Tables and line breaks
-- ✅ **Code Syntax Highlighting** - Syntax highlighting for code blocks with copy-to-clipboard
+- ✅ **Code Syntax Highlighting** - Syntax highlighting for code blocks with copy functionality
 - ✅ **Reading Time Estimation** - Calculate and display estimated reading time
-- ✅ **Author Information** - Display author name and bio
+- ✅ **Author Information** - Display author name and publication metadata
 - ✅ **Publication Dates** - Show published and updated dates
+- ✅ **Image Upload** - Support for single and multiple image uploads to Supabase
+- ✅ **Premium Content** - Premium content sections in blog posts
+- ✅ **Blog Post Preview** - Preview blog post content before publishing
+
+#### Cookies & Compliance
+- ✅ **Cookie Consent Management** - GDPR/CCPA compliant cookie consent system
+- ✅ **Custom Cookie Configuration** - Configurable cookie categories and settings
+- ✅ **Cookie Storage** - Persistent cookie consent tracking
+- ✅ **Analytics Cookies** - Support for analytics with consent management
+- ✅ **Accessibility Features** - WCAG compliance considerations
+
+#### Admin Features
+- ✅ **Admin Dashboard** - Administrative interface for content management
+- ✅ **JSON Input Validation** - Validate and parse JSON data inputs
+- ✅ **Content Management** - Tools to create and manage blog posts
+- ✅ **Analytics Dashboard** - View site analytics and metrics
 
 #### SEO & Performance
 - ✅ **Server-Side Rendering** - Blog posts rendered server-side for optimal SEO
@@ -314,8 +366,8 @@ toolsherd/
 - ✅ **Twitter Card Tags** - Twitter-specific sharing metadata
 - ✅ **JSON-LD Structured Data** - Schema.org markup for search engines
 - ✅ **Canonical URLs** - Proper URL canonicalization
-- ✅ **Sitemap** - XML sitemap for SEO crawling
-- ✅ **Robots.txt** - Robots directive file
+- ✅ **Dynamic Sitemap** - Generated via `sitemap.ts` for SEO crawling
+- ✅ **Dynamic Robots.txt** - Generated via `robots.ts` for crawl directives
 - ✅ **Image Optimization** - Next.js Image component for optimized image serving
 
 #### Social Features
@@ -329,9 +381,10 @@ toolsherd/
 - ✅ **About Page** - Information about the project
 - ✅ **Contact Page** - Contact form for users
 - ✅ **Disclaimer Page** - Legal disclaimer
-- ✅ **Privacy Policy Page** - Privacy information
+- ✅ **Privacy Policy Page** - Privacy information with cookie details
 - ✅ **Terms & Conditions Page** - Legal terms
 - ✅ **List a Website** - Tool submission form
+- ✅ **Cookie Consent Page** - Detailed cookie information page
 
 #### Dark Mode
 - ✅ **Dark/Light Mode Support** - Theme switching capability using next-themes
@@ -376,18 +429,22 @@ Create a `.env.local` file in the project root with the following variables:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-# Optional: Development/Production URLs
+# Application Configuration
 NEXT_PUBLIC_APP_URL=http://localhost:3000    # Local development
 # NEXT_PUBLIC_APP_URL=https://toolsherd.ai/  # Production
+
+# Optional: Additional configurations
+# SESSION_SECRET=your-secret-key              # For session management
+# DATABASE_URL=postgresql://...               # If using direct DB connection
 ```
 
 **Variable Explanations:**
 
-| Variable | Purpose | Where to Find |
-|----------|---------|---------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL for database connection | Supabase Dashboard → Settings → API |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public API key for Supabase authentication | Supabase Dashboard → Settings → API → `anon` key |
-| `NEXT_PUBLIC_APP_URL` | Base URL for the application (used in SEO/OG tags) | Configure based on environment |
+| Variable | Purpose | Where to Find | Required |
+|----------|---------|---------------|----------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL for database connection | Supabase Dashboard → Settings → API | ✅ Yes |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public API key for Supabase authentication | Supabase Dashboard → Settings → API → `anon` key | ✅ Yes |
+| `NEXT_PUBLIC_APP_URL` | Base URL for the application (used in SEO/OG tags) | Configure based on environment | ✅ Yes |
 
 **Note**: Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser. Do not store sensitive secrets here; use server-only environment variables in `.env` for secrets.
 
@@ -427,7 +484,7 @@ CREATE TABLE IF NOT EXISTS blog_post (
   title TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE,
   excerpt TEXT,
-  content_md TEXT NOT NULL,
+  content_json JSONB NOT NULL,
   cover_image_url TEXT,
   seo_title TEXT,
   seo_description TEXT,
@@ -460,7 +517,7 @@ INSERT INTO blog_post (
   title,
   slug,
   excerpt,
-  content_md,
+  content_json,
   cover_image_url,
   seo_title,
   seo_description,
@@ -684,7 +741,7 @@ Uses ESLint 9 with Next.js recommended rules for code quality.
 2. **Read Blog Posts**
    - Navigate to `/blog` or click "Blog" in navbar
    - Browse published blog post cards with cover images, excerpts, and metadata
-   - Click on a post to read full markdown content with syntax-highlighted code blocks
+   - Click on a post to read full JSON-structured content with syntax-highlighted code blocks
    - Share posts using social sharing buttons (Twitter, LinkedIn, WhatsApp, Email, Facebook, Reddit)
    - View author information, publication date, and reading time estimate
 
@@ -706,7 +763,7 @@ INSERT INTO blog_post (
   title,
   slug,
   excerpt,
-  content_md,
+  content_json,
   cover_image_url,
   seo_title,
   seo_description,
@@ -720,22 +777,7 @@ INSERT INTO blog_post (
   'My New Blog Post',
   'my-new-blog-post',
   'Short excerpt that appears in blog listing',
-  '# My New Blog Post
-
-## Introduction
-
-This is the main content in **markdown format**.
-
-### Code Example
-
-```javascript
-const hello = "world";
-console.log(hello);
-```
-
-## Conclusion
-
-Thanks for reading!',
+  '{"blocks": [{"type": "heading", "level": 1, "text": "My New Blog Post"}, {"type": "paragraph", "text": "This is the main content in JSON format."}, {"type": "code", "language": "javascript", "code": "const hello = \"world\";\nconsole.log(hello);", "copyable": true}]}',
   'https://images.unsplash.com/photo-example?w=1200&h=630',
   'My New Blog Post | SEO Title',
   'Meta description for search engines and social sharing',
@@ -760,7 +802,7 @@ Thanks for reading!',
    - `title`: Blog post title
    - `slug`: URL-friendly version (lowercase, hyphens only)
    - `excerpt`: Short preview text
-   - `content_md`: Full markdown content
+   - `content_json`: Full content in JSON format with structured blocks
    - `cover_image_url`: Featured image URL
    - `seo_title`: Title for search engines
    - `seo_description`: Meta description
@@ -774,77 +816,67 @@ Thanks for reading!',
 
 **Important Notes:**
 - The `slug` field must be unique and URL-safe (lowercase, hyphens, no special characters)
-- `content_md` must be valid **Markdown** format (not HTML)
+- `content_json` must be valid **JSON** format with proper block structure (not HTML)
 - To unpublish a post, set `is_published` to `false` instead of deleting
 - The post automatically becomes available at `/blog/{slug}`
 
-##### Writing Blog Post Markdown Content
+##### Writing Blog Post JSON Content
 
-Follow this structure for best results:
+The blog system now uses JSON format for storing blog post content. Each blog post has structured content blocks that are easy to parse and render.
 
-```markdown
-# Main Title (H1)
+**JSON Content Block Structure Example:**
 
-Use H1 for the post title. Usually only one per post.
-
-## Section Heading (H2)
-
-H2 headings break up the content into major sections.
-
-### Subsection (H3)
-
-Use H3 for subsections within major sections.
-
-### Code Examples
-
-Always specify the language identifier:
-
-\`\`\`javascript
-// Good - syntax highlighting enabled
-const name = "John";
-console.log(name);
-\`\`\`
-
-### Lists
-
-Unordered lists:
-- Item 1
-- Item 2
-- Nested item
-  - Sub-item
-
-Ordered lists:
-1. First step
-2. Second step
-3. Third step
-
-### Important Notes
-
-Use blockquotes for important information:
-
-> This is an important message that readers should pay attention to.
-
-### Links and Images
-
-[Link text](https://example.com)
-[Internal link](/about)
-
-![Alt text describing the image](https://images.unsplash.com/photo-1633356713697-4f4db09c97f5)
-
-Use descriptive alt text for accessibility.
-
-### Tables
-
-| Feature | Description | Example |
-|---------|-------------|---------|
-| Markdown | Simple format | Use GFM syntax |
-| SEO | Optimized | Set seo_title, seo_description |
-| Tags | Categorize | Add to tags array |
-
----
-
-Thanks for reading!
+```json
+{
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Main Title"
+    },
+    {
+      "type": "paragraph",
+      "text": "Introduction paragraph content goes here."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Section Heading"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "code": "const example = \"Hello World\";",
+      "copyable": true
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": ["Item 1", "Item 2", "Item 3"]
+    },
+    {
+      "type": "blockquote",
+      "text": "Important note or quote goes here"
+    },
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1633356713697-4f4db09c97f5",
+      "alt": "Image description",
+      "caption": "Optional caption"
+    }
+  ]
+}
 ```
+
+**Supported Block Types:**
+- `heading` - Text headings (level 1-6)
+- `paragraph` - Text paragraphs
+- `code` - Code blocks with language highlighting
+- `list` - Ordered or unordered lists
+- `blockquote` - Highlighted quotes or important notes
+- `image` - Images with alt text and captions
+- `table` - Data tables with headers and rows
+- `divider` - Horizontal separator
 
 ##### Adding UI Components from Shadcn/UI
 
@@ -898,6 +930,125 @@ export default function MyPage() {
 
 Page is automatically available at `/my-page`
 
+##### Using Custom Hooks
+
+The project includes several custom React hooks for common functionality:
+
+**Available Custom Hooks:**
+
+1. **`use-mobile.tsx`** - Mobile device detection
+```tsx
+'use client';
+import { useIsMobile } from '@/hooks/use-mobile';
+
+export default function MyComponent() {
+  const isMobile = useIsMobile();
+  
+  return (
+    <div>
+      {isMobile ? <p>Mobile view</p> : <p>Desktop view</p>}
+    </div>
+  );
+}
+```
+
+2. **`use-toast.ts`** - Toast notifications
+```tsx
+'use client';
+import { useToast } from '@/hooks/use-toast';
+
+export default function MyComponent() {
+  const { toast } = useToast();
+  
+  const handleClick = () => {
+    toast({
+      title: 'Success',
+      description: 'Operation completed successfully',
+      variant: 'default', // or 'destructive'
+    });
+  };
+  
+  return <button onClick={handleClick}>Show Toast</button>;
+}
+```
+
+3. **`useCookieConsent.ts`** - Cookie consent management
+```tsx
+'use client';
+import { useCookieConsent } from '@/hooks/useCookieConsent';
+
+export default function MyComponent() {
+  const { hasConsent, giveConsent, revokeConsent } = useCookieConsent('analytics');
+  
+  return (
+    <div>
+      {hasConsent ? (
+        <p>Analytics enabled</p>
+      ) : (
+        <button onClick={() => giveConsent()}>Enable Analytics</button>
+      )}
+    </div>
+  );
+}
+```
+
+4. **`useImageUpload.ts`** - Image upload handling
+```tsx
+'use client';
+import { useImageUpload } from '@/hooks/useImageUpload';
+
+export default function MyComponent() {
+  const { uploadImage, loading, error } = useImageUpload();
+  
+  const handleUpload = async (file: File) => {
+    const url = await uploadImage(file, 'folder-name');
+    console.log('Image uploaded to:', url);
+  };
+  
+  return (
+    <input 
+      type="file"
+      onChange={(e) => handleUpload(e.target.files?.[0]!)}
+      disabled={loading}
+    />
+  );
+}
+```
+
+5. **`useJsonParse.ts`** - JSON validation and parsing
+```tsx
+'use client';
+import { useJsonParse } from '@/hooks/useJsonParse';
+
+export default function MyComponent() {
+  const { parse, validate, error } = useJsonParse();
+  
+  const jsonString = '{"name": "John", "age": 30}';
+  const data = parse(jsonString);
+  
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}
+```
+
+6. **`useAccessibility.ts`** - Accessibility utilities
+```tsx
+'use client';
+import { useAccessibility } from '@/hooks/useAccessibility';
+
+export default function MyComponent() {
+  const { isFocusVisible, announceMessage } = useAccessibility();
+  
+  return (
+    <button 
+      onFocus={() => announceMessage('Button focused')}
+      className={isFocusVisible ? 'outline-2' : ''}
+    >
+      Click me
+    </button>
+  );
+}
+```
+
 ##### Fetching Blog Posts in Components
 
 ```typescript
@@ -930,7 +1081,7 @@ export default function BlogList() {
           coverImageUrl: post.cover_image_url ?? null,
           publishedAt: new Date(post.published_at || new Date()),
           author: post.author ?? null,
-          content: post.content_md ?? '',
+          content: post.content_json ?? {},
           createdAt: new Date(post.created_at || new Date()),
           updatedAt: new Date(post.updated_at || new Date()),
           tags: post.tags,
@@ -1020,7 +1171,7 @@ if (error) {
     "title": "Introduction to React Hooks",
     "slug": "introduction-to-react-hooks",
     "excerpt": "Learn how to use React Hooks to manage state and side effects...",
-    "content_md": "# Introduction to React Hooks\n\nReact Hooks revolutionized...",
+    "content_json": {"blocks": [{"type": "heading", "level": 1, "text": "Introduction to React Hooks"}, {"type": "paragraph", "text": "React Hooks revolutionized..."}]},
     "cover_image_url": "https://images.unsplash.com/photo-1633356713697-4f4db09c97f5",
     "seo_title": "Master React Hooks in 2025 | Complete Guide",
     "seo_description": "Learn React Hooks with practical examples. Understand useState, useEffect, and custom hooks.",
@@ -1086,13 +1237,33 @@ const { data, error } = await supabase
 ```typescript
 import { supabase } from '@/lib/supabaseClient';
 
+const contentJson = {
+  blocks: [
+    {
+      type: 'heading',
+      level: 1,
+      text: 'New Blog Post'
+    },
+    {
+      type: 'paragraph',
+      text: 'This is the introduction paragraph of the blog post.'
+    },
+    {
+      type: 'code',
+      language: 'javascript',
+      code: 'const hello = "world";',
+      copyable: true
+    }
+  ]
+};
+
 const { data, error } = await supabase
   .from('blog_post')
   .insert([{
     title: 'New Blog Post',
     slug: 'new-blog-post',
     excerpt: 'This is a new blog post excerpt.',
-    content_md: '# New Blog Post\n\nContent in markdown format...',
+    content_json: contentJson,  // Now using JSON format
     cover_image_url: 'https://images.unsplash.com/photo-example',
     seo_title: 'New Blog Post | SEO Title',
     seo_description: 'Meta description for search engines',
@@ -1116,11 +1287,25 @@ if (error) {
 ```typescript
 import { supabase } from '@/lib/supabaseClient';
 
+const updatedContentJson = {
+  blocks: [
+    {
+      type: 'heading',
+      level: 1,
+      text: 'Updated Content'
+    },
+    {
+      type: 'paragraph',
+      text: 'New content in JSON format...'
+    }
+  ]
+};
+
 const { data, error } = await supabase
   .from('blog_post')
   .update({
     title: 'Updated Title',
-    content_md: '# Updated Content\n\nNew markdown content...',
+    content_json: updatedContentJson,  // Update JSON content
     updated_at: new Date().toISOString()
   })
   .eq('id', 1)
@@ -1162,48 +1347,63 @@ if (error) {
 }
 ```
 
-#### Markdown Content Tips
+#### JSON Content Tips
 
-All blog posts store content in **Markdown format** in the `content_md` field. The markdown is rendered on the client-side using `react-markdown` with GitHub-flavored markdown (GFM) support.
+All blog posts store content in **JSON format** in the `content_json` field. The JSON structure uses content blocks that are rendered on the client-side.
 
-**Markdown Features Supported:**
+**JSON Content Block Schema:**
 
-```markdown
-# H1 Heading
-## H2 Heading
-### H3 Heading
-
-**Bold text** and *italic text*
-
-- Unordered list
-- List item 2
-
-1. Ordered list
-2. Item 2
-
-> Blockquote
-> Multi-line support
-
-[Link text](https://example.com)
-
-![Image alt](https://image-url.jpg)
-
-| Column 1 | Column 2 |
-|----------|----------|
-| Cell 1   | Cell 2   |
-
-\`\`\`javascript
-// Code block with syntax highlighting
-const greeting = "Hello, World!";
-console.log(greeting);
-\`\`\`
-
-\`inline code\`
-
----
-
-Horizontal rule
+```json
+{
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Heading text"
+    },
+    {
+      "type": "paragraph",
+      "text": "Paragraph text content"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "code": "const x = 1;",
+      "copyable": true
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": ["Item 1", "Item 2"]
+    },
+    {
+      "type": "blockquote",
+      "text": "Quote text"
+    },
+    {
+      "type": "image",
+      "src": "https://example.com/image.jpg",
+      "alt": "Image description",
+      "caption": "Optional caption"
+    },
+    {
+      "type": "table",
+      "headers": ["Column 1", "Column 2"],
+      "rows": [["Cell 1", "Cell 2"]]
+    },
+    {
+      "type": "divider"
+    }
+  ]
+}
 ```
+
+**Benefits of JSON Format:**
+- Structured content that's easy to parse and validate
+- Type-safe processing of content blocks
+- Direct support for diverse content types (code, images, tables)
+- Better compatibility with admin dashboards and content editors
+- Simplified rendering pipeline without markdown parsing
 
 ### Client Library & Configuration
 
@@ -1257,39 +1457,33 @@ Browser Display (HTML with styled content)
 5. Response: Single RawBlogPost object
 6. Generate SEO metadata (title, description, OpenGraph, Twitter cards)
 7. Transform RawBlogPost to BlogPost interface
-8. Pass post.content_md to MarkdownRenderer
-9. MarkdownRenderer converts markdown to JSX
+8. Pass post.content_json to ContentRenderer
+9. ContentRenderer converts JSON blocks to JSX
 10. Browser renders fully styled blog post with:
     - Featured image
     - Meta information (author, date, reading time)
-    - Markdown content (with syntax highlighting in code blocks)
+    - JSON content (with syntax highlighting in code blocks)
     - Social sharing buttons
     - JSON-LD structured data script tag
 ```
 
-**Step 3: Markdown Rendering Pipeline** (Most important!)
+**Step 3: JSON Content Rendering Pipeline** (Most important!)
 ```
-Markdown Input (content_md from database)
+JSON Input (content_json from database)
        ↓
-MarkdownRenderer component (src/components/MarkdownRenderer.tsx)
+ContentRenderer component (src/components/ContentRenderer.tsx)
        ↓
-react-markdown library (parses markdown syntax)
+JSON parser (processes block array structure)
        ↓
-remark plugins:
-  - remark-gfm (GitHub-Flavored Markdown support)
-  - remark-breaks (Line break handling)
-       ↓
-Component rendering:
-  - h1 → <h1 className="text-4xl font-bold mt-8 mb-4">
-  - h2 → <h2 className="text-3xl font-bold mt-8 mb-4">
-  - p → <p className="text-slate-900 leading-relaxed my-4">
-  - code (inline) → <code className="bg-slate-100 px-2 py-1 rounded">
-  - code (block) → CodeBlock component (with syntax highlighting)
-  - a → <a target="_blank" rel="noopener noreferrer">
-  - img → <figure> with caption
-  - li, ul, ol → Styled lists
+Block rendering by type:
+  - heading → <h1>, <h2>, etc. with appropriate styling
+  - paragraph → <p className="text-slate-900 leading-relaxed my-4">
+  - code → CodeBlock component (with syntax highlighting)
+  - list → Styled lists (ordered/unordered)
   - blockquote → Styled blockquote
+  - image → <figure> with responsive sizing
   - table → Styled table
+  - divider → <hr> separator
        ↓
 JSX Output (React elements)
        ↓
@@ -1368,22 +1562,41 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 }
 ```
 
-#### 5. Markdown Content Rendering
-The markdown rendering uses GitHub-Flavored Markdown (GFM):
+#### 5. JSON Content Rendering
+The JSON content rendering converts structured content blocks to React components:
 
 ```typescript
-// src/components/MarkdownRenderer.tsx
-const MarkdownRenderer = ({ content, className }) => {
+// src/components/ContentRenderer.tsx
+const ContentRenderer = ({ content, className }) => {
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkBreaks]}
-      components={{
-        // Custom component rendering for each element
-        h1: (props) => <h1 className="text-4xl font-bold mt-8">{props.children}</h1>,
-        h2: (props) => <h2 className="text-3xl font-bold mt-8">{props.children}</h2>,
-        p: (props) => <p className="leading-relaxed my-4">{props.children}</p>,
-        code: (props) => {
-          // Code blocks use CodeBlock component
+    <div className={className}>
+      {content.blocks?.map((block, index) => {
+        switch (block.type) {
+          case 'heading':
+            const HeadingTag = `h${block.level}` as keyof JSX.IntrinsicElements;
+            return <HeadingTag key={index} className="font-bold mt-6 mb-4">{block.text}</HeadingTag>;
+          case 'paragraph':
+            return <p key={index} className="leading-relaxed my-4">{block.text}</p>;
+          case 'code':
+            return <CodeBlock key={index} {...block} />;
+          case 'list':
+            const ListTag = block.ordered ? 'ol' : 'ul';
+            return (
+              <ListTag key={index} className="my-4 ml-6">
+                {block.items?.map((item, i) => <li key={i}>{item}</li>)}
+              </ListTag>
+            );
+          case 'blockquote':
+            return <blockquote key={index} className="border-l-4 pl-4 italic my-4">{block.text}</blockquote>;
+          case 'image':
+            return <figure key={index} className="my-6"><img src={block.src} alt={block.alt} /><figcaption>{block.caption}</figcaption></figure>;
+          default:
+            return null;
+        }
+      })}
+    </div>
+  );
+};
           if (props.className?.startsWith('language-')) {
             return <CodeBlock {...props} />;
           }
@@ -1427,7 +1640,7 @@ interface RawBlogPost {
   slug?: string;
   published_at?: string;            // ← snake_case
   author?: string | null;
-  content_md?: string;              // ← snake_case
+  content_json?: Record<string, any>;  // ← snake_case, JSON object
   created_at?: string;              // ← snake_case
   updated_at?: string;              // ← snake_case
   tags?: string[];
@@ -1447,7 +1660,7 @@ interface BlogPost {
   slug: string;
   publishedAt: Date;               // ← camelCase, typed as Date
   author: string | null;
-  content: string;                 // ← renamed from content_md
+  content: Record<string, any>;    // ← JSON object structure
   createdAt: Date;                 // ← camelCase, typed as Date
   updatedAt: Date;                 // ← camelCase, typed as Date
   tags?: string[];
@@ -1466,7 +1679,7 @@ const transformed: BlogPost = {
   coverImageUrl: row.cover_image_url ?? null,
   publishedAt: new Date(row.published_at || new Date()),
   author: row.author ?? null,
-  content: row.content_md ?? '',
+  content: row.content_json ?? { blocks: [] },
   createdAt: new Date(row.created_at || new Date()),
   updatedAt: new Date(row.updated_at || new Date()),
   tags: row.tags,
@@ -1482,14 +1695,14 @@ const transformed: BlogPost = {
 | Unpublished post | Filtered via `is_published = false` query | Won't appear in any list |
 | Missing cover image | Fallback to `/og-image.png` in OG tags | Always has image for social sharing |
 | No author specified | Default to empty string or "Anonymous" | Optional field |
-| Empty markdown content | Still renders (empty page) | Should be prevented at insert time |
+| Empty JSON content blocks | Still renders (empty page) | Should be prevented at insert time |
 | Missing SEO fields | Use post title/excerpt as fallback | Better than empty meta tags |
 | Very long article (10,000+ words) | Reading time calculated (50+ min) | No truncation, full content displayed |
-| External links in markdown | Opened with `target="_blank"` | Security: `rel="noopener noreferrer"` added |
+| External links in content | Opened with `target="_blank"` | Security: `rel="noopener noreferrer"` added |
 | Code blocks without language | Rendered as plain text | Language identifier recommended |
-| Images in markdown | Rendered with responsive sizing | Uses `max-w-full h-auto` classes |
+| Images in content blocks | Rendered with responsive sizing | Uses `max-w-full h-auto` classes |
 | Multiple H1 headings | All rendered (semantically wrong) | Best practice: use only one H1 |
-| Relative image paths | Not resolved (must use absolute URLs) | All images must be from external sources |
+| Invalid JSON structure | Graceful fallback to empty blocks | Content validation recommended |
 
 ---
 
@@ -1645,29 +1858,31 @@ For Supabase migrations:
 
 ### Current Issues
 
-- **No Authentication**: User accounts/login not yet implemented
+- **Limited Authentication**: Basic setup exists, but advanced auth features not fully implemented
 - **No Comments System**: Comment section not available (planned)
-- **Limited Search**: Simple text search only (full-text search planned)
-- **No Admin Dashboard**: Content management via Supabase UI only
-- **No API Endpoints**: External API not exposed
+- **Limited Full-Text Search**: Simple text search only (advanced search planned)
+- **Admin Dashboard**: Basic functionality implemented, more features needed
+- **Partial API Endpoints**: Some endpoints implemented, full API not exposed
 
 ### Technical Debt
 
-- **Test Coverage**: 0% - no automated tests implemented
-- **Documentation**: Could include more inline code comments
-- **Component Prop Validation**: Some components missing PropTypes/Zod validation
-- **Error Handling**: Could be more comprehensive in data fetching
-- **Performance**: Image lazy-loading could be optimized further
+- **Test Coverage**: Minimal - no comprehensive automated tests implemented
+- **Documentation**: Could include more inline code comments in complex functions
+- **Component Prop Validation**: Some components could use stricter prop validation
+- **Error Handling**: Could be more comprehensive in data fetching and uploads
+- **Performance**: Image lazy-loading and pagination could be optimized further
+- **Cookie Management**: Some edge cases in consent tracking may exist
 
 ### Performance & Scalability Concerns
 
 | Concern | Current Status | Mitigation |
 |---------|---|---|
-| Database Queries | N/A - Supabase handles | Use connection pooling |
-| Image Serving | Optimized via Next.js | CDN via Vercel |
-| Blog Post Count | No limit set | Implement pagination at 100+ posts |
-| Concurrent Users | Depends on Supabase tier | Scale Supabase plan as needed |
-| SEO Crawling | No rate limiting | Robots.txt limits crawl rate |
+| Database Queries | Supabase with indexes | Monitor query performance in Supabase |
+| Image Serving | Optimized via Next.js Image | CDN via Vercel, Supabase storage |
+| Blog Post Count | No pagination limit set | Implement pagination at 100+ posts |
+| Concurrent Users | Depends on Supabase tier | Scale Supabase plan as usage grows |
+| SEO Crawling | Dynamic sitemap generated | Robots.txt and sitemap.ts manage crawl |
+| Large File Uploads | Limited by Supabase storage | Set file size validation in upload hooks |
 
 ---
 
@@ -1790,14 +2005,17 @@ docs: update installation instructions
 | Task | Key Files | Difficulty |
 |------|-----------|------------|
 | Add new blog feature | `src/app/blog/`, `src/components/` | Medium |
-| Fix markdown rendering | `src/components/MarkdownRenderer.tsx` | Low |
+| Fix markdown rendering | `src/components/CodeBlock.tsx` | Low |
 | Add new page | `src/app/[path]/page.tsx` | Low |
 | Optimize performance | `src/app/`, `next.config.ts` | High |
 | Update SEO metadata | `src/app/layout.tsx`, `src/app/blog/[slug]/page.tsx` | Low |
 | Add new UI component | `src/components/ui/` | Low |
-| Database schema change | `sql/` scripts, Supabase | Medium |
-| Fix styling issues | `src/app/globals.css`, `markdown-content.css` | Low |
+| Database schema change | Supabase Dashboard SQL Editor | Medium |
+| Fix styling issues | `src/app/globals.css`, component files | Low |
 | Implement authentication | `src/lib/supabaseClient.ts`, new auth pages | High |
+| Add image upload feature | `src/components/ImageUploadZone.tsx`, `src/hooks/useImageUpload.ts` | Medium |
+| Manage cookies/consent | `src/config/cookies.config.ts`, `src/hooks/useCookieConsent.ts` | Medium |
+| Create admin functionality | `src/app/admin/`, `src/components/admin/` | High |
 
 ### Files Most Frequently Modified
 
@@ -1806,28 +2024,32 @@ docs: update installation instructions
 2. `src/components/Navbar.tsx` - Navigation changes
 3. `src/app/layout.tsx` - Global layout/metadata
 4. `src/lib/blogUtils.ts` - Blog utility functions
-5. `src/components/MarkdownRenderer.tsx` - Markdown rendering
+5. `src/components/CodeBlock.tsx` - Code rendering updates
+6. `src/app/blog/[slug]/page.tsx` - Blog post display
 
 **Moderate-Change Files**:
 - `src/components/BlogPostComponent.tsx` - Blog display
-- `src/app/blog/[slug]/page.tsx` - Blog post page
-- `next.config.ts` - Build configuration
+- `src/components/BlogPostCard.tsx` - Blog card layout
+- `src/hooks/useCookieConsent.ts` - Cookie management
+- `src/config/cookies.config.ts` - Cookie configuration
+- `src/lib/types.ts` - Data type definitions
 
 **Stable Files** (rarely change):
-- `package.json` - Dependencies
+- `package.json` - Dependencies (only when adding packages)
 - `tsconfig.json` - TypeScript config
-- `src/lib/types.ts` - Data types
+- `next.config.ts` - Build configuration
 - `src/lib/supabaseClient.ts` - DB config
+- `postcss.config.mjs` - PostCSS/Tailwind config
 
 ### Areas Requiring Extra Caution
 
 ⚠️ **Critical Areas - Approach with care:**
 
 1. **Blog Post Rendering Pipeline**
-   - Location: `MarkdownRenderer.tsx`, `CodeBlock.tsx`
+   - Location: `src/components/CodeBlock.tsx`, `src/components/ContentRenderer.tsx`
    - Risk: Changes affect all blog post displays
-   - Mitigation: Test with various markdown content types
-   - Note: GFM support is essential for user content
+   - Mitigation: Test with various JSON content block types
+   - Note: JSON block structure is essential for proper rendering
 
 2. **SEO Metadata Generation**
    - Location: `src/app/blog/[slug]/page.tsx`
@@ -1841,11 +2063,23 @@ docs: update installation instructions
    - Mitigation: Test with actual Supabase instance
    - Note: Environment variables must be correct
 
-4. **TypeScript Types**
+4. **Cookie Consent Management**
+   - Location: `src/hooks/useCookieConsent.ts`, `src/config/cookies.config.ts`
+   - Risk: Compliance violations if not handled correctly
+   - Mitigation: Test with multiple consent scenarios
+   - Note: GDPR/CCPA requirements must be met
+
+5. **TypeScript Types**
    - Location: `src/lib/types.ts`
    - Risk: Type mismatches cause runtime errors
    - Mitigation: Run type checks (`npm run lint`)
    - Note: Keep interfaces in sync with DB schema
+
+6. **Image Upload Processing**
+   - Location: `src/hooks/useImageUpload.ts`, `src/components/ImageUploadZone.tsx`
+   - Risk: Large file uploads can break the app
+   - Mitigation: Validate file sizes and types
+   - Note: Ensure Supabase storage is properly configured
 
 ### Debugging Tips for AI Assistants
 
@@ -1858,9 +2092,14 @@ console.debug('Metadata:', generateMetadata());
 const { error } = await supabase.from('blog_post').select('count(*)');
 if (error) console.error('DB Error:', error.message);
 
-// Validate markdown rendering
-console.log('Markdown input:', content);
-console.log('Rendered HTML:', renderedContent);
+// Validate JSON content structure
+console.log('JSON content blocks:', content?.blocks);
+console.log('Rendered elements:', renderedContent);
+
+// Validate JSON structure
+if (!content || !Array.isArray(content.blocks)) {
+  console.warn('Invalid JSON content structure');
+}
 ```
 
 ### Performance Optimization Areas
@@ -1925,8 +2164,8 @@ For issues, feature requests, or questions:
 
 ---
 
-**Last Updated**: January 4, 2026
-**Version**: 1.0.0
+**Last Updated**: January 25, 2026
+**Version**: 1.1.0
 **Status**: Active Development
 
 ---

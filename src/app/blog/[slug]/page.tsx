@@ -190,7 +190,7 @@ export default async function BlogPostPage({ params }: Props) {
         relatedPosts = finalRelatedPosts.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
       }
     } catch (error) {
-      console.error('Error fetching related posts:', error);
+
     }
   } else {
     // If post has no tags, just fetch recent posts
@@ -219,7 +219,7 @@ export default async function BlogPostPage({ params }: Props) {
         }));
       }
     } catch (error) {
-      console.error('Error fetching recent posts:', error);
+
     }
   }
 

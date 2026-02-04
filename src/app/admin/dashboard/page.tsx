@@ -34,7 +34,7 @@ export default function AdminDashboard() {
           loading: false,
         });
       } catch (e) {
-        console.error('Failed to fetch stats:', e);
+   
         setStats((prev) => ({ ...prev, loading: false }));
       }
     };

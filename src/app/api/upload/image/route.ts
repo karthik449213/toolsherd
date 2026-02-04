@@ -7,23 +7,23 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File;
     const fieldName = (formData.get('fieldName') as string) || 'image';
 
-    console.log('=== IMAGE UPLOAD START ===');
-    console.log('Upload request:', { fieldName, fileName: file?.name, fileSize: file?.size, fileType: file?.type });
+   
+    
 
     if (!file) {
-      console.error('No file provided');
+      
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      console.error('Invalid file type:', file.type);
+
       return NextResponse.json({ error: 'Invalid file type. Only images are allowed.' }, { status: 400 });
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      console.error('File too large:', file.size);
+
       return NextResponse.json({ error: 'File size exceeds 5MB limit' }, { status: 400 });
     }
 
@@ -35,14 +35,14 @@ export async function POST(request: NextRequest) {
       bucketName = 'tool_logos';
     }
 
-    console.log('Bucket routing:', { fieldName, determinedBucket: bucketName });
+ 
 
     // Verify Supabase credentials
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
-      console.error('Missing Supabase credentials');
+   
       return NextResponse.json(
         { error: 'Server configuration error: Missing Supabase credentials' },
         { status: 500 }
@@ -55,14 +55,14 @@ export async function POST(request: NextRequest) {
     const fileExt = file.name.split('.').pop();
     const fileName = `${fieldName}-${timestamp}-${randomId}.${fileExt}`;
 
-    console.log('Generated filename:', fileName);
+
 
     // Convert File to Buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
     // Upload to Supabase with correct bucket
-    console.log('Attempting upload to bucket:', bucketName, 'file:', fileName);
+  
     const { data, error } = await supabase.storage
       .from(bucketName)
       .upload(`uploads/${fileName}`, buffer, {
@@ -71,11 +71,7 @@ export async function POST(request: NextRequest) {
       });
 
     if (error) {
-      console.error('❌ Supabase upload error:', {
-        message: error.message,
-        statusCode: (error as any).statusCode,
-        fullError: JSON.stringify(error),
-      });
+      
       return NextResponse.json(
         { 
           error: `Upload failed: ${error.message}. Make sure the ${bucketName} bucket exists and is configured correctly.`,
@@ -86,7 +82,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✓ Upload successful, data:', data);
+    
 
     // Get public URL from correct bucket
     const { data: publicData } = supabase.storage
@@ -96,16 +92,15 @@ export async function POST(request: NextRequest) {
     const publicUrl = publicData?.publicUrl;
 
     if (!publicUrl) {
-      console.error('Failed to get public URL for file:', fileName);
+     
       return NextResponse.json({ error: 'Failed to get public URL' }, { status: 500 });
     }
 
-    console.log('✓ Public URL generated:', publicUrl);
-    console.log('=== IMAGE UPLOAD SUCCESS ===');
+
 
     return NextResponse.json({ url: publicUrl, fileName, bucket: bucketName }, { status: 200 });
   } catch (error) {
-    console.error('❌ Upload exception:', error);
+
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       { 

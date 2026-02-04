@@ -29,7 +29,7 @@ export default function JsonInput({
       const text = await navigator.clipboard.readText();
       onChange(text);
     } catch (e) {
-      console.error('Failed to read clipboard:', e);
+     
     }
   };
 

@@ -13,11 +13,7 @@ export async function POST(request: NextRequest) {
     const ipAddress = request.headers.get('x-forwarded-for') || 'unknown';
 
     // TODO: Log to database for compliance audit
-    console.log('[Cookies] Consent revoked', {
-      revokedAt,
-      ipAddress,
-      reason: body.reason || 'User requested',
-    });
+    
 
     return NextResponse.json({
       success: true,
@@ -25,7 +21,7 @@ export async function POST(request: NextRequest) {
       revokedAt,
     });
   } catch (error) {
-    console.error('[API] Error revoking consent:', error);
+   
     return NextResponse.json(
       { error: 'Failed to revoke consent' },
       { status: 500 }

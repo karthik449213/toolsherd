@@ -236,7 +236,7 @@ import {supabase} from "@/lib/supabaseClient";
         }
       }
       
-      console.error('Error fetching tools:', errorMessage, e);
+    
       setError(errorMessage);
       setHasMore(false);
     } finally {
@@ -264,7 +264,7 @@ import {supabase} from "@/lib/supabaseClient";
 
         const rows: RawBlogPost[] = (data ?? []) as RawBlogPost[];
 
-        console.log("Fetched blog posts:", rows);
+ 
 
         const mapped: BlogPost[] = rows
           .map((row: RawBlogPost) => {
@@ -303,7 +303,7 @@ import {supabase} from "@/lib/supabaseClient";
           }
         }
         
-        console.error('Error fetching blog posts:', errorMessage, e);
+
         setBlogError(errorMessage);
         setBlogPosts([]);
       } finally {
@@ -332,7 +332,7 @@ import {supabase} from "@/lib/supabaseClient";
     // Monitor network status
     useEffect(() => {
       const handleOnline = () => {
-        console.log('Back online! Retrying...');
+
         setError(null);
         setBlogError(null);
         fetchTools({ page: 0, replace: true });

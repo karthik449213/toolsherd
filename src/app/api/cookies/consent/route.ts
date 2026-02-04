@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('[API] Error getting consent:', error);
+  
     return NextResponse.json(
       { error: 'Failed to retrieve consent' },
       { status: 500 }
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('[API] Error saving consent:', error);
+ 
 
     if (error instanceof Error && error.message.includes('Zod')) {
       return NextResponse.json(
@@ -102,7 +102,7 @@ export async function DELETE(request: NextRequest) {
       message: 'All consent revoked successfully',
     });
   } catch (error) {
-    console.error('[API] Error revoking consent:', error);
+
     return NextResponse.json(
       { error: 'Failed to revoke consent' },
       { status: 500 }

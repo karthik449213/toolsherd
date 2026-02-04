@@ -34,7 +34,7 @@ export default function BlogPreview({ data, imageUrl, bodyImages }: BlogPreviewP
       }
       return Array.isArray(data.content) ? (data.content as unknown as ContentBlock[]) : [];
     } catch (error) {
-      console.error('Error parsing content:', error);
+
       return [];
     }
   };

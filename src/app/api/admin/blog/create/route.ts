@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      console.error('Database error:', error);
+ 
       return NextResponse.json(
         { error: error.message || 'Failed to create blog post' },
         { status: 500 }
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (e) {
-    console.error('Error:', e);
+
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

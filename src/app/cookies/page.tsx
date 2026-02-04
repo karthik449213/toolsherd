@@ -45,13 +45,13 @@ export default function CookiePolicyPage() {
             Cookies are small text files stored on your device that help websites remember
             information about you. Think of them as digital sticky notes that make your
             browsing experience smoother. They don't contain viruses or track you around
-            the internet by themselves—they only work within the websites that set them.
+            the internet by themselves they only work within the websites that set them.
           </p>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 text-cyan-300 font-mono">
             Our Approach to Cookies
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300">
             We believe in <strong>transparency and control</strong>. Unless a cookie is
             essential for the website to work, we ask for your permission first. You can
             change your preferences at any time using the cookie banner that appears at
@@ -128,7 +128,7 @@ export default function CookiePolicyPage() {
               <p className="text-slate-300 mb-3">
                 Marketing cookies let us show you ads about tools we think you'll find
                 useful on other websites. They also help us measure if our promotions work.
-                You can opt out anytime—we won't be offended!
+                You can opt out anytime. we won't be offended!
               </p>
               <p className="font-semibold text-slate-200 mb-2">What we track:</p>
               <ul className="list-disc pl-5 text-slate-300 space-y-1">
@@ -149,64 +149,64 @@ export default function CookiePolicyPage() {
               <h3 className="text-xl font-bold text-orange-300 mb-2">
                 🤝 Affiliate Tracking (Commission Attribution)
               </h3>
-              <p className="text-slate-700 mb-3">
+              <p className="text-slate-300 mb-3">
                 When you click an affiliate link to purchase an AI tool subscription, this
                 cookie tracks that you came from our site. It ensures the tool provider
                 credits us with the referral (and we earn a small commission to keep the
                 site running).
               </p>
-              <p className="font-semibold text-slate-800 mb-2">What we track:</p>
-              <ul className="list-disc pl-5 text-slate-700 space-y-1">
+              <p className="font-semibold text-slate-200 mb-2">What we track:</p>
+              <ul className="list-disc pl-5 text-slate-300 space-y-1">
                 <li>When you clicked a referral link</li>
                 <li>Which tool you were interested in</li>
                 <li>Whether the purchase completed</li>
               </ul>
-              <p className="text-sm text-slate-600 mt-3">
+              <p className="text-sm text-slate-400 mt-3">
                 <strong>Services:</strong> Tool provider affiliate networks (e.g., ChatGPT
                 affiliate program, RunwayML, Midjourney)
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-400">
                 <strong>Expiry:</strong> 30-90 days (varies by partner)
               </p>
             </div>
 
             {/* Performance */}
             <div className="border-l-4 border-teal-500 pl-6">
-              <h3 className="text-xl font-bold text-teal-900 mb-2">
+              <h3 className="text-xl font-bold text-cyan-400 mb-2">
                 ⚡ Performance (Speed & Stability)
               </h3>
-              <p className="text-slate-700 mb-3">
+              <p className="text-slate-300 mb-3">
                 These cookies help us keep our website fast and reliable. They track error
                 rates, page load times, and which features might be lagging. Think of it as
                 our website's health monitor.
               </p>
-              <p className="font-semibold text-slate-800 mb-2">What we monitor:</p>
-              <ul className="list-disc pl-5 text-slate-700 space-y-1">
+              <p className="font-semibold text-slate-200 mb-2">What we monitor:</p>
+              <ul className="list-disc pl-5 text-slate-300 space-y-1">
                 <li>Page load speed (which AI tools page loads slowly?)</li>
                 <li>JavaScript errors (broken search filters?)</li>
                 <li>Browser crash reports</li>
                 <li>API response times</li>
               </ul>
-              <p className="text-sm text-slate-600 mt-3">
+              <p className="text-sm text-slate-400 mt-3">
                 <strong>Services:</strong> Sentry (error tracking), Vercel Analytics
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-400">
                 <strong>Expiry:</strong> 30 days
               </p>
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400 font-mono">
             Third-Party Services & Data Sharing
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             We partner with trusted services to run the site better. Here's who gets access
             to what:
           </p>
 
           <table className="w-full border-collapse mb-6">
             <thead>
-              <tr className="bg-slate-100">
+              <tr className="bg-slate-800/40">
                 <th className="border border-slate-300 p-3 text-left font-bold">Service</th>
                 <th className="border border-slate-300 p-3 text-left font-bold">Purpose</th>
                 <th className="border border-slate-300 p-3 text-left font-bold">Data Shared</th>
@@ -222,7 +222,7 @@ export default function CookiePolicyPage() {
                   Anonymous page views, clicks, search queries
                 </td>
               </tr>
-              <tr className="bg-slate-50">
+              <tr className="bg-slate-800/40">
                 <td className="border border-slate-300 p-3">
                   <strong>Vercel Analytics</strong>
                 </td>
@@ -240,7 +240,7 @@ export default function CookiePolicyPage() {
                   Pages viewed, tools searched (anonymized)
                 </td>
               </tr>
-              <tr className="bg-slate-50">
+              <tr className="bg-slate-800/40">
                 <td className="border border-slate-300 p-3">
                   <strong>Google Ads</strong>
                 </td>
@@ -258,7 +258,7 @@ export default function CookiePolicyPage() {
                   Tool clicked, purchase completed (yes/no)
                 </td>
               </tr>
-              <tr className="bg-slate-50">
+              <tr className="bg-slate-800/40">
                 <td className="border border-slate-300 p-3">
                   <strong>Sentry</strong>
                 </td>
@@ -270,37 +270,37 @@ export default function CookiePolicyPage() {
             </tbody>
           </table>
 
-          <p className="text-sm text-slate-600 mb-4">
+          <p className="text-sm text-slate-300 mb-4">
             ℹ️ <strong>Important:</strong> All third-party services are GDPR and CCPA
             compliant. They don't sell your data to advertisers. They only help us run
             better ads and understand how people find us.
           </p>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400 font-mono">
             How You Control Cookies
           </h2>
 
-          <h3 className="text-xl font-bold mt-6 mb-3 text-slate-900">
+          <h3 className="text-xl font-bold mt-6 mb-3 text-cyan-400 font-mono">
             Option 1: Cookie Banner (Easiest)
           </h3>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             See the cookie notice at the bottom of your screen? Click the settings button
             to:
           </p>
-          <ul className="list-disc pl-5 text-slate-700 space-y-1 mb-4">
+          <ul className="list-disc pl-5 text-slate-300 space-y-1 mb-4">
             <li>Turn categories on or off</li>
             <li>Accept all cookies</li>
             <li>Reject all (except essential)</li>
             <li>Your choices are saved for 1 year</li>
           </ul>
 
-          <h3 className="text-xl font-bold mt-6 mb-3 text-slate-900">
+          <h3 className="text-xl font-bold mt-6 mb-3 text-cyan-400 font-mono">
             Option 2: Browser Settings
           </h3>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             Your browser can manage cookies too. You can:
           </p>
-          <ul className="list-disc pl-5 text-slate-700 space-y-2 mb-4">
+          <ul className="list-disc pl-5 text-slate-300 space-y-2 mb-4">
             <li>
               <strong>Chrome:</strong> Settings → Privacy → Cookies and other site data
             </li>
@@ -314,15 +314,15 @@ export default function CookiePolicyPage() {
               <strong>Edge:</strong> Settings → Privacy → Cookies and other site data
             </li>
           </ul>
-          <p className="text-sm text-slate-600 mb-4">
+          <p className="text-sm text-slate-300 mb-4">
             ⚠️ <strong>Heads up:</strong> Blocking essential cookies might break some
             features (like logging in).
           </p>
 
-          <h3 className="text-xl font-bold mt-6 mb-3 text-slate-900">
+          <h3 className="text-xl font-bold mt-6 mb-3 text-cyan-400 font-mono">
             Option 3: Opt-Out of Tracking
           </h3>
-          <ul className="list-disc pl-5 text-slate-700 space-y-2 mb-4">
+          <ul className="list-disc pl-5 text-slate-300 space-y-2 mb-4">
             <li>
               <strong>Opt out of Google Analytics:</strong>{' '}
               <a
@@ -352,63 +352,63 @@ export default function CookiePolicyPage() {
             </li>
           </ul>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400 font-mono">
             Privacy Regulations We Follow
           </h2>
 
           <div className="space-y-4">
-            <div className="bg-green-50 p-4 rounded border border-green-200">
-              <h3 className="font-bold text-green-900 mb-2">
+            <div className=" p-4 rounded border border-green-200">
+              <h3 className="font-bold text-cyan-400 mb-2">
                 🇪🇺 GDPR (Europe)
               </h3>
-              <p className="text-slate-700">
+              <p className="text-slate-300">
                 If you're in Europe, GDPR gives you the right to know what data we collect,
                 correct it, delete it, or port it to another service. We collect your
                 explicit consent before non-essential cookies. You can request access or
-                deletion anytime—just email us.
+                deletion anytime just email us.
               </p>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded border border-blue-200">
-              <h3 className="font-bold text-blue-900 mb-2">
+            <div className="p-4 rounded border border-blue-200">
+              <h3 className="font-bold text-cyan-400 mb-2">
                 🇮🇳 DPDP (India)
               </h3>
-              <p className="text-slate-700">
+              <p className="text-slate-300">
                 Under the Digital Personal Data Protection Act, we only collect data you
                 give us permission for. You can withdraw consent anytime. We keep data only
                 as long as needed (usually under 2 years).
               </p>
             </div>
 
-            <div className="bg-purple-50 p-4 rounded border border-purple-200">
-              <h3 className="font-bold text-purple-900 mb-2">
+            <div className="p-4 rounded border border-purple-200">
+              <h3 className="font-bold text-cyan-400 mb-2">
                 🇨🇦 PIPEDA (Canada)
               </h3>
-              <p className="text-slate-700">
+              <p className="text-slate-300">
                 We follow Canada's privacy laws and get your consent before collecting
                 personal information. You can access or delete your info anytime.
               </p>
             </div>
 
-            <div className="bg-amber-50 p-4 rounded border border-amber-200">
-              <h3 className="font-bold text-amber-900 mb-2">
+            <div className=" p-4 rounded border border-amber-200">
+              <h3 className="font-bold text-cyan-400 mb-2">
                 🇺🇸 CCPA (California)
               </h3>
-              <p className="text-slate-700">
+              <p className="text-slate-300">
                 California residents have the right to know what data we collect, delete it,
                 and opt out of "sales" (sharing with ads partners). We don't sell personal
-                data—we only use it to show relevant ads.
+                data. We only use it to show relevant ads.
               </p>
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400 font-mono">
             How Long We Keep Cookies
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             We don't keep data longer than we need. Here's the timeline:
           </p>
-          <ul className="list-disc pl-5 text-slate-700 space-y-2 mb-4">
+          <ul className="list-disc pl-5 text-slate-300 space-y-2 mb-4">
             <li>
               <strong>Essential cookies:</strong> Clear when you log out or close browser
             </li>
@@ -426,13 +426,13 @@ export default function CookiePolicyPage() {
             </li>
           </ul>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400">
             Your Rights
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             Depending on where you live, you have rights including:
           </p>
-          <ul className="list-disc pl-5 text-slate-700 space-y-2 mb-4">
+          <ul className="list-disc pl-5 text-slate-300 space-y-2 mb-4">
             <li>
               <strong>Right to Access:</strong> Know what data we have about you
             </li>
@@ -452,29 +452,29 @@ export default function CookiePolicyPage() {
               <strong>Right to Object:</strong> Opt out of tracking and targeted ads
             </li>
           </ul>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             To exercise any of these rights, contact us at{' '}
             <strong>hello@toolsherd.com</strong> with your request and proof of identity.
             We'll respond within 30 days (or as required by law).
           </p>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400">
             Do Not Track (DNT)
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             Some browsers let you send a "Do Not Track" signal. We respect this signal and
             will disable non-essential analytics and marketing cookies if you enable it.
             Check your browser settings to turn it on.
           </p>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400">
             Cookies for AI Tool Automation & Agents
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             If you're using an AI agent or automation tool to scrape or interact with our
             site:
           </p>
-          <ul className="list-disc pl-5 text-slate-700 space-y-2 mb-4">
+          <ul className="list-disc pl-5 text-slate-300 space-y-2 mb-4">
             <li>
               <strong>Respect robots.txt:</strong> We've defined what can be crawled
             </li>
@@ -493,10 +493,10 @@ export default function CookiePolicyPage() {
             </li>
           </ul>
 
-          <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900">
+          <h2 className="text-2xl font-bold mt-8 mb-4 text-cyan-400">
             Updates to This Policy
           </h2>
-          <p className="text-slate-700 mb-4">
+          <p className="text-slate-300 mb-4">
             We might update this policy as technology and laws change. If we make big
             changes, we'll notify you here and via email (if you're logged in). Keep
             checking back!

@@ -24,7 +24,7 @@ export default function CookiePreferencesPage() {
                   href="/"
                   className="text-lg font-bold text-white hover:text-cyan-300 transition-colors"
                 >
-                  🤖 AI Tools Directory
+                   AI Tools Directory
                 </a>
               </div>
               <a

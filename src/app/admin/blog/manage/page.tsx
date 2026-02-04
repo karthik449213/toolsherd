@@ -91,7 +91,7 @@ export default function ManageBlogPage() {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update image';
       setUpdateError(message);
-      console.error('Image update error:', err);
+      
     }
   };
 

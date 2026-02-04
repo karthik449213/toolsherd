@@ -73,7 +73,7 @@ export const MultiImageUploadZone: React.FC<MultiImageUploadZoneProps> = ({
 
         if (!response.ok) {
           const errorData = await response.json();
-          console.error(`Upload failed for ${file.name}:`, errorData);
+        
           setErrors((prev) => [...prev, `${file.name}: ${errorData.error || `Error (${response.status})`}`]);
           continue;
         }

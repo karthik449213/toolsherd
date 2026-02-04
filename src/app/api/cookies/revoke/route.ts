@@ -29,7 +29,7 @@ export async function DELETE(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error('Failed to revoke consent:', error);
+  
 
     return NextResponse.json(
       {

@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       .limit(1);
 
     if (checkError) {
-      console.error('Error checking for duplicate slug:', checkError);
+
       return NextResponse.json(
         { error: 'Failed to validate slug uniqueness' },
         { status: 500 }
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     }).select('id, slug');
 
     if (error) {
-      console.error('Database insert error:', error);
+
       
       // Handle specific error codes
       if (error.code === '23505') {
@@ -76,13 +76,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ Tool created successfully:', { id: data?.[0]?.id, slug: body.slug });
+   
     return NextResponse.json(
       { success: true, data },
       { status: 201 }
     );
   } catch (e) {
-    console.error('❌ Unexpected error:', e);
+   
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       imageUrl,
     });
   } catch (err) {
-    console.error('Image update error:', err);
+
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Internal server error' },
       { status: 500 }

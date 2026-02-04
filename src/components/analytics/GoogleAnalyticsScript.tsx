@@ -17,13 +17,13 @@ export function GoogleAnalyticsScript() {
 
     // Only load if user explicitly consented to analytics
     if (!consent?.analytics) {
-      console.log('[Analytics] Consent not given for analytics cookies');
+      
       return;
     }
 
     const gaId = process.env.NEXT_PUBLIC_GA_ID;
     if (!gaId) {
-      console.warn('[Analytics] No GA ID configured in environment variables');
+      
       return;
     }
 
@@ -46,10 +46,10 @@ export function GoogleAnalyticsScript() {
         anonymize_ip: true,
       });
 
-      console.log('[Analytics] Google Analytics loaded with consent');
+  
     };
     script.onerror = () => {
-      console.error('[Analytics] Failed to load Google Analytics script');
+     
     };
 
     document.head.appendChild(script);
