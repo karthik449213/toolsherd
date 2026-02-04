@@ -22,11 +22,11 @@ export default function Footer() {
              <Link href="/newsletter" className="text-slate-400 hover:text-cyan-300 transition-colors duration-200">
                   Newsletter
                 </Link>
-         <Link href="/twitter" className="text-slate-400 hover:text-cyan-300 transition-colors duration-200">
+         <Link href="https://www.instagram.com/toolsherd" className="text-slate-400 hover:text-cyan-300 transition-colors duration-200">
                       <Instagram className="h-6 w-6 text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer" />
                 </Link>
               
-         <Link href="/twitter" className="text-slate-400 hover:text-cyan-300 transition-colors duration-200">
+         <Link href="https://www.facebook.com/toolsherd" className="text-slate-400 hover:text-cyan-300 transition-colors duration-200">
                       <Facebook className="h-6 w-6 text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer" />
                 </Link>
               
