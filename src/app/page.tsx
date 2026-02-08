@@ -365,12 +365,12 @@ import {supabase} from "@/lib/supabaseClient";
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-12 sm:py-16 lg:py-24 border-b border-cyan-500/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-cyan-100 mb-6 animate-in fade-in duration-500 font-mono leading-tight">
-              Tools Herd:<br className="hidden sm:block" /> Your Ultimate AI<br className="hidden sm:block" /> Directory
-              <span className="block text-lg sm:text-2xl md:text-3xl lg:text-5xl text-cyan-400 mt-3 sm:mt-4 leading-tight">Discover Latest AI<br className="hidden sm:block" /> Tools by Category</span>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-cyan-100 mb-6 animate-in fade-in duration-500 font-mono leading-relaxed">
+              Tools Herd: Your Ultimate AI Directory
+              <span className="block text-lg sm:text-2xl md:text-3xl lg:text-5xl text-cyan-400 mt-3 sm:mt-4 leading-relaxed">Discover Latest AI Tools by Category</span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-8 max-w-3xl mx-auto animate-in slide-in-from-bottom-4 duration-700">
-              Hand-picked AI tools to boost your productivity, creativity, and business  all in one place.
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-8 max-w-4xl mx-auto animate-in slide-in-from-bottom-4 duration-700">
+              Hand-picked AI tools to boost your productivity, creativity, and business all in one place.
             </p>
 
             <div className="max-w-2xl mx-auto px-2 sm:px-4 mb-6 sm:mb-8 animate-in slide-in-from-bottom-4 duration-900">
