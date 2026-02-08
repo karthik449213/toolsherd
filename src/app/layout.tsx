@@ -263,6 +263,46 @@ export default function RootLayout({
         <link rel="preconnect" href="https://pkjgladwgxzyqamrwnds.supabase.co" />
         <link rel="dns-prefetch" href="https://pkjgladwgxzyqamrwnds.supabase.co" />
 
+        {/* Critical CSS - Inline for faster initial render */}
+        <style dangerouslySetInnerHTML={{__html: `
+          :root {
+            --bg-deep: #0a0e27;
+            --bg-surface: #1a1f3a;
+            --accent-cyan: #00d4ff;
+            --text-primary: #e8f1ff;
+            --text-secondary: #b0bcc4;
+            --text-muted: #7a8a99;
+            --background: var(--bg-deep);
+            --foreground: var(--text-primary);
+          }
+          html {
+            color-scheme: dark;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--foreground);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-image: 
+              radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.02) 0%, transparent 50%);
+            background-attachment: fixed;
+          }
+          * {
+            transition-duration: 200ms;
+          }
+          button, a, input, textarea, select {
+            transition-duration: 200ms;
+          }
+        `}} />
+
+        {/* Load CSS immediately */}
+        <link rel="stylesheet" href="/globals.css" />
+        <noscript>
+          <link rel="stylesheet" href="/globals.css" />
+        </noscript>
+
         {/* Favicon variants */}
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />

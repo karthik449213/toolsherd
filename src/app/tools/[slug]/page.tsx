@@ -121,7 +121,7 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
     <div className="min-h-screen bg-slate-950">
       {/* Header Navigation */}
       <div className="bg-slate-900/50 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4">
           <Link href="/tools">
             <Button variant="ghost" className="text-cyan-300 hover:text-cyan-200 hover:bg-slate-800/50">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -133,8 +133,8 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
 
       {/* Hero Section */}
       <section className="bg-slate-900/30 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Tool Image Section - FIXED DIMENSIONS */}
             {/* 
               ✅ IMAGE DIMENSIONS FOR CANVA:
@@ -188,8 +188,8 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
               <Badge className={`mb-4 px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(tool.category)}`}>
                 {getCategoryDisplayName(tool.category)}
               </Badge>
-              <h1 className="text-4xl lg:text-5xl font-bold text-cyan-100 mb-6 font-mono">{tool.name}</h1>
-              <p className="text-xl text-slate-300 mb-8 leading-relaxed">{tool.description}</p>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-cyan-100 mb-6 font-mono">{tool.name}</h1>
+              <p className="text-base sm:text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">{tool.description}</p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 {(tool.website_url || tool.url) && (

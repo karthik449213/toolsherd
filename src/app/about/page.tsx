@@ -9,14 +9,14 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="bg-slate-950">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24">
         
         {/* Header Section */}
         <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-cyan-100 tracking-tight font-mono">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-cyan-100 tracking-tight font-mono">
             About Tools Herd AI
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-slate-300">
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-slate-300">
             Cutting through the noise to bring you the best tools in the AI landscape.
           </p>
           
@@ -31,11 +31,11 @@ export default function AboutPage() {
         </div>
 
         {/* Main Content Section */}
-        <div className="mt-16 text-lg text-slate-300 space-y-8">
+        <div className="mt-12 sm:mt-16 text-sm sm:text-base md:text-lg text-slate-300 space-y-8">
 
           {/* Our Mission Section */}
           <div>
-            <h2 className="text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Mission</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Mission</h2>
             <p className="leading-relaxed">
               In the rapidly expanding universe of Artificial Intelligence, finding the right tool can feel like searching for a needle in a haystack. Tools Herd AI was born from a simple mission: to demystify the world of AI and empower creators, developers, and businesses by curating the most innovative and effective tools available. We believe that the right tool can unlock limitless potential, and our goal is to help you find it.
             </p>
@@ -43,7 +43,7 @@ export default function AboutPage() {
 
           {/* Our Story Section */}
           <div>
-            <h2 className="text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Story</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Story</h2>
             <p className="leading-relaxed">
               As AI enthusiasts and developers ourselves, we spent countless hours sifting through forums, blogs, and product launches, trying to keep up with the latest advancements. We knew there had to be a better way. We envisioned a central hub—a well-organized, expertly vetted directory that saves you time and helps you discover tools you can truly trust. That vision became Tools Herd AI, a platform built by the community, for the community.
             </p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
 
           
           <div>
-            <h2 className="text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Approach to Curation</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Approach to Curation</h2>
             <p className="leading-relaxed">
               Quality over quantity is our mantra. Every tool listed in our directory undergoes a rigorous evaluation process. We focus on several key factors:
             </p>
@@ -66,9 +66,9 @@ export default function AboutPage() {
    
 
           {/* Join Our Community Section */}
-          <div className="text-center pt-12">
-            <h2 className="text-3xl font-bold text-cyan-300 font-mono">Join Our Community</h2>
-            <p className="mt-3 max-w-2xl mx-auto text-lg text-slate-300">
+          <div className="text-center pt-8 sm:pt-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 font-mono">Join Our Community</h2>
+            <p className="mt-3 max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-slate-300">
               Tools Herd AI is more than just a directory; it&#39;s a community of innovators. Explore our collection, subscribe to our newsletter for the latest updates, and help us grow.
             </p>
             <div className="mt-8 flex justify-center gap-4">

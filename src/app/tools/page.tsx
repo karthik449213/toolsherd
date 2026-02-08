@@ -234,22 +234,22 @@ export default function ToolsPage() {
             </p>
           </header>
 
-          <div className="max-w-2xl mx-auto mb-8">
+          <div className="max-w-2xl mx-auto mb-6 sm:mb-8 px-2 sm:px-0">
             <div className="relative">
               <Input
                 type="text"
                 placeholder="Search AI tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 text-lg rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-16 placeholder-slate-500"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-12 sm:pr-16 placeholder-slate-500"
               />
-              <Button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-6 py-2 rounded-xl font-semibold shadow-glow-medium">
+              <Button className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-4 sm:px-6 py-2 rounded-xl font-semibold shadow-glow-medium">
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
 
             {/* Category buttons below search */}
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-2">
               {categories.map((category) => {
                 const Icon = category.icon;
                 const isActive = activeCategory === category.id;
@@ -276,11 +276,11 @@ export default function ToolsPage() {
           {error && <div className="text-center text-red-500 mb-6 bg-red-950/30 border border-red-500/30 rounded p-4">{error}</div>}
 
           {loading && tools.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-lg text-slate-400">Loading AI tools...</p>
+            <div className="text-center py-12 sm:py-16">
+              <p className="text-sm sm:text-base md:text-lg text-slate-400">Loading AI tools...</p>
             </div>
           ) : tools && tools.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {tools.map((tool) => (
                 <Card
                   key={tool.id}

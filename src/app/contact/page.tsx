@@ -8,20 +8,20 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <main className="bg-slate-950">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24">
         
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-cyan-100 tracking-tight font-mono">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-cyan-100 tracking-tight font-mono">
             Get in Touch
           </h1>
-          <p className="mt-4 max-w-xl mx-auto text-lg text-slate-300">
+          <p className="mt-4 max-w-xl mx-auto text-sm sm:text-base md:text-lg text-slate-300">
             Have a question, a suggestion for a tool, or a partnership inquiry? We'd love to hear from you.
           </p>
         </div>
 
         {/* Contact Form */}
-        <div className="bg-slate-800/40 p-8 rounded-2xl border border-cyan-500/20 shadow-glow-medium">
+        <div className="bg-slate-800/40 p-6 sm:p-8 rounded-2xl border border-cyan-500/20 shadow-glow-medium">
           <form 
             action="https://formspree.io/f/xpqqwjbl" // <-- PASTE YOUR URL HERE
             method="POST"

@@ -363,43 +363,42 @@ import {supabase} from "@/lib/supabaseClient";
 
 
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-16 lg:py-24 border-b border-cyan-500/20">
+        <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-12 sm:py-16 lg:py-24 border-b border-cyan-500/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold text-cyan-100 mb-6 animate-in fade-in duration-500 font-mono">
-              Tools Herd : Your Ultimate AI Directory
-              <span className="block text-3xl lg:text-5xl text-cyan-400 mt-2">Discover Latest AI Tools by Category</span>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-cyan-100 mb-6 animate-in fade-in duration-500 font-mono leading-tight">
+              Tools Herd:<br className="hidden sm:block" /> Your Ultimate AI<br className="hidden sm:block" /> Directory
+              <span className="block text-lg sm:text-2xl md:text-3xl lg:text-5xl text-cyan-400 mt-3 sm:mt-4 leading-tight">Discover Latest AI<br className="hidden sm:block" /> Tools by Category</span>
             </h1>
-            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto animate-in slide-in-from-bottom-4 duration-700">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-8 max-w-3xl mx-auto animate-in slide-in-from-bottom-4 duration-700">
               Hand-picked AI tools to boost your productivity, creativity, and business  all in one place.
             </p>
 
-            <div className="max-w-2xl mx-auto mb-8 animate-in slide-in-from-bottom-4 duration-900">
+            <div className="max-w-2xl mx-auto px-2 sm:px-4 mb-6 sm:mb-8 animate-in slide-in-from-bottom-4 duration-900">
               <div className="relative">
                 <Input
                   type="text"
                   placeholder="Search AI tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-6 py-4 text-lg rounded-2xl border-2 border-cyan-500/40 focus:border-cyan-500/80 focus:ring-4 focus:ring-cyan-500/30 shadow-glow-medium pr-16 bg-slate-800/60 text-cyan-100"
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl border-2 border-cyan-500/40 focus:border-cyan-500/80 focus:ring-4 focus:ring-cyan-500/30 shadow-glow-medium pr-12 sm:pr-16 bg-slate-800/60 text-cyan-100"
                 />
-                <Button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-6 py-2 rounded-xl font-semibold">
+                <Button className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-4 sm:px-6 py-2 rounded-xl font-semibold">
                   <Search className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-300">
-              <span className="bg-slate-800/40 border border-cyan-500/20 px-4 py-2 rounded-full shadow-glow-subtle">Trending: ChatGPT</span>
-              <span className="bg-slate-800/40 border border-cyan-500/20 px-4 py-2 rounded-full shadow-glow-subtle">New: Runway ML</span>
-              <span className="bg-slate-800/40 border border-cyan-500/20 px-4 py-2 rounded-full shadow-glow-subtle">Featured: Notion AI</span>
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-slate-300 px-2">              <span className="bg-slate-800/40 border border-cyan-500/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-glow-subtle whitespace-nowrap">Trending: ChatGPT</span>
+              <span className="bg-slate-800/40 border border-cyan-500/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-glow-subtle whitespace-nowrap">New: Runway ML</span>
+              <span className="bg-slate-800/40 border border-cyan-500/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-glow-subtle whitespace-nowrap">Featured: Notion AI</span>
             </div>
           </div>
         </section>
 
-        {/* Category Filter - hidden on mobile, sticky on md+ */}
-        <section className="hidden md:block bg-slate-900/60 backdrop-blur py-8 border-b border-cyan-500/20 md:sticky md:top-16 md:z-40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap justify-center gap-2 lg:gap-4">
+        {/* Category Filter - hidden on mobile, visible on md+ */}
+        <section className="hidden md:block bg-slate-900/60 backdrop-blur py-4 md:py-6 lg:py-8 border-b border-cyan-500/20 md:sticky md:top-14 md:z-40 overflow-x-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 whitespace-nowrap md:whitespace-normal">
+            <div className="flex flex-wrap justify-center gap-1 md:gap-2 lg:gap-3 md:gap-3 lg:gap-4">
               {categories.map((category) => {
                 const Icon = category.icon;
                 return (
@@ -425,8 +424,8 @@ import {supabase} from "@/lib/supabaseClient";
         </section>
 
         {/* Tools Grid */}
-        <main className="py-16 bg-slate-950" itemScope itemType="https://schema.org/CollectionPage">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="py-12 sm:py-16 bg-slate-950" itemScope itemType="https://schema.org/CollectionPage">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <header className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono" itemProp="name">
                 Featured AI Tools
@@ -444,7 +443,7 @@ import {supabase} from "@/lib/supabaseClient";
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 tools-lsit lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 tools-lsit lg:grid-cols-3 gap-6 sm:gap-8">
                   {tools.map((tool) => {
                     return (
                       <Card
@@ -503,8 +502,8 @@ import {supabase} from "@/lib/supabaseClient";
         </main>
 
         {/* Blog Section */}
-        <section className="py-16 bg-slate-900/50 border-t border-cyan-500/20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 bg-slate-900/50 border-t border-cyan-500/20">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <header className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono">Latest Blog Posts</h2>
               <p className="text-lg text-slate-300">Daily updates from our blog</p>

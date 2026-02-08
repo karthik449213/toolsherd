@@ -95,13 +95,13 @@ export default function BlogPage() {
 
 
       {/* Blog Section */}
-      <main className="py-16 bg-slate-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <header className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl  font-bold text-cyan-300 mb-4 font-mono">
+      <main className="py-12 sm:py-16 bg-slate-950">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <header className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono">
               AI Blog & Insights
             </h2>
-            <p className="text-lg text-slate-300">
+            <p className="text-sm sm:text-base md:text-lg text-slate-300">
               Stay updated with the latest trends, tips, and insights in AI technology
             </p>
           </header>
