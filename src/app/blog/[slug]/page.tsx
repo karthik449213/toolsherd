@@ -303,14 +303,20 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Featured Image */}
         {post.coverImageUrl && (
-          <div className="w-full h-96 relative overflow-hidden bg-slate-800/50 border-b border-cyan-500/20">
-            <Image
-              src={post.coverImageUrl}
-              alt={post.title}
-              fill
-              className="object-cover w-full h-full"
-              priority
-            />
+          <div className="w-full bg-slate-800/50 border-b border-cyan-500/20">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="relative w-full overflow-hidden rounded-lg shadow-glow-medium border border-cyan-500/20">
+                <Image
+                  src={post.coverImageUrl}
+                  alt={post.title}
+                  width={800}
+                  height={450}
+                  className="w-full h-auto object-contain"
+                  priority
+                  quality={85}
+                />
+              </div>
+            </div>
           </div>
         )}
 
@@ -383,9 +389,16 @@ export default async function BlogPostPage({ params }: Props) {
                                   );
                                 } else if (block.type === 'image') {
                                   return (
-                                    <figure key={idx} className="my-8 bg-slate-900/40 border border-cyan-500/20 rounded-lg p-6 shadow-glow-medium">
-                                      <img src={block.url} alt={block.alt || 'Content image'} className="max-w-full h-auto rounded-lg shadow-lg border border-cyan-500/10" />
-                                      {block.alt && <figcaption className="text-sm text-slate-400 text-center mt-4 font-mono italic">{block.alt}</figcaption>}
+                                    <figure key={idx} className="my-8 bg-slate-900/40 border border-cyan-500/20 rounded-lg overflow-hidden shadow-glow-medium">
+                                      <Image 
+                                        src={block.url} 
+                                        alt={block.alt || 'Content image'} 
+                                        width={700}
+                                        height={400}
+                                        className="w-full h-auto object-contain"
+                                        quality={85}
+                                      />
+                                      {block.alt && <figcaption className="text-sm text-slate-400 text-center mt-4 px-4 py-2 font-mono italic">{block.alt}</figcaption>}
                                     </figure>
                                   );
                                 }
