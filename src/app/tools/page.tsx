@@ -224,12 +224,12 @@ export default function ToolsPage() {
 
       {/* Search and Category Filter */}
       <main className="py-16 bg-slate-950" itemScope itemType="https://schema.org/CollectionPage">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <header className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-cyan-300 mb-4 font-mono" itemProp="name">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <header className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-cyan-300 mb-3 sm:mb-4 font-mono" itemProp="name">
               All AI Tools
             </h2>
-            <p className="text-lg text-slate-300" itemProp="description">
+            <p className="text-sm sm:text-base md:text-lg text-slate-300" itemProp="description">
               Comprehensive collection of AI tools across all categories
             </p>
           </header>
@@ -241,15 +241,15 @@ export default function ToolsPage() {
                 placeholder="Search AI tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-12 sm:pr-16 placeholder-slate-500"
+                className="w-full px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-10 sm:pr-12 md:pr-16 placeholder-slate-500"
               />
-              <Button className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-4 sm:px-6 py-2 rounded-xl font-semibold shadow-glow-medium">
+              <Button className="absolute right-1 sm:right-2 md:right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-2 sm:px-3 md:px-6 py-1 md:py-2 rounded-xl font-semibold shadow-glow-medium h-auto">
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
 
             {/* Category buttons below search */}
-            <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-2">
+            <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-1.5 sm:gap-2">
               {categories.map((category) => {
                 const Icon = category.icon;
                 const isActive = activeCategory === category.id;
@@ -258,14 +258,14 @@ export default function ToolsPage() {
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
                     className={clsx(
-                      'px-6 py-3 rounded-xl font-medium transition-all duration-300',
+                      'px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 text-xs sm:text-sm md:text-base whitespace-nowrap',
                       isActive
                         ? 'bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400'
                         : 'bg-slate-800/50 text-slate-300 border border-cyan-500/20 hover:bg-slate-700/50'
                     )}
                     aria-pressed={isActive}
                   >
-                    {Icon && <Icon className="h-4 w-4 mr-2" />}
+                    {Icon && <Icon className="hidden sm:inline h-3.5 w-3.5 mr-1 md:mr-2" />}
                     {category.name}
                   </Button>
                 );
@@ -280,34 +280,34 @@ export default function ToolsPage() {
               <p className="text-sm sm:text-base md:text-lg text-slate-400">Loading AI tools...</p>
             </div>
           ) : tools && tools.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {tools.map((tool) => (
                 <Card
                   key={tool.id}
-                  className="bg-slate-800/40 border border-cyan-500/20 rounded-2xl shadow-glow-medium hover:shadow-glow-large hover:border-cyan-500/40 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+                  className="bg-slate-800/40 border border-cyan-500/20 rounded-xl sm:rounded-2xl shadow-glow-medium hover:shadow-glow-large hover:border-cyan-500/40 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col"
                 >
                   <Image
                     src={tool.imageUrl || ''}
                     alt={`${tool.name} logo`}
                     width={400}
                     height={300}
-                    className="w-full h-48 bg-slate-700/50 object-cover"
+                    className="w-full h-32 sm:h-40 md:h-48 bg-slate-700/50 object-cover"
                   />
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-cyan-100">{tool.name}</h3>
+                  <CardContent className="p-3 sm:p-4 md:p-6 flex flex-col flex-1">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2 sm:mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-cyan-100 line-clamp-2">{tool.name}</h3>
                       <Badge
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(
+                        className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium flex-shrink-0 ${getCategoryColor(
                           tool.category
                         )}`}
                       >
                         {getCategoryDisplayName(tool.category)}
                       </Badge>
                     </div>
-                    <p className="text-slate-400 mb-4">{tool.description}</p>
-                    <Link href={`/tools/${tool.slug}`}>
-                      <Button className="w-full bg-cyan-500 text-gray-950 py-3 rounded-xl hover:bg-cyan-400 transition-colors font-medium shadow-glow-medium">
-                        Read More <ExternalLink className="h-4 w-4 ml-2" />
+                    <p className="text-slate-400 mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 flex-1">{tool.description}</p>
+                    <Link href={`/tools/${tool.slug}`} className="w-full">
+                      <Button className="w-full bg-cyan-500 text-gray-950 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:bg-cyan-400 transition-colors font-medium shadow-glow-medium text-xs sm:text-sm">
+                        Read More <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
                       </Button>
                     </Link>
                   </CardContent>
@@ -320,18 +320,18 @@ export default function ToolsPage() {
             </div>
           )}
 
-          <div className="text-center mt-10">
+          <div className="text-center mt-8 sm:mt-10">
             {hasMore ? (
               <Button
                 onClick={handleLoadMore}
                 disabled={loadingMore}
-                className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold hover:from-cyan-600 hover:to-teal-600 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base"
               >
                 {loadingMore ? 'Loading...' : 'Load More Tools'}
               </Button>
             ) : (
               tools.length > 0 && (
-                <p className="text-slate-500 text-sm">
+                <p className="text-slate-500 text-xs sm:text-sm">
                   Showing {tools.length} {hasMore ? '' : 'tools.'}
                 </p>
               )
@@ -345,7 +345,7 @@ export default function ToolsPage() {
       {/* Floating mobile button and category sheet */}
       <Button
         aria-label="Open categories"
-        className="md:hidden fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full p-0 bg-emerald-600 hover:bg-emerald-700 shadow-lg"
+        className="md:hidden fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full p-0 bg-cyan-500 hover:bg-cyan-400 shadow-lg"
         onClick={() => setCategorySheetOpen(true)}
       >
         <ListFilter className="h-6 w-6 text-white" />

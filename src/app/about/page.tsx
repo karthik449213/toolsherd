@@ -31,8 +31,7 @@ export default function AboutPage() {
         </div>
 
         {/* Main Content Section */}
-        <div className="mt-12 sm:mt-16 text-sm sm:text-base md:text-lg text-slate-300 space-y-8">
-
+        <div className="mt-8 sm:mt-12 md:mt-16 text-xs sm:text-sm md:text-base lg:text-lg text-slate-300 space-y-6 sm:space-y-8">
           {/* Our Mission Section */}
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-4 font-mono">Our Mission</h2>
@@ -55,7 +54,7 @@ export default function AboutPage() {
             <p className="leading-relaxed">
               Quality over quantity is our mantra. Every tool listed in our directory undergoes a rigorous evaluation process. We focus on several key factors:
             </p>
-            <ul className="list-disc list-inside mt-4 space-y-2 pl-4 text-slate-400">
+            <ul className="list-disc list-inside mt-4 space-y-2 pl-2 sm:pl-4 text-slate-400 text-sm sm:text-base">
               <li><span className="font-semibold text-cyan-400">Functionality:</span> Does the tool deliver on its promises effectively?</li>
               <li><span className="font-semibold text-cyan-400">User Experience:</span> Is it intuitive, well-designed, and easy to use?</li>
               <li><span className="font-semibold text-cyan-400">Innovation:</span> Does it bring something new and valuable to the table?</li>
@@ -71,11 +70,11 @@ export default function AboutPage() {
             <p className="mt-3 max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-slate-300">
               Tools Herd AI is more than just a directory; it&#39;s a community of innovators. Explore our collection, subscribe to our newsletter for the latest updates, and help us grow.
             </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Link href="/tools" className="inline-block bg-cyan-500 text-gray-950 font-semibold px-6 py-3 rounded-md hover:bg-cyan-400 transition-colors shadow-glow-medium">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+              <Link href="/tools" className="inline-block bg-cyan-500 text-gray-950 font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-md hover:bg-cyan-400 transition-colors shadow-glow-medium text-center text-sm sm:text-base">
                 Explore Tools
               </Link>
-              <Link href="/list-a-website" className="inline-block bg-slate-800/50 text-cyan-300 font-semibold px-6 py-3 rounded-md hover:bg-slate-700/50 border border-cyan-500/30 transition-colors">
+              <Link href="/list-a-website" className="inline-block bg-slate-800/50 text-cyan-300 font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-md hover:bg-slate-700/50 border border-cyan-500/30 transition-colors text-center text-sm sm:text-base">
                 Submit a Tool
               </Link>
             </div>

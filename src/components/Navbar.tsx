@@ -34,7 +34,7 @@ export default function Navbar() {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-64 sm:w-80 bg-gradient-to-t from-cyan-400 to-slate-900 border-l border-cyan-500/20 text-slate-100">
+              <SheetContent side="right" className="w-64 sm:w-80 bg-gradient-to-b from-slate-950 to-slate-900 border-l border-cyan-500/20 text-slate-100">
                 <SheetHeader>
                   <SheetTitle className="text-cyan-300 font-bold text-lg font-mono ">Menu</SheetTitle>
                 </SheetHeader>
@@ -43,6 +43,7 @@ export default function Navbar() {
                   <Link href="/blog" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Blog</Link>
                   <Link href="/about" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">About</Link>
                   <Link href="/contact" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Contact</Link>
+                  <Link href="/tools" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Tools</Link>
                   <Link href="/list-a-website" className="block text-slate-200 hover:text-cyan-300 font-medium  duration-200 transition-colors">List a Website</Link>
                   <div className="pt-4 border-t border-cyan-500/20">
                     <FeedbackForm />

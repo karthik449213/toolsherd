@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/lib/supabaseClient';
-import { ArrowLeft, ExternalLink, Check, Star } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Check, Star, Share2, Copy, Check as CheckIcon } from 'lucide-react';
 
 interface Tool {
   id: string;
@@ -65,6 +65,40 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
   const [tool, setTool] = useState<Tool | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [shareResponse, setShareResponse] = useState<string | null>(null);
+
+  const handleShareTool = async () => {
+    if (!tool) return;
+
+    const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/tools/${tool.slug}`;
+    const shareText = `Check out ${tool.name} - ${tool.description}`;
+
+    // Try native share API first
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: tool.name,
+          text: shareText,
+          url: shareUrl,
+        });
+        setShareResponse('Shared successfully!');
+        setTimeout(() => setShareResponse(null), 3000);
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Share failed:', err);
+        }
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        setShareResponse('Copied to clipboard!');
+        setTimeout(() => setShareResponse(null), 3000);
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchTool = async () => {
@@ -121,9 +155,9 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
     <div className="min-h-screen bg-slate-950">
       {/* Header Navigation */}
       <div className="bg-slate-900/50 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <Link href="/tools">
-            <Button variant="ghost" className="text-cyan-300 hover:text-cyan-200 hover:bg-slate-800/50">
+            <Button variant="ghost" className="text-cyan-300 text-xs sm:text-sm hover:text-cyan-200 hover:bg-slate-800/50 px-2 sm:px-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Tools
             </Button>
@@ -133,8 +167,8 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
 
       {/* Hero Section */}
       <section className="bg-slate-900/30 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 md:py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
             {/* Tool Image Section - FIXED DIMENSIONS */}
             {/* 
               ✅ IMAGE DIMENSIONS FOR CANVA:
@@ -156,9 +190,9 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
               4. Transparent background (PNG) or solid color
               5. Center the main subject
             */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center order-2 md:order-1">
               {/* Desktop: 448px × 448px | Mobile: responsive with 1:1 ratio */}
-              <div className="relative w-full max-w-md aspect-square bg-slate-800/40 border-2 border-cyan-500/30 rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium hover:shadow-glow-large transition-shadow duration-300">
+              <div className="relative w-full max-w-sm aspect-square bg-slate-800/40 border-2 border-cyan-500/30 rounded-xl sm:rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium hover:shadow-glow-large transition-shadow duration-300">
                 {tool.imageUrl ? (
                   <Image
                     src={tool.imageUrl}
@@ -172,11 +206,11 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
                   <div className="flex flex-col items-center justify-center h-full w-full bg-gradient-to-br from-slate-700 to-slate-900">
                     <div className="text-center">
                       <div className="text-cyan-400/50 mb-3">
-                        <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <p className="text-slate-400 text-sm">No image</p>
+                      <p className="text-slate-400 text-xs sm:text-sm">No image</p>
                     </div>
                   </div>
                 )}
@@ -184,14 +218,14 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
             </div>
 
             {/* Tool Info */}
-            <div>
-              <Badge className={`mb-4 px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(tool.category)}`}>
+            <div className="order-1 md:order-2">
+              <Badge className={`mb-3 sm:mb-4 px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${getCategoryColor(tool.category)}`}>
                 {getCategoryDisplayName(tool.category)}
               </Badge>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-cyan-100 mb-6 font-mono">{tool.name}</h1>
-              <p className="text-base sm:text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">{tool.description}</p>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-cyan-100 mb-4 sm:mb-6 font-mono">{tool.name}</h1>
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-300 mb-6 sm:mb-8 leading-relaxed">{tool.description}</p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {(tool.website_url || tool.url) && (
                   <a 
                     href={tool.website_url || tool.url} 
@@ -204,29 +238,44 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
                      
                       }
                     }}
+                    className="flex-1"
                   >
-                    <Button className="w-full sm:w-auto bg-cyan-500 text-gray-950 hover:bg-cyan-400 px-8 py-6 text-lg rounded-xl font-semibold shadow-glow-medium">
-                      Visit Website <ExternalLink className="h-5 w-5 ml-2" />
+                    <Button className="w-full bg-cyan-500 text-gray-950 hover:bg-cyan-400 px-4 sm:px-8 py-4 sm:py-6 text-xs sm:text-sm md:text-base rounded-lg sm:rounded-xl font-semibold shadow-glow-medium">
+                      Visit Website <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5 ml-1 sm:ml-2" />
                     </Button>
                   </a>
                 )}
-                <Button variant="outline" className="w-full sm:w-auto px-8 py-6 text-lg rounded-xl border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50">
-                  Share Tool
+                <Button 
+                  onClick={handleShareTool}
+                  variant="outline" 
+                  className="flex-1 px-4 sm:px-8 py-4 sm:py-6 text-xs sm:text-sm md:text-base rounded-lg sm:rounded-xl border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50 flex items-center justify-center gap-2"
+                >
+                  {shareResponse ? (
+                    <>
+                      <CheckIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                      {shareResponse}
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
+                      Share Tool
+                    </>
+                  )}
                 </Button>
               </div>
 
               {/* Quick Stats */}
-              <div className="flex gap-6 pt-8 border-t border-cyan-500/10">
+              <div className="flex gap-4 sm:gap-6 pt-6 sm:pt-8 border-t border-cyan-500/10">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Star className="h-5 w-5 text-cyan-400 fill-cyan-400" />
-                    <span className="text-2xl font-bold text-cyan-100">4.8</span>
+                    <Star className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400 fill-cyan-400" />
+                    <span className="text-xl sm:text-2xl font-bold text-cyan-100">4.8</span>
                   </div>
-                  <p className="text-sm text-slate-400">Rating</p>
+                  <p className="text-xs sm:text-sm text-slate-400">Rating</p>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-cyan-100 mb-2">10K+</div>
-                  <p className="text-sm text-slate-400">Users</p>
+                  <div className="text-xl sm:text-2xl font-bold text-cyan-100 mb-2">10K+</div>
+                  <p className="text-xs sm:text-sm text-slate-400">Users</p>
                 </div>
               </div>
             </div>
@@ -235,10 +284,10 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {/* Features Section */}
-      <section className="bg-slate-900/20 py-16 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-cyan-300 mb-12 font-mono">Key Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="bg-slate-900/20 py-12 sm:py-16 md:py-20 border-b border-cyan-500/20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-300 mb-8 sm:mb-12 font-mono">Key Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               { title: 'Easy to Use', description: 'Intuitive interface that requires no learning curve' },
               { title: 'Powerful Performance', description: 'Fast processing with enterprise-grade reliability' },
@@ -248,14 +297,14 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
               { title: 'Affordable Pricing', description: 'Flexible plans that fit any budget' },
             ].map((feature, index) => (
               <Card key={index} className="border border-cyan-500/20 bg-slate-800/40 hover:border-cyan-500/40 hover:shadow-glow-medium transition-all">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0">
-                      <Check className="h-6 w-6 text-cyan-400" />
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <Check className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-cyan-200 mb-2">{feature.title}</h3>
-                      <p className="text-slate-400">{feature.description}</p>
+                    <div className="min-w-0">
+                      <h3 className="text-base sm:text-lg font-semibold text-cyan-200 mb-2">{feature.title}</h3>
+                      <p className="text-slate-400 text-xs sm:text-sm">{feature.description}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -266,18 +315,18 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {/* Detailed Description Section */}
-      <section className="bg-slate-950 py-16 border-b border-cyan-500/20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-cyan-300 mb-8 font-mono">About {tool.name}</h2>
+      <section className="bg-slate-950 py-12 sm:py-16 md:py-20 border-b border-cyan-500/20">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-300 mb-6 sm:mb-8 font-mono">About {tool.name}</h2>
           <div className="prose prose-slate max-w-none prose-invert">
-            <p className="text-lg text-slate-300 leading-relaxed mb-6">
+            <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed mb-4 sm:mb-6">
               {tool.name} is a cutting-edge AI tool designed to revolutionize the way professionals work in the {getCategoryDisplayName(tool.category).toLowerCase()} space. With its powerful features and user-friendly interface, it helps teams increase productivity and achieve better results.
             </p>
-            <p className="text-lg text-slate-300 leading-relaxed mb-6">
+            <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed mb-4 sm:mb-6">
               Whether you&apos;re a solo entrepreneur or part of a large enterprise, {tool.name} provides the tools you need to succeed. Its advanced AI capabilities combined with intuitive design make it the perfect solution for modern workflows.
             </p>
-            <h3 className="text-2xl font-bold text-cyan-300 mt-8 mb-4 font-mono">Use Cases</h3>
-            <ul className="space-y-3 mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-cyan-300 mt-6 sm:mt-8 mb-4 font-mono">Use Cases</h3>
+            <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
               {[
                 'Automate repetitive tasks and save valuable time',
                 'Enhance content quality with AI-powered suggestions',
@@ -285,8 +334,8 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
                 'Generate insights from complex data',
                 'Scale your operations efficiently',
               ].map((useCase, index) => (
-                <li key={index} className="flex items-start gap-3 text-slate-300">
-                  <Check className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-1" />
+                <li key={index} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm md:text-base text-slate-300">
+                  <Check className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400 flex-shrink-0 mt-0.5 sm:mt-1" />
                   <span>{useCase}</span>
                 </li>
               ))}
@@ -296,10 +345,10 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {/* Pricing Section */}
-      <section className="bg-slate-900/20 py-16 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-cyan-300 mb-12 text-center font-mono">Pricing Plans</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="bg-slate-900/20 py-12 sm:py-16 md:py-20 border-b border-cyan-500/20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-300 mb-8 sm:mb-12 text-center font-mono">Pricing Plans</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               {
                 name: 'Starter',
@@ -326,29 +375,49 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
             ].map((plan, index) => (
               <Card
                 key={index}
-                className={`border rounded-2xl overflow-hidden transition-all ${
+                className={`border rounded-lg sm:rounded-2xl overflow-hidden transition-all ${
                   plan.highlighted ? 'border-cyan-500 shadow-glow-large bg-slate-800/60' : 'border-cyan-500/20 bg-slate-800/40'
                 }`}
               >
-                <CardContent className={`p-8 ${plan.highlighted ? 'bg-slate-800/80' : ''}`}>
-                  <h3 className="text-2xl font-bold text-cyan-100 mb-4">{plan.name}</h3>
-                  <div className="mb-6">
-                    <span className="text-5xl font-bold text-cyan-300">{plan.price}</span>
-                    {plan.period && <span className="text-slate-400 ml-2">{plan.period}</span>}
+                <CardContent className={`p-4 sm:p-6 md:p-8 ${plan.highlighted ? 'bg-slate-800/80' : ''}`}>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-100 mb-3 sm:mb-4">{plan.name}</h3>
+                  <div className="mb-4 sm:mb-6">
+                    <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-300">{plan.price}</span>
+                    {plan.period && <span className="text-slate-400 ml-2 text-xs sm:text-sm">{plan.period}</span>}
                   </div>
-                  <Button
-                    className={`w-full mb-8 py-6 rounded-xl text-lg ${
-                      plan.highlighted
-                        ? 'bg-cyan-500 text-gray-950 hover:bg-cyan-400 shadow-glow-medium font-semibold'
-                        : 'bg-slate-700/50 text-cyan-300 hover:bg-slate-600/50 border border-cyan-500/30'
-                    }`}
-                  >
-                    Get Started
-                  </Button>
-                  <ul className="space-y-4">
+                  {(tool?.website_url || tool?.url) ? (
+                    <a
+                      href={tool.website_url || tool.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      <Button
+                        className={`w-full mb-6 sm:mb-8 py-3 sm:py-4 md:py-6 rounded-lg sm:rounded-xl text-sm sm:text-base md:text-lg ${
+                          plan.highlighted
+                            ? 'bg-cyan-500 text-gray-950 hover:bg-cyan-400 shadow-glow-medium font-semibold'
+                            : 'bg-slate-700/50 text-cyan-300 hover:bg-slate-600/50 border border-cyan-500/30'
+                        }`}
+                      >
+                        Get Started <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
+                      </Button>
+                    </a>
+                  ) : (
+                    <Button
+                      disabled
+                      className={`w-full mb-6 sm:mb-8 py-3 sm:py-4 md:py-6 rounded-lg sm:rounded-xl text-sm sm:text-base md:text-lg opacity-50 cursor-not-allowed ${
+                        plan.highlighted
+                          ? 'bg-cyan-500 text-gray-950'
+                          : 'bg-slate-700/50 text-cyan-300 border border-cyan-500/30'
+                      }`}
+                    >
+                      Get Started
+                    </Button>
+                  )}
+                  <ul className="space-y-2 sm:space-y-4">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-3 text-slate-300">
-                        <Check className="h-5 w-5 text-cyan-400" />
+                      <li key={idx} className="flex items-center gap-2 sm:gap-3 text-slate-300 text-xs sm:text-sm">
+                        <Check className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400 flex-shrink-0" />
                         {feature}
                       </li>
                     ))}
@@ -361,26 +430,28 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-cyan-600/20 to-cyan-500/10 border-t border-b border-cyan-500/20 py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-cyan-100 mb-6 font-mono">Ready to get started?</h2>
-          <p className="text-xl text-slate-300 mb-8">
+      <section className="bg-gradient-to-r from-cyan-600/20 to-cyan-500/10 border-t border-b border-cyan-500/20 py-12 sm:py-16 md:py-20">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-100 mb-4 sm:mb-6 font-mono">Ready to get started?</h2>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-6 sm:mb-8">
             Join thousands of professionals already using {tool.name} to achieve their goals.
           </p>
-          <a href={tool.url || '#'} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-cyan-500 text-gray-950 hover:bg-cyan-400 px-8 py-6 text-lg rounded-xl font-semibold shadow-glow-medium">
-              Start Free Trial <ExternalLink className="h-5 w-5 ml-2" />
-            </Button>
-          </a>
+          {(tool?.website_url || tool?.url) && (
+            <a href={tool.website_url || tool.url} target="_blank" rel="noopener noreferrer">
+              <Button className="bg-cyan-500 text-gray-950 hover:bg-cyan-400 px-6 sm:px-8 py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl font-semibold shadow-glow-medium">
+                Start Free Trial <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5 ml-1 sm:ml-2" />
+              </Button>
+            </a>
+          )}
         </div>
       </section>
 
       {/* Footer Navigation */}
-      <section className="bg-slate-900/50 border-t border-cyan-500/20 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-slate-900/50 border-t border-cyan-500/20 py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <Link href="/tools">
-            <Button variant="outline" className="rounded-xl border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+            <Button variant="outline" className="rounded-lg sm:rounded-xl border-cyan-500/30 text-cyan-300 hover:bg-slate-800/50 text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5">
+              <ArrowLeft className="h-4 w-4 mr-1 sm:mr-2" />
               Back to All Tools
             </Button>
           </Link>
