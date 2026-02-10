@@ -20,6 +20,12 @@ import Image from 'next/image';
     Palette,
     Briefcase,
     ListFilter,
+    Upload,
+    Rocket,
+    Sparkles,
+    ArrowRight,
+    CheckCircle2,
+    X,
   } from "lucide-react";
 
 
@@ -149,6 +155,8 @@ import {supabase} from "@/lib/supabaseClient";
     const [searchQuery, setSearchQuery] = useState("");
     const [categorySheetOpen, setCategorySheetOpen] = useState(false);
     const [isClient, setIsClient] = useState(false);
+    const [showListingBanner, setShowListingBanner] = useState(false);
+    const [bannerDismissed, setBannerDismissed] = useState(false);
 
     const [tools, setTools] = useState<Tool[]>([]);
      const [loading, setLoading] = useState(true);
@@ -314,6 +322,12 @@ import {supabase} from "@/lib/supabaseClient";
     // Initial load + refetch on filter changes
     useEffect(() => {
       setIsClient(true);
+      // Check if user is visiting for the first time
+      const hasVisited = localStorage.getItem('toolsherd_visited');
+      if (!hasVisited) {
+        setShowListingBanner(true);
+        localStorage.setItem('toolsherd_visited', 'true');
+      }
     }, []);
 
     useEffect(() => {
@@ -361,6 +375,42 @@ import {supabase} from "@/lib/supabaseClient";
     return (
       <div className="min-h-screen bg-slate-950">
 
+        {/* First Visit Listing Banner */}
+        {showListingBanner && !bannerDismissed && (
+          <div className="bg-gradient-to-r from-cyan-600 via-cyan-500 to-blue-600 border-b-4 border-cyan-400">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 relative">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center justify-between">
+                <div className="flex gap-3 sm:gap-4 items-start flex-1">
+                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 flex items-center justify-center mt-1">
+                    <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white animate-pulse" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
+                      Have an Amazing AI Tool?
+                    </h3>
+                    <p className="text-sm sm:text-base text-cyan-50">
+                      Get it featured in our directory and reach thousands of AI professionals looking for tools like yours. It's free and takes just 2 minutes!
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2 flex-shrink-0">
+                  <Link href="/list-a-website" className="inline-block">
+                    <Button className="bg-white text-cyan-600 font-semibold px-4 sm:px-6 py-2 rounded-lg hover:bg-cyan-50 transition-all duration-300 text-sm sm:text-base shadow-lg hover:shadow-xl whitespace-nowrap">
+                      List Your Tool
+                    </Button>
+                  </Link>
+                  <button
+                    onClick={() => setBannerDismissed(true)}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                    aria-label="Close banner"
+                  >
+                    <X className="h-5 w-5 text-white" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-12 sm:py-16 lg:py-24 border-b border-cyan-500/20">
@@ -380,45 +430,41 @@ import {supabase} from "@/lib/supabaseClient";
                   placeholder="Search AI tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl border-2 border-cyan-500/40 focus:border-cyan-500/80 focus:ring-4 focus:ring-cyan-500/30 shadow-glow-medium pr-12 sm:pr-16 bg-slate-800/60 text-cyan-100"
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-2xl border-2 border-cyan-500/40 focus:border-cyan-500/80 focus:ring-4 focus:ring-cyan-500/30 shadow-glow-medium pr-14 sm:pr-16 bg-slate-800/60 text-cyan-100"
                 />
-                <Button className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-4 sm:px-6 py-2 rounded-xl font-semibold">
-                  <Search className="h-4 w-4" />
-                </Button>
+                <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 flex items-center justify-center">
+                  <Search className="h-5 w-5 text-cyan-400" />
+                </div>
+              </div>
+
+              <div className="hidden md:block mt-6">
+                <div className="flex flex-wrap justify-center gap-2 lg:gap-3">
+                  {categories.map((category) => {
+                    const Icon = category.icon;
+                    return (
+                      <Button
+                        key={category.id}
+                        onClick={() => setActiveCategory(category.id)}
+                        className={clsx(
+                          "px-6 py-3 rounded-xl font-medium transition-all duration-300",
+                          activeCategory === category.id
+                            ? "bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400"
+                            : "bg-slate-800/50 text-slate-200 border border-cyan-500/20 hover:border-cyan-500/50 hover:bg-slate-800"
+                        )}
+                        aria-pressed={activeCategory === category.id}
+                      >
+                        {Icon && <Icon className="h-4 w-4 mr-2" />}
+                        {category.name}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-slate-300 px-2">              <span className="bg-slate-800/40 border border-cyan-500/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-glow-subtle whitespace-nowrap">Trending: ChatGPT</span>
               <span className="bg-slate-800/40 border border-cyan-500/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-glow-subtle whitespace-nowrap">New: Runway ML</span>
               <span className="bg-slate-800/40 border border-cyan-500/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-glow-subtle whitespace-nowrap">Featured: Notion AI</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Category Filter - hidden on mobile, visible on md+ */}
-        <section className="hidden md:block bg-slate-900/60 backdrop-blur py-4 md:py-6 lg:py-8 border-b border-cyan-500/20 md:sticky md:top-14 md:z-40 overflow-x-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 whitespace-nowrap md:whitespace-normal">
-            <div className="flex flex-wrap justify-center gap-1 md:gap-2 lg:gap-3 md:gap-3 lg:gap-4">
-              {categories.map((category) => {
-                const Icon = category.icon;
-                return (
-                   <Button
-    key={category.id}
-    onClick={() => setActiveCategory(category.id)}
-    className={clsx(
-      "px-6 py-3 rounded-xl font-medium transition-all duration-300",
-      activeCategory === category.id
-        ? "bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400"
-        : "bg-slate-800/50 text-slate-200 border border-cyan-500/20 hover:border-cyan-500/50 hover:bg-slate-800"
-    )}
-    aria-pressed={activeCategory === category.id}
-  >
-  {Icon && <Icon className="h-4 w-4 mr-2" />}
-  {category.name}
-</Button>
-
-                );
-              })}
             </div>
           </div>
         </section>
@@ -450,19 +496,19 @@ import {supabase} from "@/lib/supabaseClient";
                         key={tool.id}
                         className="bg-slate-800/40 rounded-2xl border border-cyan-500/20 shadow-glow-medium hover:shadow-glow-large hover:-translate-y-1 transition-all duration-300 transform overflow-hidden"
                       >
-                        <div className="tool-logo img relative h-48 bg-slate-900/50 rounded-t-2xl overflow-hidden border-b border-cyan-500/10">
-                        <Image
-                                         src={tool.imageUrl || ''}
-                                         alt={`${tool.name} logo`}
-                                         width={400}
-                                         height={192}
-                                         className="w-full h-48 flex items-center justify-center bg-slate-900/50 rounded-t-2xl object-contain p-4"
-                                       />
+                        <div className="tool-logo img relative w-full max-w-sm aspect-square bg-slate-800/40 border-2 border-cyan-500/30 rounded-xl sm:rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium hover:shadow-glow-large transition-shadow duration-300 mx-auto">
+                          <Image
+                            src={tool.imageUrl || ''}
+                            alt={`${tool.name} logo`}
+                            fill
+                            sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 2rem), 448px"
+                            className="object-cover hover:scale-105 transition-transform duration-300"
+                          />
                         </div>
                         <CardContent className="p-6">
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-xl font-bold text-cyan-100">{tool.name}</h3>
-                            <Badge className={`px-3 py-1 rounded-full text-sm font-medium border ${getCategoryColor(tool.category)}`}>
+                          <div className="mb-3">
+                            <h3 className="text-2xl font-bold text-cyan-100 mb-2">{tool.name}</h3>
+                            <Badge className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium border ${getCategoryColor(tool.category)}`}>
                               {getCategoryDisplayName(tool.category)}
                             </Badge>
                           </div>
@@ -500,6 +546,82 @@ import {supabase} from "@/lib/supabaseClient";
             )}
           </div>
         </main>
+
+        {/* CTA Section - List Your AI Tool */}
+        <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-y border-cyan-500/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                <Sparkles className="h-4 w-4 text-cyan-400" />
+                <span className="text-sm font-semibold text-cyan-300">Join the Directory</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-cyan-100 mb-4 font-mono leading-tight">
+                Got an AI Tool?
+                <span className="block text-cyan-400 mt-2">List It On Tools Herd!</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                Reach thousands of AI enthusiasts and professionals. Get discovered by users looking for exactly what you offer.
+              </p>
+            </div>
+
+            {/* Features List */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 sm:mb-16">
+              <div className="flex items-start gap-4 p-6 rounded-xl bg-slate-800/40 border border-cyan-500/20 hover:border-cyan-500/40 transition-colors">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                  <Rocket className="h-6 w-6 text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-cyan-100 mb-2">Boost Visibility</h3>
+                  <p className="text-slate-400">Get your tool seen by thousands of AI professionals and enthusiasts monthly</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 p-6 rounded-xl bg-slate-800/40 border border-cyan-500/20 hover:border-cyan-500/40 transition-colors">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                  <Upload className="h-6 w-6 text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-cyan-100 mb-2">Easy to List</h3>
+                  <p className="text-slate-400">Simple and quick submission process - get your tool live in minutes</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 p-6 rounded-xl bg-slate-800/40 border border-cyan-500/20 hover:border-cyan-500/40 transition-colors">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                  <CheckCircle2 className="h-6 w-6 text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-cyan-100 mb-2">Verified Quality</h3>
+                  <p className="text-slate-400">Only the best AI tools are featured in our curated directory</p>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link href="/list-a-website" className="w-full sm:w-auto">
+                <Button className="w-full bg-gradient-to-r from-cyan-500 to-cyan-400 text-gray-950 py-4 px-8 rounded-xl font-semibold text-lg shadow-glow-large hover:shadow-glow-xl hover:from-cyan-400 hover:to-cyan-300 transition-all duration-300 flex items-center justify-center gap-2 group">
+                  <Upload className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                  Start Listing Your Tool
+                </Button>
+              </Link>
+              <Link href="/tools" className="w-full sm:w-auto">
+                <Button className="w-full bg-slate-800/60 border-2 border-cyan-500/40 text-cyan-100 py-4 px-8 rounded-xl font-semibold text-lg hover:border-cyan-500/70 hover:bg-slate-700/60 transition-all duration-300 flex items-center justify-center gap-2 group">
+                  Explore All Tools
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+
+            {/* Additional Info */}
+            <div className="mt-12 p-6 rounded-xl bg-cyan-500/5 border border-cyan-500/20">
+              <p className="text-center text-slate-300">
+                <span className="font-semibold text-cyan-300">Already have a listing?</span> {' '}
+                <Link href="/admin/tools/manage" className="text-cyan-400 hover:text-cyan-300 underline transition-colors">
+                  Manage your tools
+                </Link>
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Blog Section */}
         <section className="py-12 sm:py-16 bg-slate-900/50 border-t border-cyan-500/20">

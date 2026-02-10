@@ -47,18 +47,18 @@
 
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="p-0 w-[calc(100vw-1rem)] max-w-none md:hidden">
-          <DialogHeader className="px-4 pt-4 pb-2 border-b">
-            <DialogTitle>Select Category</DialogTitle>
-            <DialogDescription>Quickly filter and choose a category</DialogDescription>
+        <DialogContent className="p-0 w-[calc(100vw-1rem)] max-w-none md:hidden bg-slate-900 border border-cyan-500/20">
+          <DialogHeader className="px-4 pt-4 pb-2 border-b border-cyan-500/20 bg-slate-800/50">
+            <DialogTitle className="text-cyan-100 font-mono">Select Category</DialogTitle>
+            <DialogDescription className="text-slate-300">Quickly filter and choose a category</DialogDescription>
           </DialogHeader>
 
-          <div className="p-4 space-y-3">
+          <div className="p-4 space-y-3 bg-slate-900">
             <Input
               placeholder="Filter categories..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full"
+              className="w-full px-4 py-2 rounded-lg border-2 border-cyan-500/40 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/30 bg-slate-800/60 text-cyan-100 placeholder-slate-400"
             />
 
             <div className="max-h-[60vh] overflow-y-auto -mx-1 pr-1">
@@ -70,11 +70,10 @@
                     <Button
                       key={cat.id}
                       onClick={() => onSelect(cat.id)}
-                      variant={isActive ? "default" : "secondary"}
-                      className={`justify-start px-3 py-3 rounded-xl ${
+                      className={`justify-start px-3 py-3 rounded-xl transition-all duration-300 ${
                         isActive
-                          ? "bg-blue-600 text-white hover:bg-blue-700"
-                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                          ? "bg-cyan-500 text-gray-950 hover:bg-cyan-400 shadow-glow-medium font-semibold"
+                          : "bg-slate-800/60 text-slate-200 border border-cyan-500/20 hover:border-cyan-500/40 hover:bg-slate-700/60"
                       }`}
                       aria-pressed={isActive}
                     >
@@ -89,8 +88,7 @@
             <div className="pt-1">
               <Button
                 onClick={() => onOpenChange(false)}
-                variant="secondary"
-                className="w-full rounded-xl"
+                className="w-full rounded-xl bg-slate-800/60 text-slate-200 border border-cyan-500/20 hover:border-cyan-500/40 hover:bg-slate-700/60 transition-all duration-300"
               >
                 Close
               </Button>

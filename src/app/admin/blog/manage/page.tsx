@@ -183,9 +183,11 @@ export default function ManageBlogPage() {
                         <Eye className="h-4 w-4" />
                       </Button>
                     </Link>
-                    <Button variant="outline" size="sm" className="rounded-lg" disabled>
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
+                    <Link href={`/admin/blog/${blog.id}/edit`}>
+                      <Button variant="outline" size="sm" className="rounded-lg">
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                    </Link>
                     {deleteConfirm === blog.id ? (
                       <div className="flex gap-2">
                         <Button

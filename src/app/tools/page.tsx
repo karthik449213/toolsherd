@@ -241,35 +241,35 @@ export default function ToolsPage() {
                 placeholder="Search AI tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-10 sm:pr-12 md:pr-16 placeholder-slate-500"
+                className="w-full px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base rounded-2xl border border-cyan-500/30 bg-slate-900/50 text-slate-100 focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/30 focus:shadow-glow-medium shadow-lg pr-10 sm:pr-12 placeholder-slate-500"
               />
-              <Button className="absolute right-1 sm:right-2 md:right-3 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 px-2 sm:px-3 md:px-6 py-1 md:py-2 rounded-xl font-semibold shadow-glow-medium h-auto">
-                <ExternalLink className="h-4 w-4" />
-              </Button>
+              <div className="absolute right-3 sm:right-4 md:right-5 top-1/2 -translate-y-1/2 flex items-center justify-center">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400" />
+              </div>
             </div>
 
-            {/* Category buttons below search */}
-            <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-1.5 sm:gap-2">
-              {categories.map((category) => {
-                const Icon = category.icon;
-                const isActive = activeCategory === category.id;
-                return (
-                  <Button
-                    key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
-                    className={clsx(
-                      'px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-300 text-xs sm:text-sm md:text-base whitespace-nowrap',
-                      isActive
-                        ? 'bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400'
-                        : 'bg-slate-800/50 text-slate-300 border border-cyan-500/20 hover:bg-slate-700/50'
-                    )}
-                    aria-pressed={isActive}
-                  >
-                    {Icon && <Icon className="hidden sm:inline h-3.5 w-3.5 mr-1 md:mr-2" />}
-                    {category.name}
-                  </Button>
-                );
-              })}
+            <div className="hidden md:block mt-6">
+              <div className="flex flex-wrap justify-center gap-2 lg:gap-3">
+                {categories.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <Button
+                      key={category.id}
+                      onClick={() => setActiveCategory(category.id)}
+                      className={clsx(
+                        "px-6 py-3 rounded-xl font-medium transition-all duration-300",
+                        activeCategory === category.id
+                          ? "bg-cyan-500 text-gray-950 shadow-glow-medium hover:bg-cyan-400"
+                          : "bg-slate-800/50 text-slate-200 border border-cyan-500/20 hover:border-cyan-500/50 hover:bg-slate-800"
+                      )}
+                      aria-pressed={activeCategory === category.id}
+                    >
+                      {Icon && <Icon className="h-4 w-4 mr-2" />}
+                      {category.name}
+                    </Button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -286,13 +286,28 @@ export default function ToolsPage() {
                   key={tool.id}
                   className="bg-slate-800/40 border border-cyan-500/20 rounded-xl sm:rounded-2xl shadow-glow-medium hover:shadow-glow-large hover:border-cyan-500/40 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col"
                 >
-                  <Image
-                    src={tool.imageUrl || ''}
-                    alt={`${tool.name} logo`}
-                    width={400}
-                    height={300}
-                    className="w-full h-32 sm:h-40 md:h-48 bg-slate-700/50 object-cover"
-                  />
+                  <div className="relative w-full max-w-sm aspect-square bg-slate-800/40 border-2 border-cyan-500/30 rounded-xl sm:rounded-2xl flex items-center justify-center overflow-hidden shadow-glow-medium hover:shadow-glow-large transition-shadow duration-300 mx-auto">
+                    {tool.imageUrl ? (
+                      <Image
+                        src={tool.imageUrl}
+                        alt={`${tool.name} logo`}
+                        fill
+                        sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 2rem), 448px"
+                        className="object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-full w-full bg-gradient-to-br from-slate-700 to-slate-900">
+                        <div className="text-center">
+                          <div className="text-cyan-400/50 mb-2">
+                            <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                          <p className="text-slate-400 text-xs">No image</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <CardContent className="p-3 sm:p-4 md:p-6 flex flex-col flex-1">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2 sm:mb-3">
                       <h3 className="text-lg sm:text-xl font-bold text-cyan-100 line-clamp-2">{tool.name}</h3>

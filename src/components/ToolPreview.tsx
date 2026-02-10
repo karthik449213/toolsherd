@@ -122,7 +122,7 @@ export default function ToolPreview({ data, imageUrl }: ToolPreviewProps) {
       <div className="bg-slate-800/40 border border-cyan-500/30 rounded-2xl p-8 hover:border-cyan-500/50 transition-all duration-200">
         <h2 className="text-2xl font-bold text-cyan-300 mb-6 font-mono">Key Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.key_features.map((feature, idx) => (
+          {Array.isArray(data.key_features) && data.key_features.map((feature, idx) => (
             <Card key={idx} className="border-cyan-500/20">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
@@ -144,7 +144,7 @@ export default function ToolPreview({ data, imageUrl }: ToolPreviewProps) {
       <div className="bg-slate-800/40 border border-cyan-500/30 rounded-2xl p-8 hover:border-cyan-500/50 transition-all duration-200">
         <h2 className="text-2xl font-bold text-cyan-300 mb-6 font-mono">Use Cases</h2>
         <ul className="space-y-3">
-          {data.use_cases.map((useCase, idx) => (
+          {Array.isArray(data.use_cases) && data.use_cases.map((useCase, idx) => (
             <li key={idx} className="flex items-start gap-3 text-slate-300">
               <Check className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-1" />
               <span>{useCase}</span>
@@ -157,13 +157,13 @@ export default function ToolPreview({ data, imageUrl }: ToolPreviewProps) {
       <div className="bg-slate-800/40 border border-cyan-500/30 rounded-2xl p-8 hover:border-cyan-500/50 transition-all duration-200">
         <h2 className="text-2xl font-bold text-cyan-300 mb-6 font-mono">Pricing Plans</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {data.pricing_tiers.map((plan, idx) => (
+          {Array.isArray(data.pricing_tiers) && data.pricing_tiers.map((plan, idx) => (
             <Card key={idx} className="border-cyan-500/20">
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-cyan-100 mb-2">{plan.name}</h3>
                 <div className="text-3xl font-bold text-cyan-300 mb-6">{plan.price}</div>
                 <ul className="space-y-3">
-                  {plan.features.map((feature, fIdx) => (
+                  {Array.isArray(plan.features) && plan.features.map((feature, fIdx) => (
                     <li key={fIdx} className="flex items-start gap-2 text-sm text-slate-300">
                       <Check className="h-4 w-4 text-cyan-400 flex-shrink-0 mt-0.5" />
                       {feature}
@@ -187,7 +187,7 @@ export default function ToolPreview({ data, imageUrl }: ToolPreviewProps) {
             <p className="text-slate-400">Description: <span className="font-medium text-slate-200">{data.seo_description}</span></p>
           </div>
           <div>
-            <p className="text-slate-400">Keywords: <span className="font-medium text-slate-200">{data.seo_keywords.join(', ')}</span></p>
+            <p className="text-slate-400">Keywords: <span className="font-medium text-slate-200">{Array.isArray(data.seo_keywords) ? data.seo_keywords.join(', ') : ''}</span></p>
           </div>
         </div>
       </div>

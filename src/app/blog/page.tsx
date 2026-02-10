@@ -10,11 +10,13 @@ import {
 
   Calendar,
   User,
+  ListFilter,
 } from "lucide-react";
 
 import { supabase } from "@/lib/supabaseClient";
 import { BlogPost, RawBlogPost } from "@/lib/types";
 import { blogCategories } from "@/lib/categoryMapping";
+import CategorySheet from "@/components/category-sheet";
 
 const formatDate = (d: Date) =>
   new Date(d).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
@@ -26,6 +28,7 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categorySheetOpen, setCategorySheetOpen] = useState(false);
 
   const fetchBlogPosts = async () => {
     setLoading(true);
@@ -106,9 +109,9 @@ export default function BlogPage() {
             </p>
           </header>
 
-          {/* Category Filter */}
-          <div className="mb-12 ">
-            <div className="flex flex-wrap gap-2 justify-center ">
+          {/* Category Filter - desktop only */}
+          <div className="hidden md:block mb-12">
+            <div className="flex flex-wrap gap-2 justify-center">
               <button
                 onClick={() => setSelectedCategory("all")}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
@@ -189,6 +192,26 @@ export default function BlogPage() {
           )}
         </div>
       </main>
+
+      {/* Floating mobile button and category sheet */}
+      <Button
+        aria-label="Open categories"
+        className="md:hidden fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full p-0 bg-cyan-500 hover:bg-cyan-400 shadow-lg"
+        onClick={() => setCategorySheetOpen(true)}
+      >
+        <ListFilter className="h-6 w-6 text-white" />
+      </Button>
+
+      <CategorySheet
+        categories={[{ id: "all", name: "All Posts", icon: null }, ...blogCategories.map((cat) => ({ ...cat, icon: null }))]}
+        activeCategory={selectedCategory}
+        open={categorySheetOpen}
+        onOpenChange={setCategorySheetOpen}
+        onSelect={(id) => {
+          setSelectedCategory(id);
+          setCategorySheetOpen(false);
+        }}
+      />
 
       {/* Footer */}
    

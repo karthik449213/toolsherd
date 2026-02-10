@@ -303,15 +303,15 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Featured Image */}
         {post.coverImageUrl && (
-          <div className="w-full bg-slate-800/50 border-b border-cyan-500/20">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <div className="relative w-full overflow-hidden rounded-lg shadow-glow-medium border border-cyan-500/20">
+          <div className="bg-slate-950">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              <div className="relative w-full aspect-video overflow-hidden rounded-lg shadow-glow-medium border border-cyan-500/20 bg-slate-900">
                 <Image
                   src={post.coverImageUrl}
                   alt={post.title}
-                  width={800}
-                  height={450}
-                  className="w-full h-auto object-contain"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 896px, 896px"
+                  className="object-cover"
                   priority
                   quality={85}
                 />
@@ -321,11 +321,11 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {/* Main Content */}
-        <main className="py-16 bg-slate-950">
+        <main className="py-8 sm:py-12 bg-slate-950">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* Article Content */}
-              <article className="lg:col-span-3 bg-slate-800/40 border border-cyan-500/20 rounded-lg shadow-glow-medium p-8">
+              <article className="lg:col-span-3 bg-slate-800/40 border border-cyan-500/20 rounded-lg shadow-glow-medium p-4 sm:p-6 lg:p-8">
                 {post.content && (
                   <div className="prose-content text-slate-300 mb-8 space-y-6">
                     {(() => {
@@ -389,16 +389,18 @@ export default async function BlogPostPage({ params }: Props) {
                                   );
                                 } else if (block.type === 'image') {
                                   return (
-                                    <figure key={idx} className="my-8 bg-slate-900/40 border border-cyan-500/20 rounded-lg overflow-hidden shadow-glow-medium">
-                                      <Image 
-                                        src={block.url} 
-                                        alt={block.alt || 'Content image'} 
-                                        width={700}
-                                        height={400}
-                                        className="w-full h-auto object-contain"
-                                        quality={85}
-                                      />
-                                      {block.alt && <figcaption className="text-sm text-slate-400 text-center mt-4 px-4 py-2 font-mono italic">{block.alt}</figcaption>}
+                                    <figure key={idx} className="my-6 -mx-4 sm:mx-0 bg-slate-900/40 sm:border border-cyan-500/20 sm:rounded-lg overflow-hidden shadow-glow-medium">
+                                      <div className="relative w-full aspect-video bg-slate-900">
+                                        <Image 
+                                          src={block.url} 
+                                          alt={block.alt || 'Content image'} 
+                                          fill
+                                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 600px, 600px"
+                                          className="object-cover"
+                                          quality={85}
+                                        />
+                                      </div>
+                                      {block.alt && <figcaption className="text-sm text-slate-400 text-center py-2 px-4 font-mono italic">{block.alt}</figcaption>}
                                     </figure>
                                   );
                                 }

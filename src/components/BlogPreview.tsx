@@ -15,6 +15,8 @@ interface ContentBlock {
   content?: string;
   items?: string[];
   ordered?: boolean;
+  url?: string;
+  alt?: string;
 }
 
 export default function BlogPreview({ data, imageUrl, bodyImages }: BlogPreviewProps) {
@@ -93,11 +95,13 @@ export default function BlogPreview({ data, imageUrl, bodyImages }: BlogPreviewP
         );
 
       case 'image':
+        const imageSrc = (block as any).url || block.content;
+        const imageAlt = (block as any).alt || 'Blog content';
         return (
           <div key={idx} className="my-6 rounded-lg overflow-hidden border border-slate-200">
             <img
-              src={block.content}
-              alt="Blog content"
+              src={imageSrc}
+              alt={imageAlt}
               className="w-full h-auto object-cover max-h-96"
             />
           </div>

@@ -172,7 +172,7 @@ export const MultiImageUploadZone: React.FC<MultiImageUploadZoneProps> = ({
       {/* Uploaded Images Gallery */}
       {uploadedUrls.length > 0 && (
         <div className="bg-gray-50 rounded-lg p-4">
-          <h4 className="font-semibold text-gray-700 mb-3">Uploaded Images ({uploadedUrls.length}/{maxFiles})</h4>
+          <h4 className="font-semibold text-gray-700 mb-3">✓ Uploaded Images ({uploadedUrls.length}/{maxFiles})</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {uploadedUrls.map((url, index) => (
               <div
@@ -184,22 +184,24 @@ export const MultiImageUploadZone: React.FC<MultiImageUploadZoneProps> = ({
                   alt={`Body image ${index + 1}`}
                   className="w-full h-32 object-cover"
                 />
-                <div className="absolute top-1 right-1 bg-emerald-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                  Image {index + 1}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="text-white text-xs font-semibold">Image {index + 1}</span>
                 </div>
                 <button
                   onClick={() => removeImage(index)}
                   type="button"
-                  className="absolute top-1 left-1 bg-red-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded hover:bg-red-700 transition-colors"
                 >
                   <X size={16} />
                 </button>
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-3">
-            Reference images in your markdown content as [Image 1], [Image 2], etc.
-          </p>
+          <div className="mt-4 p-3 bg-cyan-50 border border-cyan-200 rounded">
+            <p className="text-sm text-cyan-800 font-semibold">
+              📌 Next Step: Use the visual editor below to insert these images anywhere in your content!
+            </p>
+          </div>
         </div>
       )}
 

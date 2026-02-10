@@ -215,9 +215,11 @@ export default function ManageToolsPage() {
                         <Eye className="h-4 w-4" />
                       </Button>
                     </Link>
-                    <Button variant="outline" size="sm" className="rounded-lg" disabled>
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
+                    <Link href={`/admin/tools/${tool.id}/edit`}>
+                      <Button variant="outline" size="sm" className="rounded-lg">
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                    </Link>
                     {deleteConfirm === tool.id ? (
                       <div className="flex gap-2">
                         <Button
