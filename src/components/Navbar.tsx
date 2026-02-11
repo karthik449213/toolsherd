@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -8,6 +8,12 @@ import { Menu } from 'lucide-react';
 import { FeedbackForm } from '@/components/feedback-form';
 
 export default function Navbar() {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleLinkClick = () => {
+    setIsSheetOpen(false);
+  };
+
   return (
 <header className="bg-gradient-to-b from-slate-950 to-slate-900 shadow-glow-subtle sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
@@ -28,7 +34,7 @@ export default function Navbar() {
             <FeedbackForm />
           </nav>
           <div className="md:hidden ml-auto">
-            <Sheet>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" aria-label="Open menu" className="border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/10 h-10 w-10">
                   <Menu className="h-5 w-5" />
@@ -39,12 +45,12 @@ export default function Navbar() {
                   <SheetTitle className="text-cyan-300 font-bold text-lg font-mono ">Menu</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6 space-y-6">
-                  <Link href="/" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Home</Link>
-                  <Link href="/blog" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Blog</Link>
-                  <Link href="/about" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">About</Link>
-                  <Link href="/contact" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Contact</Link>
-                  <Link href="/tools" className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Tools</Link>
-                  <Link href="/list-a-website" className="block text-slate-200 hover:text-cyan-300 font-medium  duration-200 transition-colors">List a Website</Link>
+                  <Link href="/" onClick={handleLinkClick} className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Home</Link>
+                  <Link href="/blog" onClick={handleLinkClick} className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Blog</Link>
+                  <Link href="/about" onClick={handleLinkClick} className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">About</Link>
+                  <Link href="/contact" onClick={handleLinkClick} className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Contact</Link>
+                  <Link href="/tools" onClick={handleLinkClick} className="block text-slate-200 hover:text-cyan-300 font-medium transition-colors duration-200">Tools</Link>
+                  <Link href="/list-a-website" onClick={handleLinkClick} className="block text-slate-200 hover:text-cyan-300 font-medium  duration-200 transition-colors">List a Website</Link>
                   <div className="pt-4 border-t border-cyan-500/20">
                     <FeedbackForm />
                   </div>
