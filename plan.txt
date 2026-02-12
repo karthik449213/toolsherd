@@ -1,0 +1,198 @@
+You are a world-class startup strategist, SaaS architect, venture capital advisor, and product-led growth expert.
+
+Your task is to generate a COMPLETE billion-dollar company building blueprint in Markdown format for the project described below.
+
+The output MUST be a structured, long-form .md document ready to be saved as:
+
+/docs/BILLION_DOLLAR_ROADMAP.md
+
+--------------------------------------------------
+PROJECT CONTEXT
+--------------------------------------------------
+
+Company Name: Tools Herd AI
+
+Product:
+
+Tools Herd AI is a modern, full-stack web application built with Next.js 16 (App Router). It is:
+
+- A curated AI tools directory
+- A professional SEO-optimized blog
+- A discovery and decision platform for AI tools
+- Focused on productivity, content creation, coding, marketing, trading, and business automation
+
+Long-term Vision:
+
+To become the infrastructure layer between users and AI tools by owning:
+
+1. Discovery
+2. Decision
+3. Purchase
+4. Market Intelligence
+
+The goal is to build this into a billion-dollar company.
+
+--------------------------------------------------
+YOUR OBJECTIVE
+--------------------------------------------------
+
+Generate a COMPLETE strategic roadmap explaining how Tools Herd AI can evolve from:
+
+Stage 0 → MVP  
+To → Profitable Platform  
+To → AI Ecosystem Infrastructure Company  
+To → $1B+ Valuation  
+
+This is NOT motivational content.
+This must be analytical, structured, and execution-ready.
+
+--------------------------------------------------
+OUTPUT REQUIREMENTS
+--------------------------------------------------
+
+Return a deeply structured Markdown document including the following sections:
+
+# 1. Executive Vision
+- Clear 10-year vision
+- What category we dominate
+- What problem we truly solve
+- Why this can be a billion-dollar company
+
+# 2. Market Opportunity Analysis
+- TAM, SAM, SOM explanation
+- AI SaaS growth trends
+- Competitive landscape (directories, review platforms, marketplaces)
+- Market gaps we can exploit
+
+# 3. Strategic Phases of Growth
+
+Break into clear phases:
+
+## Phase 1: Traffic & Affiliate Engine (0–12 months)
+- Goals
+- Revenue model
+- Key metrics
+- Team requirements
+- Risks
+- Moat being built
+
+## Phase 2: Productization & SaaS Layer (12–24 months)
+- Comparison engine
+- AI Stack Builder
+- Premium subscriptions
+- Recurring revenue strategy
+- Data collection advantage
+
+## Phase 3: Marketplace & Platformization (24–48 months)
+- Subscription management layer
+- AI marketplace
+- Commission model
+- Platform economics
+- Network effects
+
+## Phase 4: Data & Intelligence Layer (36–60 months)
+- AI market intelligence product
+- VC & enterprise targeting
+- Data monetization
+- Strategic defensibility
+
+# 4. Revenue Architecture
+
+Explain all revenue streams:
+
+- Affiliate
+- Featured listings
+- SaaS subscriptions
+- Marketplace commissions
+- Data platform
+- Enterprise partnerships
+- Advertising (if applicable)
+
+Include revenue projections scenarios:
+- Conservative
+- Aggressive
+- Breakout
+
+# 5. Moat Strategy
+
+Explain defensibility:
+
+- SEO moat
+- Brand moat
+- Data moat
+- Switching costs
+- Network effects
+- Community layer
+
+# 6. Product Architecture Evolution
+
+How the tech stack should evolve:
+
+- Early stage architecture
+- Scaling to 100k MAU
+- Scaling to 1M+ MAU
+- Microservices or modular scaling
+- Data warehouse strategy
+
+# 7. Growth Engine Strategy
+
+- SEO strategy
+- Programmatic SEO
+- YouTube & media
+- Email & newsletter
+- Community
+- Partnerships
+- Acquisition loops
+
+# 8. Fundraising Narrative
+
+If raising capital:
+- Why investors would care
+- Comparable companies
+- Valuation strategy
+- Key metrics to hit before raising
+
+# 9. Team Evolution Plan
+
+Who to hire at:
+- $10k/month revenue
+- $100k/month revenue
+- $1M/month revenue
+
+# 10. Exit Scenarios
+
+Potential acquirers:
+- SaaS platforms
+- Marketplaces
+- Media companies
+- AI infrastructure players
+
+Explain why acquisition would happen.
+
+--------------------------------------------------
+FORMATTING RULES
+--------------------------------------------------
+
+- Use proper Markdown headings (#, ##, ###)
+- Use tables where useful
+- Use bullet points
+- Be analytical and practical
+- Avoid fluff
+- Write as if presenting to serious founders or investors
+- Minimum 3,000 words equivalent depth
+- No generic startup advice
+
+This document must feel like a real strategic masterplan, not blog content.
+
+End with a clear summary: “What must happen in the next 12 months.”
+
+--------------------------------------------------
+REMEMBER
+--------------------------------------------------
+
+Think like a venture capitalist AND a product architect.
+Be concrete.
+Be structured.
+Be realistic but ambitious.
+No motivational tone.
+Only strategic execution clarity.

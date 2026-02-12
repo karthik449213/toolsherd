@@ -161,7 +161,7 @@ export default function ToolPreview({ data, imageUrl }: ToolPreviewProps) {
             <Card key={idx} className="border-cyan-500/20">
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-cyan-100 mb-2">{plan.name}</h3>
-                <div className="text-3xl font-bold text-cyan-300 mb-6">{plan.price}</div>
+                <div className="text-2xl font-bold text-cyan-300 mb-6">{plan.price}</div>
                 <ul className="space-y-3">
                   {Array.isArray(plan.features) && plan.features.map((feature, fIdx) => (
                     <li key={fIdx} className="flex items-start gap-2 text-sm text-slate-300">

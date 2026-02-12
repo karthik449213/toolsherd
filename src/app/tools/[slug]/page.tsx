@@ -9,6 +9,22 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/lib/supabaseClient';
 import { ArrowLeft, ExternalLink, Check, Star, Share2, Copy, Check as CheckIcon } from 'lucide-react';
 
+interface PricingInfo {
+  pricing_model?: string;
+  starting_price?: number;
+  currency?: string;
+  billing_cycle?: string;
+}
+
+interface PricingTier {
+  name: string;
+  price: number | string;
+  price_label?: string;
+  period?: string;
+  features: string[];
+  highlighted?: boolean;
+}
+
 interface Tool {
   id: string;
   name: string;
@@ -22,6 +38,8 @@ interface Tool {
   rating?: number;
   user_count?: number;
   tags?: string[];
+  pricing?: PricingInfo | string;
+  pricing_tiers?: PricingTier[] | string;
 }
 
 const getCategoryColor = (category: string) => {
@@ -60,12 +78,91 @@ const getCategoryDisplayName = (category: string) => {
   }
 };
 
+const getCurrencySymbol = (currency?: string) => {
+  const code = (currency || 'USD').toUpperCase();
+  switch (code) {
+    case 'USD':
+      return '$';
+    case 'EUR':
+      return '€';
+    case 'GBP':
+      return '£';
+    case 'INR':
+      return '₹';
+    default:
+      return `${code} `;
+  }
+};
+
+const normalizePricingTiers = (value: Tool['pricing_tiers']): PricingTier[] => {
+  if (Array.isArray(value)) return value as PricingTier[];
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? (parsed as PricingTier[]) : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+};
+
+const normalizePricingInfo = (value: Tool['pricing']): PricingInfo => {
+  if (value && typeof value === 'object') return value as PricingInfo;
+  if (typeof value === 'string') {
+    try {
+      return JSON.parse(value) as PricingInfo;
+    } catch {
+      return {};
+    }
+  }
+  return {};
+};
+
+const billingCycleToPeriod = (billingCycle?: string) => {
+  const normalized = (billingCycle || '').toLowerCase().trim();
+  switch (normalized) {
+    case 'per-month':
+    case 'monthly':
+      return '/month';
+    case 'per-year':
+    case 'yearly':
+    case 'annual':
+      return '/year';
+    case 'per-week':
+    case 'weekly':
+      return '/week';
+    case 'per-day':
+    case 'daily':
+      return '/day';
+    default:
+      return '';
+  }
+};
+
+const getPlanPriceDisplay = (plan: PricingTier, pricingInfo: PricingInfo) => {
+  if (plan.price_label) {
+    return { priceText: plan.price_label, periodText: '' };
+  }
+
+  if (typeof plan.price === 'string') {
+    return { priceText: plan.price, periodText: plan.period || '' };
+  }
+
+  const symbol = getCurrencySymbol(pricingInfo.currency);
+  const periodText = plan.period || billingCycleToPeriod(pricingInfo.billing_cycle);
+  return { priceText: `${symbol}${plan.price}`, periodText };
+};
+
 export default function ToolDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
   const [tool, setTool] = useState<Tool | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [shareResponse, setShareResponse] = useState<string | null>(null);
+
+  const pricingInfo = normalizePricingInfo(tool?.pricing);
+  const pricingTiers = normalizePricingTiers(tool?.pricing_tiers);
 
   const handleShareTool = async () => {
     if (!tool) return;
@@ -349,30 +446,10 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-300 mb-8 sm:mb-12 text-center font-mono">Pricing Plans</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {[
-              {
-                name: 'Starter',
-                price: 'Free',
-                features: ['Up to 5 projects', 'Basic features', 'Community support'],
-              },
-              {
-                name: 'Professional',
-                price: '$29',
-                period: '/month',
-                features: [
-                  'Unlimited projects',
-                  'Advanced features',
-                  'Priority support',
-                  'API access',
-                ],
-                highlighted: true,
-              },
-              {
-                name: 'Enterprise',
-                price: 'Custom',
-                features: ['Custom solutions', 'Dedicated support', 'SLA guarantee'],
-              },
-            ].map((plan, index) => (
+            {pricingTiers.length > 0 ? pricingTiers.map((plan, index) => {
+              const { priceText, periodText } = getPlanPriceDisplay(plan, pricingInfo);
+
+              return (
               <Card
                 key={index}
                 className={`border rounded-lg sm:rounded-2xl overflow-hidden transition-all ${
@@ -382,8 +459,8 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
                 <CardContent className={`p-4 sm:p-6 md:p-8 ${plan.highlighted ? 'bg-slate-800/80' : ''}`}>
                   <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-100 mb-3 sm:mb-4">{plan.name}</h3>
                   <div className="mb-4 sm:mb-6">
-                    <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-300">{plan.price}</span>
-                    {plan.period && <span className="text-slate-400 ml-2 text-xs sm:text-sm">{plan.period}</span>}
+                    <span className="text-2xl sm:text-3xl font-bold text-cyan-300">{priceText}</span>
+                    {periodText && <span className="text-slate-400 ml-1 text-sm">{periodText}</span>}
                   </div>
                   {(tool?.website_url || tool?.url) ? (
                     <a
@@ -424,7 +501,12 @@ export default function ToolDetailPage({ params }: { params: Promise<{ slug: str
                   </ul>
                 </CardContent>
               </Card>
-            ))}
+              );
+            }) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-slate-400">Pricing information not available</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
