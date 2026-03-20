@@ -82,17 +82,17 @@ export const ImageWithCaption: React.FC<ImageProps> = ({
   src,
   alt,
   caption,
-  width = 800,
-  height = 400,
+  width = 600,
+  height = 300,
 }) => (
   <figure className="my-6">
-    <div className="relative w-full h-auto">
+    <div className="relative w-full h-auto max-w-full">
       <Image
         src={src}
         alt={alt}
         width={width}
         height={height}
-        className="w-full h-auto rounded-lg"
+        className="w-full h-auto rounded-lg shadow-sm"
       />
     </div>
     {caption && (

@@ -400,7 +400,7 @@ export default async function BlogPostPage({ params }: Props) {
                                           quality={85}
                                         />
                                       </div>
-                                      {block.alt && <figcaption className="text-sm text-slate-400 text-center py-2 px-4 font-mono italic">{block.alt}</figcaption>}
+                                    
                                     </figure>
                                   );
                                 }

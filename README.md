@@ -1,203 +1,295 @@
-# Tools Herd AI - Ultimate AI Directory & Blog Platform
+# Tools Herd AI
 
-## 1. Project Overview
+> A premium dark-themed AI tools directory and blog platform built with Next.js 16, Tailwind CSS 4, and Supabase.
 
-### Project Name
-**Tools Herd AI** (Repository: `toolsherd`)
+[![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-2.57.4-3ECF8E)](https://supabase.com/)
 
-### Short Description
-Tools Herd AI is a modern, full-stack web application built with **Next.js 16** that serves as a comprehensive directory of AI tools combined with a professional blog platform. The application helps users discover, explore, and learn about the best AI tools available for various use cases including productivity, content creation, coding, marketing, and trading. It provides a curated directory with tool categorization, detailed listings, and educational blog posts with full SEO optimization.
+## 🚀 Overview
 
-### Key Goals & Intended Use Cases
-- **Primary Goal**: Create a discoverable, user-friendly directory of AI tools with detailed information and comparisons
-- **Secondary Goal**: Publish high-quality, SEO-optimized blog posts about AI tools, trends, and best practices
-- **Use Cases**:
-  - Users searching for specific AI tools for their workflows
-  - Content creators, developers, marketers, and traders looking for AI solutions
-  - Readers interested in AI education, tutorials, and industry insights
-  - AI tool discovery and comparison across different categories
+Tools Herd AI is a modern, full-stack web application that combines a comprehensive AI tools directory with a professional blog platform. Discover, compare, and learn about the best AI tools for productivity, content creation, coding, marketing, and trading.
 
----
+### ✨ Key Features
 
-## 2. Tech Stack
+- **🛠️ AI Tools Directory**: Curated collection of 500+ AI tools across 12 categories
+- **📝 Professional Blog**: SEO-optimized articles about AI trends and tutorials
+- **🎨 Premium Dark Theme**: Cyberpunk-inspired design with cyan accents
+- **📱 Responsive Design**: Mobile-first approach with adaptive layouts
+- **🔍 Advanced Search**: Real-time filtering and category-based navigation
+- **👨‍💼 Admin Dashboard**: Full CRUD operations for content management
+- **🍪 GDPR Compliance**: Advanced cookie consent system
+- **📊 Analytics Ready**: Google Analytics integration with consent management
 
-### Programming Languages
-- **TypeScript** - Primary language for type-safe development
-- **JavaScript/JSX/TSX** - React component development
-- **SQL** - Database queries and schema definition
-- **CSS/PostCSS** - Styling with Tailwind CSS
+## 🏗️ Tech Stack
 
-### Frameworks & Libraries
+### Frontend
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4 with custom dark theme
+- **UI Components**: Shadcn/ui + Radix UI primitives
+- **State Management**: TanStack Query (React Query)
+- **Forms**: React Hook Form + Zod validation
 
-#### Frontend Framework
-- **Next.js 16.1.1** - React metaframework with App Router for SSR and static generation
-- **React 19.2.3** - UI library
-- **React DOM 19.2.3** - DOM rendering
+### Backend & Database
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **File Storage**: Supabase Storage
+- **API**: Next.js API Routes
 
-#### UI Component Libraries & Styling
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Shadcn/ui** - High-quality component library built on Radix UI
-- **Radix UI** - Accessible component primitives (accordion, alert dialog, avatar, badge, button, dialog, dropdown menu, select, tooltip, etc.)
-- **Lucide React 0.544** - Icon library
-- **React Icons 5.4** - Additional icon sets
-- **Class Variance Authority (CVA) 0.7.1** - Component styling utility
-- **Clsx 2.1.1** - Utility for className management
+### Development Tools
+- **Package Manager**: npm
+- **Linting**: ESLint
+- **Bundler**: Turbopack (dev), Webpack (prod)
+- **Deployment**: Vercel-ready
 
-#### JSON Content & Rendering
-- **JSON validation & parsing** - Structured content block handling
-- **Content rendering engine** - Convert JSON blocks to React components
-- **react-day-picker 9.13.0** - Date picker component
+## 📁 Project Structure
 
-#### Form Handling & Validation
-- **React Hook Form 7.55.0** - Performant form library
-- **@hookform/resolvers 3.10.0** - Form validation resolvers
-- **Zod 3.24.2** - TypeScript-first schema validation
-- **zod-validation-error 3.4.0** - User-friendly validation error formatting
+```
+toolsherd/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── admin/             # Admin dashboard
+│   │   ├── api/               # API routes
+│   │   ├── blog/              # Blog pages
+│   │   ├── tools/             # Tools directory
+│   │   ├── layout.tsx         # Root layout
+│   │   └── globals.css        # Global styles
+│   ├── components/            # Reusable components
+│   │   ├── ui/               # Shadcn/ui components
+│   │   ├── admin/            # Admin components
+│   │   ├── cookies/          # Cookie system
+│   │   └── [Component].tsx   # Feature components
+│   └── lib/                  # Utilities & config
+│       ├── supabaseClient.ts # Database client
+│       ├── types.ts         # TypeScript types
+│       └── utils.ts         # Helper functions
+├── public/                   # Static assets
+├── docs/                     # Documentation
+└── package.json
+```
 
-#### Data Management & State
-- **@tanstack/react-query (TanStack Query) 5.89.0** - Server state management
-- **Supabase JS 2.57.4** - Backend services client library
-- **Wouter 3.3.5** - Lightweight client-side router
+## 🚀 Getting Started
 
-#### UI Utilities & Effects
-- **Framer Motion 11.13.1** - Animation library
-- **React Resizable Panels 2.1.7** - Resizable panel components
-- **Vaul 1.1.2** - Drawer component library
-- **Input OTP 1.4.2** - One-time password input
-- **Embla Carousel React 8.6.0** - Carousel component
-- **Recharts 2.15.2** - Charting library
+### Prerequisites
 
-#### Styling Utilities
-- **Tailwind Merge 2.6.0** - Smart class merging for Tailwind CSS
-- **Tailwindcss-animate 1.0.7** - Tailwind animation utilities
-- **TW Animate CSS 1.2.5** - Additional Tailwind animations
+- Node.js 18+
+- npm or yarn
+- Supabase account
 
-#### Form Utilities
-- **React Markdown** 10.1.0 - Markdown rendering in React
-- **Date-fns** 3.6.0 - Date utility library
-- **Zod** 3.24.2 - TypeScript-first schema validation
+### Installation
 
-#### Middleware & Backend Utilities
-- **Drizzle ORM** - Type-safe database ORM
-- **Drizzle-Zod** - Integration between Drizzle and Zod
-- **Memorystore** 1.6.7 - In-memory session store
-- **Connect-PG-Simple** 10.0.0 - PostgreSQL session store
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/karthik449213/toolsherd.git
+   cd toolsherd
+   ```
 
-#### Communication & WebSocket
-- **WebSocket (ws)** 8.18.0 - WebSocket client for real-time features
-- **Express** 4.21.2 - Backend/server framework
-- **Passport** 0.7.0 - Authentication middleware
-- **Passport-Local** 1.0.0 - Local authentication strategy
-- **Express Session** 1.18.1 - Session management
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### Database
-- **Supabase** - PostgreSQL database with real-time capabilities
-  - Hosted PostgreSQL database
-  - Authentication system
-  - Real-time subscriptions
-  - Storage for images and files
-- **PostgreSQL** - Underlying relational database
+3. **Environment Setup**
+   ```bash
+   cp .env.example .env.local
+   ```
 
-### Database Schema
+   Configure your environment variables:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   NEXT_PUBLIC_SITE_URL=https://your-domain.com
+   ```
 
-**Main Table: `blog_post`**
+4. **Database Setup**
+   - Create a new Supabase project
+   - Run the SQL migrations in `docs/database-schema.sql`
+   - Configure storage buckets for images
 
-The blog system uses a single PostgreSQL table in Supabase to store all blog post data:
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📊 Database Schema
+
+### Core Tables
+
+**ai_tools**
 ```sql
-CREATE TABLE blog_post (
-  id BIGINT PRIMARY KEY,
-  title TEXT NOT NULL,
-  slug TEXT NOT NULL UNIQUE,
-  excerpt TEXT,
-  content_json JSONB NOT NULL,  -- JSON CONTENT STRUCTURE
-  cover_image_url TEXT,
-  seo_title TEXT,
-  seo_description TEXT,
-  seo_keywords TEXT[],
-  author TEXT,
-  tags TEXT[],
-  category TEXT,
-  published_at TIMESTAMP WITH TIME ZONE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  is_published BOOLEAN DEFAULT true
-);
+- id: bigint (primary key)
+- name: text
+- slug: text (unique)
+- description: text
+- category: text
+- imageUrl: text
+- url: text
+- pricing_tiers: jsonb
+- key_features: jsonb
+- use_cases: jsonb
+- rating: decimal
+- user_count: integer
+- tags: text[]
+- seo_title: text
+- seo_description: text
+- featured: boolean
+- is_published: boolean
+- created_at: timestamp
+- updated_at: timestamp
 ```
 
-**Field Definitions:**
-- `id` - Unique post identifier (auto-incrementing)
-- `title` - Blog post title (required)
-- `slug` - URL-friendly identifier (required, unique) - used in route `/blog/{slug}`
-- `excerpt` - Short description/preview text
-- `content_json` - Full content in JSON format (required) - stores structured content blocks
-- `cover_image_url` - Featured image URL
-- `seo_title` - SEO-optimized title for search engines
-- `seo_description` - Meta description for SEO
-- `seo_keywords` - Array of keywords for SEO
-- `author` - Post author name
-- `tags` - Array of topic tags
-- `category` - Post category classification
-- `published_at` - Publication timestamp
-- `created_at` - Record creation timestamp
-- `updated_at` - Last modification timestamp
-- `is_published` - Boolean flag to control visibility
+**blog_post**
+```sql
+- id: bigint (primary key)
+- title: text
+- slug: text (unique)
+- excerpt: text
+- content_json: jsonb
+- cover_image_url: text
+- author: text
+- tags: text[]
+- category: text
+- published_at: timestamp
+- is_published: boolean
+- created_at: timestamp
+- updated_at: timestamp
+```
 
-### Tools, Services & Platforms
-- **Supabase Cloud** - Backend as a Service (BaaS) for database and authentication
-- **Node.js** - JavaScript runtime
-- **npm** - Package manager
-- **ESLint 9** - Code linting and quality
-- **PostCSS 4** - CSS processing
-- **Turbopack** - Next.js bundler (used in dev mode)
-- **Next Font (Google Fonts)** - Optimized font loading
+## 🎨 Design System
+
+### Color Palette
+- **Primary**: Cyan (#00d4ff)
+- **Background**: Deep Dark (#0a0e27)
+- **Surface**: Dark Blue (#1a1f3a)
+- **Text**: Light Gray (#e8f1ff)
+- **Accents**: Magenta (#ff006e), Green (#05ffa1)
+
+### Typography
+- **Sans**: Geist Sans
+- **Mono**: Geist Mono
+- **Sizes**: Responsive scale with fluid typography
+
+### Components
+- **Cards**: Glassmorphism effect with cyan borders
+- **Buttons**: Gradient backgrounds with glow effects
+- **Inputs**: Dark backgrounds with cyan focus states
+- **Navigation**: Sticky header with mobile sheet
+
+## 📱 Pages & Features
+
+### Public Pages
+- **/** - Homepage with hero, featured tools, recent blog posts
+- **/tools** - Tools directory with search and filtering
+- **/tools/[slug]** - Individual tool detail pages
+- **/blog** - Blog listing with category filters
+- **/blog/[slug]** - Individual blog posts
+- **/about** - About page
+- **/contact** - Contact form
+- **/privacy-policy** - Privacy policy
+- **/terms-and-conditions** - Terms of service
+
+### Admin Features
+- **/admin/tools** - Tool management (CRUD)
+- **/admin/blog** - Blog post management (CRUD)
+- **/admin/images** - Image upload and management
+
+### Special Features
+- **Cookie Consent**: GDPR-compliant banner with granular controls
+- **SEO Optimization**: Dynamic meta tags, sitemaps, structured data
+- **Image Optimization**: Next.js Image component with Supabase storage
+- **Performance**: Optimized fonts, lazy loading, code splitting
+
+## 🔧 Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+```
+
+### Code Quality
+- **TypeScript**: Strict type checking enabled
+- **ESLint**: Configured for React/Next.js best practices
+- **Prettier**: Code formatting (via ESLint)
+
+### Testing
+- Component testing with React Testing Library
+- E2E testing with Playwright (planned)
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Configure environment variables
+3. Deploy automatically on push
+
+### Manual Deployment
+```bash
+npm run build
+npm run start
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow TypeScript strict mode
+- Use conventional commits
+- Maintain component documentation
+- Test components before submitting PRs
+
+## 📈 Roadmap
+
+### Phase 1 (Current): Foundation ✅
+- [x] Next.js 16 setup with App Router
+- [x] Supabase integration
+- [x] Basic directory and blog functionality
+- [x] Admin dashboard
+- [x] SEO infrastructure
+
+### Phase 2: Enhancement 🚧
+- [ ] Advanced search with AI-powered recommendations
+- [ ] User accounts and bookmarks
+- [ ] Tool comparison feature
+- [ ] Newsletter system
+- [ ] Premium content features
+
+### Phase 3: Monetization 💰
+- [ ] Paid tool listings
+- [ ] Sponsored content
+- [ ] Affiliate tracking
+- [ ] Premium subscriptions
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) - The React framework
+- [Supabase](https://supabase.com/) - Backend as a service
+- [Shadcn/ui](https://ui.shadcn.com/) - UI component library
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+
+## 📞 Support
+
+For support, email support@toolsherd.ai or join our [Discord community](https://discord.gg/toolsherd).
 
 ---
 
-## 3. Project Architecture
-
-### High-Level Architecture Explanation
-
-The application follows a **modern Next.js App Router architecture** with a clear separation of concerns:
-
-```
-┌─────────────────────────────────────────────────┐
-│          Vercel/Hosting (Next.js)               │
-├─────────────────────────────────────────────────┤
-│  Middleware Layer (middleware.ts)               │
-│  - Cookie consent verification                 │
-│  - Request header manipulation                 │
-│  - Path-based routing logic                    │
-├─────────────────────────────────────────────────┤
-│  Frontend Layer (React 19 + TypeScript)         │
-│  - Pages: Home, Blog, Tools, Admin, About     │
-│  - Components: Reusable UI elements            │
-│  - Custom Hooks: Logic abstraction             │
-├─────────────────────────────────────────────────┤
-│  Next.js App Router (SSR/SSG/ISR)              │
-│  - Dynamic routes: /blog/[slug]                │
-│  - API routes: /api/*                          │
-│  - Admin dashboard: /admin/*                   │
-├─────────────────────────────────────────────────┤
-│  Data Layer                                     │
-│  - Supabase Client (supabaseClient.ts)         │
-│  - TanStack Query (react-query)                │
-│  - Cookie management (cookies/utilities)       │
-│  - Type definitions (types.ts)                 │
-├─────────────────────────────────────────────────┤
-│  Supabase Cloud Backend                        │
-│  - PostgreSQL Database                         │
-│  - Authentication & Sessions                   │
-│  - Image Storage (blog images, uploads)        │
-│  - Real-time subscriptions (optional)          │
-└─────────────────────────────────────────────────┘
-```
-└─────────────────────────────────────────────────┘
-```
-
-### Architectural Design Patterns
-
-1. **Server-Side Rendering (SSR)**: Blog post pages are server-rendered for optimal SEO
+**Built with ❤️ for the AI community**
 2. **Static Generation with ISR**: Pages are pre-rendered and revalidated incrementally
 3. **Component-Based Architecture**: Modular, reusable React components
 4. **Separation of Concerns**: Clear division between pages, components, and utilities
