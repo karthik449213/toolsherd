@@ -64,6 +64,38 @@ export default function AboutPage() {
           
    
 
+          {/* Exciting Startup Idea Section */}
+          <div className="mt-12 sm:mt-16 bg-gradient-to-br from-purple-900/20 to-pink-900/20 rounded-xl p-6 sm:p-8 border border-purple-500/30 hover:border-purple-500/60 transition-colors">
+            <div className="text-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-purple-300 font-mono mb-3">🚀 Join Our Exciting Startup Idea</h2>
+              <p className="text-sm sm:text-base text-slate-300 mb-4">
+                Interested in being part of something revolutionary? We&#39;re building:
+              </p>
+              <p className="text-base sm:text-lg font-semibold text-purple-200 mb-4">
+                <span className="text-pink-300">An AI-powered operating system</span> that helps gig drivers maximize earnings across ride-hailing platforms
+              </p>
+              <p className="text-sm sm:text-base text-slate-400 mb-6">
+                Join our community and be part of the future. Send us an email if you&#39;re interested in collaborating or learning more!
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+                <a 
+                  href="https://startup-landing-page--karthikpiinasi.replit.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block bg-purple-600 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-md hover:bg-purple-500 transition-colors shadow-glow-medium text-center text-sm sm:text-base"
+                >
+                  View Startup Page
+                </a>
+                <a 
+                  href="mailto:karthikpiinasi@gmail.com" 
+                  className="inline-block bg-pink-600/70 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-md hover:bg-pink-600 border border-pink-500/30 transition-colors text-center text-sm sm:text-base"
+                >
+                  Email: karthikpiinasi@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* Join Our Community Section */}
           <div className="text-center pt-8 sm:pt-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 font-mono">Join Our Community</h2>
