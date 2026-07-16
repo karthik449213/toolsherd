@@ -90,7 +90,7 @@ export default function AboutPage() {
                   href="mailto:karthikpiinasi@gmail.com" 
                   className="inline-block bg-pink-600/70 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-md hover:bg-pink-600 border border-pink-500/30 transition-colors text-center text-sm sm:text-base"
                 >
-                  Email: karthikpiinasi@gmail.com
+                  Email: toolsherd@gmail.com
                 </a>
               </div>
             </div>
